@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "retailtrac-POS",
+    "slug": "retailtrac-POS",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "retailtrac-POS"
+}
