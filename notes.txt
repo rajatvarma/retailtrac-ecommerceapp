@@ -1,0 +1,12 @@
+p_img="http://pvanam.retailtrac360.com:8080/images_item/";
+
+        String i = "CID=" + cid+ "&RID=" + referenceID + "&CRN=" + customerRefNo + "&AMT="+amount+"&VER=1.0&TYP="+typ+"&CNY=INR&RTU=" + returnURL + "&PPI="+amount+"&RE1=MN&RE2=&RE3=&RE4=&RE5=&CKS=" + checkSumValue;
+
+{
+    "getCallData": "{\"token\":\"Igswfd\/3THF4v\/WYXdmbQjCKLzbofLBDkvwFRnWrmTr4gxrHTPqpaA6UoNClPzmD\"}",
+    "postcallData": ""
+}
+
+
+rID - sO code
+customerRefNo random number of length 4
