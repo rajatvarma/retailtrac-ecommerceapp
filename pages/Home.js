@@ -29,8 +29,6 @@ const HomePage = ({navigation}) => {
 
             <Header title={`Welcome`} icons={[{icon: faUser, destination: 'Account'}, {icon: faShoppingCart, destination: 'Cart'}]} nav={navigation}/>
 
-            <SearchBar />
-
             <View style={HomePageStyles.categoriesContainer}>
                 <Text style={HomePageStyles.categoriesHeading}>{`What would you like to buy today?\n`}</Text>
                 {categories ? 
@@ -79,7 +77,7 @@ const HomePageStyles = StyleSheet.create({
     },
 
     categoriesListContainer: {
-        height: '65%'
+        height: '80%'
     },
 
     categoriesHeading: {

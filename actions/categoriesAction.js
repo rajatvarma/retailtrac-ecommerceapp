@@ -1,7 +1,8 @@
 import axios from "axios";
+import { categoriesURL } from "../apiCalls";
 
 const getCategories = () => async (dispatch) => {
-    const categoriesList = await axios.get("http://pvanam.retailtrac360.com:8080/MergedWebservicesFMCG/rest/EcomInventory/allCategorywithSearchText?search_text=")
+    const categoriesList = await axios.get(categoriesURL).catch(e => console.log(e))
 
     dispatch({
         type: "GET_CATEGORIES",

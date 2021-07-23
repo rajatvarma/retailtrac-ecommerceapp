@@ -1,6 +1,6 @@
-import SecureStore from 'expo-secure-store'
+import * as SecureStore from 'expo-secure-store'
 
-export async function saveUser(key, value) {
+export async function saveUserData(key, value) {
     await SecureStore.setItemAsync(key, value)
 }
 

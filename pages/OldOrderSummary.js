@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
 import axios from 'axios'
 import Header from '../components/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { getOrderSummary } from '../actions/ordersAction'
+import GeneralButton from '../components/Button'
+import { validateOrderStatusURL } from '../apiCalls'
 
 const ItemCard = ({item}) => {
     return(
@@ -20,7 +22,7 @@ const ItemCard = ({item}) => {
 
 const OrderSummaryPage = ({route, navigation}) => {
 
-    const {order_id, order_date} = route.params
+    const {order_id, order_date, order_status} = route.params
 
     const {orderDetails} = useSelector(state => state)
 
@@ -30,7 +32,23 @@ const OrderSummaryPage = ({route, navigation}) => {
         dispatch(getOrderSummary(order_id))
     }, [dispatch])
 
-    console.log(orderDetails)
+    // console.log(orderDetails)
+
+    const validateOrderStatus = () => {
+
+        const url = validateOrderStatusURL + `?salesOrderCode=${order_id}`
+
+        axios.get(url).then(r => {
+            if (r.data) {
+            Alert.alert('Attention', r.data.params[0].status, [
+                {
+                    text: 'OK',
+                    onPress: () => {}
+                }
+            ])
+        }
+        })
+    }
 
     return(
         <View style={styles.pageContainer}>
@@ -38,6 +56,9 @@ const OrderSummaryPage = ({route, navigation}) => {
             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
                 <Text style={{fontSize: 18, fontWeight: '500', marginVertical: '2%'}}>{order_id}</Text>
                 <Text style={{fontSize: 18, fontWeight: '500', marginVertical: '2%'}}>{order_date}</Text>
+            </View>
+            <View style={{marginVertical: '5%'}}>
+                {order_status !== "complete" && <GeneralButton text="Validate" onPress={validateOrderStatus} />}
             </View>
             <ScrollView>
                 {orderDetails && orderDetails.map((item) => <ItemCard item={item} key={item.item_code} />)}

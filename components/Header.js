@@ -30,7 +30,7 @@ const Header = ({title, icons, nav}) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: '10%',
+        // height: '5%',
         width: '100%',
         borderBottomWidth: 1,
         paddingVertical: 5,

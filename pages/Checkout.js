@@ -1,9 +1,9 @@
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
-import { DatePickerIOS, DatePickerIOSComponent, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import { checkoutHandler } from '../apiCallHandler'
+import { checkoutHandler } from '../paymentGatewayHandler'
 import GeneralButton from '../components/Button'
 import Header from '../components/Header'
 import Input from '../components/TextInput'
@@ -82,12 +82,14 @@ const CheckoutPage = ({navigation}) => {
     useEffect(() => {
         let sum = 0
         let totalItemCount = 0
+        let shipping = 0
         cart.forEach(element => {
             sum = sum + (element.cart_quantity*Number(element.sell_price))
             totalItemCount = totalItemCount + element.cart_quantity
+            shipping = shipping + Number(element.charges)
         });
         setCartTotal(sum)
-        setShippingAmount(50*totalItemCount)
+        setShippingAmount(shipping)
     }, [cart])
 
 

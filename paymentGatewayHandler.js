@@ -1,14 +1,12 @@
 import axios from 'axios'
 import querystring from 'querystring'
 import { encryptForPayment, generateCheckSum } from './algorithms'
-
-const BASE_URL = 'http://pvanam.retailtrac360.com:8080/MergedWebservicesFMCG/'
+import { getPaymentDataURL, getPaymentTokenURL, raiseSaleURL } from './apiCalls'
 
 const getPaymentData = async () => {
     let values = {}
-    await axios.get('http://pvanam.retailtrac360.com:8080/MergedWebservicesFMCG/rest/EcomInventory/getPaymentGatewayProperties')
+    await axios.get(getPaymentDataURL)
     .then(response => {
-        // console.log(response.data.data)
         if (typeof(response) === 'object') {
             for (let index = 0; index < response.data.data.length; index++) {
                 const item = response.data.data[index]
@@ -38,8 +36,6 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         totalItemCount = totalItemCount + item.cart_quantity
         itemCost = itemCost + `${item.sell_price}:`
     });
-
-    const url = 'rest/EcomSales/ecommerceValidatePincode'
     
     var data = querystring.stringify({
         'line1': user.addressLine1,
@@ -69,12 +65,12 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
     });
 
     try {
-        await axios.post(`http://pvanam.retailtrac360.com:8080/MergedWebservicesFMCG/rest/EcomSales/ecommerceValidatePincode`, data, {
+        await axios.post(raiseSaleURL, data, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
-        .catch('Failed to raise query')
+        .catch(console.log('Failed to raise query'))
         .then(response => {
             if (response.data) {
                 salesCode = response.data['Sales_code'].split(';')[0]
@@ -94,13 +90,16 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
 
     try {
         var paymentData = await getPaymentData()
+        console.log(paymentData)
     } catch (error) {
+        console.log('Payment Gateway Error')
         return {...rsp, error: true}
     }
 
     try {
         var token = await getPaymentToken(salesCode, CRN)
     } catch (error) {
+        console.log('Token Error')
         return {...rsp, error: true}
     }
 
@@ -135,7 +134,8 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
 
 const getPaymentToken = async (so_code, crn) => {
     var token
-    const url = `http://pvanam.retailtrac360.com:8080/generateTokendIDForAndroid?tokenID=&crn=${crn}&so_code=${so_code}`
+    const url = getPaymentTokenURL+`?tokenID=&crn=${crn}&so_code=${so_code}`
+    console.log(url)
     await axios.get(url)
     .then(response => {
         token = JSON.parse(response.data.getCallData).token

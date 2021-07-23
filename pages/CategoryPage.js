@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native'
 import SearchBar from '../components/Searchbar'
 import ProductCard from '../components/ProductCard'
@@ -20,6 +20,8 @@ const CategoryPage = ({route, navigation}) => {
 
     const {cart} = useSelector((state) => state)
 
+    const [searchText, setSearchText] = useState('')
+
     const {products} = useSelector((state) => state.products)
 
     const checkCartForItem = (item) => {
@@ -34,9 +36,25 @@ const CategoryPage = ({route, navigation}) => {
     return (
         <View style={CategoryPageStyles.pageContainer}>
             <Header icons={[{icon: faArrowLeft, destination: 'Home'}, {icon: faShoppingCart, destination: 'Cart'}]} nav={navigation}/>
-            <SearchBar />
-            {products ? 
-                <View style={CategoryPageStyles.productsContainer}>
+            <SearchBar state={searchText} setState={setSearchText}/>
+
+            <View style={CategoryPageStyles.productsContainer}>
+                {
+                    (Boolean(searchText.length)) &&
+                    <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
+                        {products.filter((item) => {return item.item_name.toLowerCase().includes(searchText.toLowerCase())}).map((item) => {
+                            if (checkCartForItem(item)) {
+                                return <ProductCard product={checkCartForItem(item)} key={item.item_code}/>
+                            } else {
+                                return <ProductCard product={item} key={item.item_code}/>
+                            }
+                        })}
+                    </ScrollView>
+                }
+
+                {
+                    products && !Boolean(searchText.length) ?
+
                     <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                         {products.map((item) => {
                             if (checkCartForItem(item)) {
@@ -46,10 +64,12 @@ const CategoryPage = ({route, navigation}) => {
                             }
                         })}
                     </ScrollView>
-                </View>    
-                :
-                <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
-            }
+
+                    :
+
+                    <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
+                }
+            </View>
             <CartPreview navigation={navigation}/>
         </View>
     )
@@ -57,6 +77,7 @@ const CategoryPage = ({route, navigation}) => {
 
 const CategoryPageStyles = StyleSheet.create({
     pageContainer: {
+        maxHeight: '100%',
         paddingTop: '10%',
         paddingHorizontal: '3%',
     },
@@ -70,15 +91,10 @@ const CategoryPageStyles = StyleSheet.create({
         paddingTop: '5%'
     },
 
-    categoryTitle: {
-        fontSize: 34,
-        fontWeight: 'bold',
-        marginBottom: '5%'
-    },
-
     scrollContainer: {
-        height: '70%'
+        height: '72.5%'
     }
 })
 
 export default CategoryPage
+

@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState } from 'react'
-import { View, Text, StyleSheet, Pressable, TextInput, Button, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import GeneralButton from '../components/Button'
 import Input from '../components/TextInput'
 import axios from 'axios'
 import querystring from 'querystring'
 import FormErrorMessage from '../components/FormErrorMessage'
+import { registerOTPURL, userRegistrationURL } from '../apiCalls'
 
 
 const SignUpPage = ({navigation}) => {
@@ -41,7 +42,7 @@ const SignUpPage = ({navigation}) => {
 
     const getOTPHandler = async () => { 
         console.log(name, email, phone, pincode)
-        const data = await axios.post('http://pvanam.retailtrac360.com:8080/MergedWebservicesFMCG/rest/EcomCustomer/eCommerceSendOTP', querystring.stringify({
+        const data = await axios.post(registerOTPURL, querystring.stringify({
             'username': name,
             'email': email,
             'mobileNo': phone,
@@ -58,7 +59,11 @@ const SignUpPage = ({navigation}) => {
                     setFormError(true)
                     setFormErrorMessage(r.data)
                 }
-        }).catch(e => console.log(e))
+        }).catch(e => {
+            console.log(e)
+            setFormError(true)
+            setFormErrorMessage('There was an error. Please try again later.')
+        })
         }   
 
     const verifyOTPHandler = () => {
@@ -84,7 +89,7 @@ const SignUpPage = ({navigation}) => {
           });
           var config = {
             method: 'post',
-            url: 'http://pvanam.retailtrac360.com:8080/MergedWebservicesFMCG/rest/EcomCustomer/verifyOTPInsertCsutomers',
+            url: userRegistrationURL,
             headers: { 
               'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -104,8 +109,6 @@ const SignUpPage = ({navigation}) => {
           });
     }
 
-
-    // console.log(name, email, password, phone, pincode, area, city, otp, response.otp, response.customer_id)
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -137,7 +140,7 @@ const SignUpPage = ({navigation}) => {
                             <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={verifyPhoneNumber}/>
                         </View>
                         <View style={styles.fieldContainer}>
-                            {/* {This has been left empty to so that make the design look better} */}
+                            {/* {This has been left empty to make the design look better} */}
                         </View>
                         <GeneralButton text="Next" onPress={getOTPHandler}/>
                     </View>
@@ -165,7 +168,7 @@ const SignUpPage = ({navigation}) => {
                                 <Input placeholder="Enter your city" state={city} setState={setCity} type='city'/>                
                             </View>
                             <View style={styles.fieldContainer}>
-                                {/* {This has been left empty to so that make the design look better} */}
+                                {/* {This has been left empty to make the design look better} */}
                             </View>
                             <GeneralButton text="Submit" onPress={() => setAddressEntered(true)} />
                         </View>
@@ -178,7 +181,7 @@ const SignUpPage = ({navigation}) => {
                                 <Input placeholder="Choose a strong password" state={password} setState={setPassword} type='password'/>                
                             </View>
                             <View style={styles.fieldContainer}>
-                                {/* {This has been left empty to so that make the design look better} */}
+                                {/* {This has been left empty to make the design look better} */}
                             </View>
                             <GeneralButton text="Submit" onPress={registerUserHandler} />
                         </>

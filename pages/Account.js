@@ -8,6 +8,7 @@ import GeneralButton from '../components/Button'
 import Header  from '../components/Header'
 import { DotsWave } from '../components/LoadingAnimations'
 import Option from '../components/Option'
+import { saveUserData } from '../userStorage'
 
 const AccountPage = ({navigation}) => {
 
@@ -29,6 +30,8 @@ const AccountPage = ({navigation}) => {
             <View style={styles.buttonContainer}>
                 <GeneralButton text='Sign Out' onPress={() => {
                     dispatch(setUser({}))
+                    saveUserData('phone', '')
+                    saveUserData('password', '')
                 }} />
             </View>
         </View>

@@ -7,7 +7,7 @@ import Header from '../components/Header'
 
 const OrderCard = ({data, nav}) => {
     return(
-        <Pressable style={styles.orderCard} onPress={() => nav.navigate('Order', {order_id: data[0], order_date: data[3]})}>
+        <Pressable style={styles.orderCard} onPress={() => nav.navigate('Order', {order_id: data[0], order_date: data[3], order_status: data[2]})}>
             <Text style={styles.orderHeading}>Order ID:</Text>
             <Text>{data[0]}</Text>
             <Text style={styles.orderHeading}>Amount:</Text>
@@ -34,7 +34,7 @@ const OrdersPage = ({navigation}) => {
     orders.forEach(element => {
         data = element.split(":")
         if(data[0].length) {
-        ordersCardList.push(<OrderCard data={data} nav={navigation} key={data[0]}/>)
+        ordersCardList.push(<OrderCard data={data} nav={navigation} key={data[0]} orderStatus={data[2]} />) 
         }
     });
 

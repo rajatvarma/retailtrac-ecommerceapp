@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { StatusBar, Text, View } from 'react-native';
+import { StatusBar, Text, Viewn } from 'react-native';
 import CategoryPage from './pages/CategoryPage';
 import HomePage from './pages/Home';
 import { NavigationContainer } from '@react-navigation/native';
@@ -21,22 +21,49 @@ import SettingsPage from './pages/Settings';
 import EditAccountPage from './pages/EditAccount';
 import OrderSummaryPage from './pages/OldOrderSummary';
 import PaymentGatewayPage from './pages/PaymentWebView';
+import axios from 'axios';
+import { loginURL } from './apiCalls';
+import querystring from 'querystring'
 
 
 const Stack = createStackNavigator();
 
 const AppContent = () => {
 
-  const {user} = useSelector((state) => state)
-
   const dispatch = useDispatch()
+
+  const loginAttempt = async () => {
+      try {
+        var phone = await getUserData('phone')
+        var password = await getUserData('password')
+      } catch (error) {
+        return false
+      }
+
+      axios.post(loginURL, querystring.stringify({
+        'username': phone,
+        'password': password
+      }), {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(response => {
+        if (response.data.user) {
+          dispatch(setUser(response.data.user))
+        }        
+      }).catch(e => console.log(e))
+      
+
+  }
+
+  const {user} = useSelector((state) => state)
 
   // const user = {
   //   addressLine1: "Plot 1169, Road 56",
   //   addressLine2: "Jubilee Hills",
   //   city: "Hyderabad",
   //   company_user: "superuser",
-  //   customer_id: "CI100115",
+  //   customer_id: "CI1005",
   //   customer_name: "Rajat",
   //   email: "rvar@codonsoft.com",
   //   latitude: " ",
@@ -48,8 +75,8 @@ const AppContent = () => {
   // }
 
   useEffect(() => {
-    dispatch(setUser(user))
-  })
+    loginAttempt()
+  }, [dispatch])
 
 
   return(

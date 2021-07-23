@@ -10,8 +10,6 @@ import ProductCard from '../components/ProductCard'
 const Cart = ({navigation}) => {
 
     const {cart} = useSelector((state) => state)
-
-    console.log(cart)
     
     const dispatch = useDispatch()
 
