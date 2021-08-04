@@ -11,10 +11,9 @@ const Header = ({title, icons, nav}) => {
             const onPress = icons[i].onPress
             iconsList.push(
                 <Pressable style={styles.icon} onPress={destination ? () => nav.navigate(destination) : onPress ? () => {
-                    console.log('Pressed')
                         onPress
                     } : ()=>{}} key={i}>
-                    <FontAwesomeIcon icon={icons[i].icon} size={24}></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={icons[i].icon} size={24} color="white"></FontAwesomeIcon>
                 </Pressable>
             )
         }
@@ -31,17 +30,24 @@ const Header = ({title, icons, nav}) => {
 const styles = StyleSheet.create({
     container: {
         // height: '5%',
+        // flex: 1,
+        backgroundColor: '#FF595F',
         width: '100%',
-        borderBottomWidth: 1,
-        paddingVertical: 5,
+        paddingTop: '7.5%',
+        paddingBottom: '2.5%',
+        borderBottomWidth: 2,
+        borderBottomColor: 'white',
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
     },
 
     title: {
         flex: 8,
-        fontSize: 28,
-        fontWeight: '700',
+        fontSize: 30,
+        fontFamily: 'Epilogue_700Bold',
+        color: 'white'
+
     },
 
     icon: {
@@ -49,5 +55,34 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     }
 })
+
+export const BannerHeader = ({title}) => {
+
+    const bannerHeaderStyles = StyleSheet.create({
+        container: {
+            height: '12.5%',
+            backgroundColor: '#FF595F',
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+        },
+    
+        title: {
+            flex: 8,
+            fontSize: 30,
+            textAlign: 'center',
+            fontFamily: 'Epilogue_600SemiBold',
+            color: 'white'
+    
+        }
+    })
+
+    return(
+        <View style={bannerHeaderStyles.container}>
+            {title && <Text style={bannerHeaderStyles.title}>{title}</Text>}
+        </View>
+    )
+}
 
 export default Header

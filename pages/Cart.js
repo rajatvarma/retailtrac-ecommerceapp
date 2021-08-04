@@ -20,12 +20,12 @@ const Cart = ({navigation}) => {
                 {cart.length ? 
                     cart.map((item) => (<ProductCard product={item} key={item.item_code}/>))
                     :
-                    <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Your cart is empty</Text>
+                    <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#EEE', fontWeight: '600'}}>😟 Your cart is empty</Text>
             }
             </ScrollView>
 
             <View style={styles.buttonContainer}>
-                <GeneralButton text='Proceed to checkout ➡' onPress={() => navigation.navigate('Checkout')} />
+                <GeneralButton text='Proceed to checkout' onPress={() => navigation.navigate('Checkout')} styleType="secondary" />
             </View>
         </View>
     )
@@ -33,9 +33,9 @@ const Cart = ({navigation}) => {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingTop: '10%',
         paddingHorizontal: '5%',
-        height: '100%'
+        height: '100%',
+        backgroundColor: '#FE595F'
     },
 
     mainHeading: {

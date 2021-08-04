@@ -1,7 +1,9 @@
+import { faAngleRight, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSelector, useStore } from 'react-redux'
-import GeneralButton from './Button'
+import GeneralButton, { CartAddButton } from './Button'
 
 const CartPreview = ({navigation}) => {
 
@@ -18,28 +20,49 @@ const CartPreview = ({navigation}) => {
         
     return(
         <Pressable style={styles.container} onPress={() => navigation.navigate('Cart')}>
-            <View>
-            <Text><Text style={{fontSize: 16}}>{cart ? cart.length : 0}</Text> items in cart</Text>
-            <Text>Rs. <Text style={{fontSize: 16, fontWeight: '900'}}>{total}</Text></Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <FontAwesomeIcon icon={faShoppingBag} size={22} color="white" />
+                <View style={{marginHorizontal: '10%'}}>
+                    <Text style={styles.quantityText}>{cart ? cart.length : 0} item(s) in cart</Text>
+                    <Text style={styles.amountText}>Rs. <Text>{total}</Text></Text>
+                </View>
             </View>
-            <GeneralButton text="Checkout ➡" onPress={() => {navigation.navigate('Checkout')}} />
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.ctaText}>Proceed to Cart</Text>
+                <FontAwesomeIcon icon={faAngleRight} size={22} color="white" />
+            </View>
         </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        padding: 10,
+        paddingVertical: '3%',
+        paddingHorizontal: '5%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        elevation: 5,
-        shadowColor: '#0003',
-        shadowOffset: { width: 2, height: 3 },
-        shadowOpacity: 0.8,
-        shadowRadius: 1,  
-        borderRadius: 15,
-        backgroundColor: '#FFF',
+        justifyContent: 'space-evenly',
+        borderRadius: 10,
+        backgroundColor: '#067DFF',
+        alignItems: 'center',
+    },
+
+    quantityText: {
+        fontSize: 12,
+        color: 'white',
+        fontFamily: 'Epilogue_600SemiBold'
+    },
+
+    amountText: {
+        fontSize: 16,
+        color: 'white',
+        fontFamily: 'Epilogue_700Bold',
+        marginTop: '2%'
+    },
+
+    ctaText: {
+        fontFamily: 'Epilogue_700Bold',
+        fontSize: 15,
+        color: 'white',
     }
 })
 

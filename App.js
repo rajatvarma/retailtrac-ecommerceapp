@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { StatusBar, Text, Viewn } from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, Text, View } from 'react-native';
 import CategoryPage from './pages/CategoryPage';
 import HomePage from './pages/Home';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,12 +7,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Cart from './pages/Cart';
 import SignUpPage from './pages/SignUp'
 import LoginPage from './pages/Login';
-import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
-import ComponentsPage from './pages/Components';
-import getUser, { setUser } from './actions/userAction';
+import { setUser } from './actions/userAction';
 import { getUserData } from './userStorage';
 import CheckoutPage from './pages/Checkout';
 import AccountPage from './pages/Account';
@@ -24,6 +23,10 @@ import PaymentGatewayPage from './pages/PaymentWebView';
 import axios from 'axios';
 import { loginURL } from './apiCalls';
 import querystring from 'querystring'
+import { useFonts, Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black } from '@expo-google-fonts/epilogue';
+import OtpVerificationPage from './pages/OTPVerification';
+import DeliveryAddresses from './pages/DeliveryAddresses';
+import AddAddress from './pages/AddAddress';
 
 
 const Stack = createStackNavigator();
@@ -58,8 +61,13 @@ const AppContent = () => {
 
   const {user} = useSelector((state) => state)
 
+  useEffect(() => {
+    loginAttempt()
+  }, [dispatch])
+
+
   // const user = {
-  //   addressLine1: "Plot 1169, Road 56",
+  //   addressLine1: "161/1, Road No: 13A",
   //   addressLine2: "Jubilee Hills",
   //   city: "Hyderabad",
   //   company_user: "superuser",
@@ -74,14 +82,16 @@ const AppContent = () => {
   //   telephone2: "",
   // }
 
-  useEffect(() => {
-    loginAttempt()
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(setUser(user))
+  // }, [])
 
+
+  let [fontsLoaded] = useFonts({Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black})
 
   return(
     <>
-    {false ? <View><Text>Loading.....</Text></View> :
+    {fontsLoaded ? 
           <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>
               {Object.keys(user).length ? 
@@ -96,14 +106,19 @@ const AppContent = () => {
                   <Stack.Screen name="EditAccount" component={EditAccountPage} />
                   <Stack.Screen name="Order" component={OrderSummaryPage} />
                   <Stack.Screen name="PaymentGateway" component={PaymentGatewayPage} />
+                  <Stack.Screen name="UserAddresses" component={DeliveryAddresses} />
+                  <Stack.Screen name="AddAddress" component={AddAddress} /> 
                 </> :
                 <>
-                  <Stack.Screen name="SignUp" component={SignUpPage} />
                   <Stack.Screen name="Login" component={LoginPage} />
+                  <Stack.Screen name="SignUp" component={SignUpPage} />
+                  <Stack.Screen name="OTP" component={OtpVerificationPage} />
                 </>
               }
             </Stack.Navigator>
           </NavigationContainer>
+          :
+          <View><Text>Loading</Text></View>
       }
     </>
   )
@@ -113,12 +128,19 @@ export default function App() {
   
   const store = createStore(rootReducer, applyMiddleware(thunk))
 
+  // let [fontsLoaded] = useFonts({Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black})
+
   return (
     <Provider store={store}>
       <StatusBar
         hidden={true} />
       <AppContent />
     </Provider>
-    // <ComponentsPage />
-  );
+    );
+
+  // if(fontsLoaded) {
+  //   return <OtpVerificationPage />
+  // } else {
+  //   return null
+  // }
 }

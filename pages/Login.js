@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
-import { View, Text, Pressable, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, Alert } from 'react-native'
+import { View, Text, Pressable, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, Alert, Image, ImageBackground } from 'react-native'
 import GeneralButton from '../components/Button'
 import Input from '../components/TextInput'
 import querystring from 'querystring'
@@ -11,11 +11,11 @@ import FormErrorMessage from '../components/FormErrorMessage'
 import { getForgotPasswordOTP, loginURL, resetPasswordURL } from '../apiCalls'
 import { saveUserData } from '../userStorage'
 
-const LoginPage = ({navigation}) => {
+const LoginPage = ({navigation, route}) => {
 
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-    const [email, setEmail] = useState("")
+    // const [email, setEmail] = useState("")
     const dispatch = useDispatch()
 
     const [loginError, SetLoginError] = useState(false)
@@ -25,7 +25,6 @@ const LoginPage = ({navigation}) => {
 
     const [otpSent, setOtpSent] = useState(false)
 
-    const [otp, setOTP] = useState('')
     const [response, setResponse] = useState('')
     const [otpVerified, setOTPVerified] = useState(false)
 
@@ -49,6 +48,8 @@ const LoginPage = ({navigation}) => {
             console.log(r.data)
             setResponse(r.data)
             setOtpSent(true)
+            navigation.navigate('OTP', {serverOTP: r.data, phone: phone})
+            
         }).catch((e) => {
             SetLoginError(true)
             setErrorMessage(e)
@@ -56,6 +57,7 @@ const LoginPage = ({navigation}) => {
     }
     
     const loginHandler = async () => {
+        console.log('login')
         SetLoginError(false)
         axios.post(loginURL, querystring.stringify({
             'username': phone,
@@ -65,6 +67,7 @@ const LoginPage = ({navigation}) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then((r) => {
+            console.log(r.data)
             if (r.data.user) {
                 try {
                     saveUserData('phone', phone)
@@ -83,7 +86,7 @@ const LoginPage = ({navigation}) => {
 
     const changePasswordHandler = () => {
         axios.post(resetPasswordURL, querystring.stringify({
-            'otpmsg': otp,
+            'otpmsg': route.params.otp,
             'newPwd': password,
             'mobileNum': phone
         }), {
@@ -104,112 +107,141 @@ const LoginPage = ({navigation}) => {
         })
     }
 
+    if(route.params && !otpVerified) {
+        setOTPVerified(true)
+    }   
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+            <ImageBackground source={require('../assets/images/login/Background.png')} style={{justifyContent: "center"}}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.pageContainer}>
                     
-                    <Text style={styles.mainHeading}>Login</Text>
-                    
-                    {forgotPassword && !otpVerified &&
-                        <View style={styles.formContainer}>
-                            <View style={styles.fieldContainer}>
-                                <Input placeholder="Phone number" state={phone} setState={setPhone} type="phone" validate={validatePhone}/>
-                                {otpSent && 
-                                    <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' />
-                                }
-                            </View>
-                            <GeneralButton text="Confirm" onPress={!otpSent ? forgotPasswordOTPHandler : () => {
-                                if (response == otp) {
-                                    setOTPVerified(true)
-                                }
-                            }}/>
-                        </View>
-                    }
+                    <View style={styles.imagesContainer}></View>
 
-                    {!forgotPassword && 
-                        <>
-                            <View style={styles.formContainer}>
+                    <View style={styles.formContainer}>
+                        {forgotPassword && !otpVerified &&
+                            <>
+                                <View style={styles.fieldContainer}>
+                                    <Input placeholder="Phone number" state={phone} setState={setPhone} type="phone" validate={validatePhone} styleType="primary" />
+                                </View>
+                                <GeneralButton 
+                                    text="Confirm" 
+                                    styleType="primary"
+                                    onPress={() => {
+                                        forgotPasswordOTPHandler()
+                                    }}
+                                />
+                            </>
+                        }
+
+                        {!forgotPassword && 
+                            <>
                                 {loginError && <FormErrorMessage message={loginErrorMessage} />}
                                 <View style={styles.fieldContainer}>
-                                    <Input placeholder="Phone number" state={phone} setState={setPhone} type="phone" validate={validatePhone}/>
+                                    <Input placeholder="Phone number" state={phone} setState={setPhone} type="phone" validate={validatePhone} styleType="primary" />
                                 </View>
                                 <View style={styles.fieldContainer}>
-                                    <Input placeholder="Password" state={password} setState={setPassword} type="password"/>
+                                    <Input placeholder="Password" state={password} setState={setPassword} type="password" styleType="primary" />
                                 </View>
-                            </View>
-                            <GeneralButton text="Login" onPress={loginHandler}/>
-                        </>
-                    }  
+                                <View style={styles.fieldContainer}>
+                                    {/* {This has been left empty to make the design look better} */}
+                                </View>
+                                <GeneralButton text="Login" onPress={loginHandler} styleType="primary" />
+                            </>
+                        }  
 
-                    {
-                        forgotPassword && otpVerified && 
-                        <View style={styles.formContainer}>
-                            <View style={styles.fieldContainer}>
-                                <Input placeholder="Enter new password" state={password} setState={setPassword} type='password'/>
-                            </View>                
-                            <View style={styles.fieldContainer}>
-                                {/* {This has been left empty to make the design look better} */}
-                            </View>
-                            <GeneralButton text="Next" onPress={changePasswordHandler}/>
-                        </View>
-                    }
+                        {
+                            forgotPassword && otpVerified && 
+                            <>
+                                <View style={styles.fieldContainer}>
+                                    <Input placeholder="Enter new password" state={password} setState={setPassword} 
+                                    type='password' styleType="primary" />
+                                </View>                
+                                <GeneralButton text="Next" onPress={changePasswordHandler} styleType="primary" />
+                            </>
+                        }
 
-                    {!forgotPassword && 
-                        <Pressable onPress={()=>{setForgotPassword(true)}}>
-                            <Text style={{marginVertical: '5%', textDecorationLine: 'underline'}}>Forgot Password?</Text>
-                        </Pressable>
-                    }
+                        {!forgotPassword && 
+                            <Pressable onPress={()=>{setForgotPassword(true)}}>
+                                <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                            </Pressable>
+                        }
 
-                    <View style={{marginVertical: 50, flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{fontSize: 16, fontWeight: '400'}}>Don't have an account? </Text>
+                        {forgotPassword && 
+                            <Pressable onPress={()=>{setForgotPassword(false)}}>
+                                <Text style={styles.forgotPassword}>Back</Text>
+                            </Pressable>
+                        }
+
+                    </View>
+                    
+                    <View style={styles.bottomLabelContainer}>
+                    {!forgotPassword &&
+                        <>
+                        <Text style={styles.bottomLabelText}>Don't have an account? </Text>
                         <Pressable onPress={() => {navigation.navigate('SignUp')}}>
-                            <Text style={{fontSize: 16, fontWeight: '600', textDecorationLine: 'underline'}}>Register</Text>
+                            <Text style={[styles.bottomLabelText,  {fontFamily: 'Epilogue_700Bold'}]}>Register here</Text>
                         </Pressable>
+                        </>
+                    }   
                     </View>
 
                 </View>
             </TouchableWithoutFeedback>
+            </ImageBackground>
         </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingTop: '10%',
-        paddingHorizontal: '5%',
-        height: '100%'
+        height: '100%',
+        justifyContent: 'space-between',
     },
 
-    mainHeading: {
-        fontSize: 42,
-        fontWeight: 'bold'
-    },
-
+    imagesContainer: {
+        height: '40%',
+        paddingVertical: '20%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+    ,
+    
     formContainer: {
-        marginVertical: '10%',
+        paddingHorizontal: '10%',
     },
 
     fieldContainer: {
         marginVertical: '2%'
     },
 
-    fieldHeading: {
-        marginBottom: '2%',
-        fontSize: 18, 
-        fontWeight: '500'
+    bottomLabelContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'center',
+        alignSelf: 'flex-end',
+        borderTopWidth: 2,
+        borderTopColor: 'white',
+        width: '100%',
+        paddingVertical: 20,
     },
 
-    button: {
-        marginVertical: 20,
-        borderWidth: 2,
-        padding: 5,
+    bottomLabelText: {
+        fontFamily: 'Epilogue_400Regular',
+        fontSize: 16,
+        color: 'white',
+        fontWeight: '400'
     },
 
-    buttonText: {
-        fontSize: 18,
-        textAlign: 'center'
+    forgotPassword: {
+        marginVertical: '10%',
+        color: 'white', 
+        fontWeight: '700', 
+        fontSize: 16,
+        alignSelf: 'flex-end',
+        fontFamily: 'Epilogue_700Bold'
     }
+
 
 })
 

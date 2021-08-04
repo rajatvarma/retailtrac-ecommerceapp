@@ -5,12 +5,14 @@ import { getPaymentDataURL, getPaymentTokenURL, raiseSaleURL } from './apiCalls'
 
 const getPaymentData = async () => {
     let values = {}
+    console.log(getPaymentDataURL)
     await axios.get(getPaymentDataURL)
     .then(response => {
+        console.log(response.data)
         if (typeof(response) === 'object') {
             for (let index = 0; index < response.data.data.length; index++) {
                 const item = response.data.data[index]
-                values[item['url_name']] = item['url_values']
+                values[item['operation']] = item['url_values']
             }   
         }
     })
@@ -63,6 +65,8 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         'city': user.city,
         'name': user.customer_id
     });
+
+    console.log(data);
 
     try {
         await axios.post(raiseSaleURL, data, {

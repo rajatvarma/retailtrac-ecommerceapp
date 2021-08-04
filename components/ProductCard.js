@@ -1,13 +1,13 @@
-import { faImage } from '@fortawesome/free-solid-svg-icons'
+import { faImage, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCartItem, deleteCartItem, updateCart } from '../actions/cartActions'
-import GeneralButton from './Button'
+import { SmallButton } from './Button'
 import QuantityControl from './CartQuantityControl'
 
-const ProductCard = ({product}) => {
+const ProductCard = ({product, image_url}) => {
     let qty = 0 
     if (product.cart_quantity) {
         qty = product.cart_quantity
@@ -35,20 +35,21 @@ const ProductCard = ({product}) => {
 
     return(
         <View style={ProductCardStyles.card}>
+            
             <View style={ProductCardStyles.productImage}>
-                <FontAwesomeIcon icon={faImage} size={42} color="#CCC"/>
+                <Image style={{flex: 1, height: 80, width: 80}} resizeMode="contain" source={{uri: image_url}} />
             </View>
+            
             <View style={ProductCardStyles.textContainer}>
                 <View>
     	            <Text style={ProductCardStyles.productName}>{product.item_name}</Text>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
                     <View>
-                        <Text style={{fontSize: 12}}>Rs.</Text>
-                        <Text style={ProductCardStyles.productPrice}>{product.sell_price}</Text>
+                        <Text style={ProductCardStyles.productPrice}><Text style={{fontSize: 14}}>Rs.</Text>{product.sell_price}</Text>
                     </View>
                     {!isAdded ? 
-                        <GeneralButton text="Add to Cart" onPress={buttonOnPressHandler}/> 
+                        <SmallButton text="Add" icon={faShoppingBag} onPress={buttonOnPressHandler}/> 
                         :
                         <QuantityControl value={itemQuantity} onPress={quantityOnPressHandler} />
                     }   
@@ -61,22 +62,15 @@ const ProductCard = ({product}) => {
 const ProductCardStyles = StyleSheet.create({
     card: {
         backgroundColor: '#FFF',
-        margin: 5,
+        marginVertical: 5,
         paddingVertical: 15,
         paddingHorizontal: 15,
-        height: 150,
         flexDirection: 'row',
-        elevation: 5,
-        shadowColor: '#0003',
-        shadowOffset: { width: 2, height: 3 },
-        shadowOpacity: 0.8,
-        shadowRadius: 1,  
         borderRadius: 15
     },
 
     productImage: {
-        width: '30%',
-        height: '100%',
+        marginRight: '5%',
         justifyContent: 'center',
         alignItems: 'center'
     }, 
@@ -84,11 +78,11 @@ const ProductCardStyles = StyleSheet.create({
     textContainer: {
         width: '70%',
         justifyContent: 'space-between',
-        height: '100%'
     },
 
     productName: {
-        fontSize: 15,
+        fontFamily: 'Epilogue_500Medium',
+        fontSize: 18,
         fontWeight: '600',
     },
 
@@ -99,7 +93,9 @@ const ProductCardStyles = StyleSheet.create({
     },
 
     productPrice: {
-        fontSize: 18,
+        fontSize: 22,
+        fontFamily: 'Epilogue_800ExtraBold',
+        color: '#F37A20',
         fontWeight: '800',
     },
 

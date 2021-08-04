@@ -1,11 +1,11 @@
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarker, faMapMarkerAlt, faPen, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { checkoutHandler } from '../paymentGatewayHandler'
 import GeneralButton from '../components/Button'
-import Header from '../components/Header'
+import Header, { BannerHeader } from '../components/Header'
 import Input from '../components/TextInput'
 
 const ErrorBanner = () => {
@@ -61,23 +61,32 @@ const FieldEditCard = ({field, close, state, setState}) => {
 }
 
 
-const CheckoutPage = ({navigation}) => {
+const CheckoutPage = ({navigation, route}) => {
 
     const {cart, user} = useSelector(state => state) 
-    const [name, setName] = useState(user.customer_name)
-    const [phone, setPhone] = useState(user.telephone1)
-    const [address, setAddress] = useState({
+
+    const name = route.params ? route.params.user.customer_name : user.customer_name
+    const phone = route.params in route ? route.params.user.telephone1 : user.telephone1
+    const address = route.params ? route.params.address ? route.params.address : {
         line1: user.addressLine1,
         line2: user.addressLine2,
         city: user.city,
         pincode: user.pincode
-    })
+    } : {
+        line1: user.addressLine1,
+        line2: user.addressLine2,
+        city: user.city,
+        pincode: user.pincode
+    }
+
     const [cartTotal, setCartTotal] = useState(0)
     const [shippingAmount, setShippingAmount] = useState(0)
-    const [editing, setEditing] = useState({})
 
     const [checkoutError, setCheckoutError] = useState(false)
 
+    const [checkoutStage, setCheckoutStage] = useState(0)
+
+    console.log(checkoutStage);
 
     useEffect(() => {
         let sum = 0
@@ -92,49 +101,54 @@ const CheckoutPage = ({navigation}) => {
         setShippingAmount(shipping)
     }, [cart])
 
-
     return(
         <View style={styles.pageContainer}>
-            {editing === "name" && <FieldEditCard field={'name'} state={name} setState={setName} close={() => setEditing({...editing, isEditing: false})} />}
-            {editing === "phone" && <FieldEditCard field={'phone'} state={phone} setState={setPhone} close={() => setEditing({...editing, isEditing: false})} />}
-            {editing === "address" && <FieldEditCard field={'address'} state={address} setState={setAddress} close={() => setEditing({...editing, isEditing: false})} />}
-            <Header title='Checkout' />
+            <BannerHeader title='Checkout' />
             {checkoutError && <ErrorBanner />}
             <View style={styles.invoice}>
-                <View style={styles.invoiceItem}>
-                    <View>
-                        <Text style={styles.invoiceHeading}>Name</Text>
-                        <Text style={styles.invoiceContent}>{!name ? user.customer_name : name}</Text>
+                {checkoutStage >= 0 &&
+                <View>
+                    <View style={styles.itemHeadingContainer}>
+                        <Text style={styles.invoiceHeading}>Contact Details</Text>
+                        <Pressable onPress={() => {navigation.navigate('EditAccount', {fromCheckout: true})}}>
+                            <FontAwesomeIcon icon={faPen} color="#236CD9" size={18} />
+                        </Pressable>
                     </View>
-                    <Pressable onPress={() => setEditing('name')}>
-                        <FontAwesomeIcon icon={faEdit} />
-                    </Pressable>
-                </View>
-                <View style={styles.invoiceItem}>
-                    <View>
-                        <Text style={styles.invoiceHeading}>Phone Number</Text>
-                        <Text style={styles.invoiceContent}>{!phone ? user.telephone1 : phone}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: '5%'}}>
+                        <View style={{backgroundColor: '#236CD923', padding: '5%', borderRadius: 100, marginRight: '5%'}}>
+                            <FontAwesomeIcon icon={faUser} />
+                        </View>
+                        <View style={{justifyContent: 'space-between'}}>
+                            <Text style={styles.invoiceContent}>{!name ? user.customer_name : name}</Text>
+                            <Text style={styles.invoiceContent}>{!phone ? user.telephone1 : phone}</Text>
+                        </View>
                     </View>
-                    <Pressable onPress={() => setEditing('phone')}>
-                        <FontAwesomeIcon icon={faEdit} />
-                    </Pressable>
                 </View>
-                <View style={styles.invoiceItem}>
-                    <View>
-                        <Text style={styles.invoiceHeading}>Address</Text>
-                        <Text style={styles.invoiceContent}>{
-                                `${address.line1}\n${address.line2}\n${address.city}, ${address.pincode}`
-                        }
-                        </Text>
+                }
+
+                {checkoutStage >= 1 &&
+                <View>
+                    <View style={styles.itemHeadingContainer}>
+                        <Text style={styles.invoiceHeading}>Delivery Address</Text>
+                        <Pressable onPress={() => {navigation.navigate('UserAddresses', {fromCheckout: true, user: {customer_name: name, telephone1: phone}})}}>
+                            <FontAwesomeIcon icon={faPen} color="#236CD9" size={18} />
+                        </Pressable>
                     </View>
-                    <Pressable onPress={() => setEditing('address')}>
-                        <FontAwesomeIcon icon={faEdit} />
-                    </Pressable>
+                    <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: '5%'}}>
+                        <View style={{backgroundColor: '#236CD923', padding: '5%', borderRadius: 100, marginRight: '5%'}}>
+                            <FontAwesomeIcon icon={faMapMarkerAlt} />
+                        </View>
+                        <View style={{justifyContent: 'space-between'}}>
+                            <Text style={styles.invoiceContent}>
+                                {`${address.line1}\n${address.line2}\n${address.city}, ${address.pincode}`}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
-                {/* <View style={styles.invoiceItem}>
-                    <Text style={styles.invoiceHeading}>Delivery Date</Text>
-                    <DatePickerIOS date={new Date()} />
-                </View> */}
+                }
+                {checkoutStage >= 2 &&
+                <>
+                <View style={{borderBottomColor: '#a7a5a5', borderBottomWidth: 1, marginVertical: '5%'}}></View>
                 <View style={styles.invoiceItem}>
                     <Text style={styles.invoiceHeading}>Subtotal</Text>
                     <Text style={styles.invoiceContent}>Rs. {cartTotal}</Text>
@@ -147,9 +161,15 @@ const CheckoutPage = ({navigation}) => {
                     <Text style={styles.invoiceHeading}>Total Amount</Text>
                     <Text style={styles.invoiceContent}>Rs. {cartTotal + shippingAmount}</Text>
                 </View>
+                </>
+                }
             </View>
+
             <View style={styles.buttonContainer}>
-                <GeneralButton text="Place Order" onPress={async () => {
+                {checkoutStage !== 2 ? 
+                <GeneralButton styleType='secondary' text="Continue" onPress={() => {setCheckoutStage(checkoutStage => checkoutStage+1)}} />
+                :
+                <GeneralButton styleType='secondary' text="Continue" onPress={async () => {
                     const paymentURL = await checkoutHandler({...user, 
                         customer_name: name, 
                         telephone1: phone, 
@@ -165,6 +185,7 @@ const CheckoutPage = ({navigation}) => {
                     }
                     
                 }} />
+                }
             </View>
         </View>
     )
@@ -173,8 +194,6 @@ const CheckoutPage = ({navigation}) => {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingVertical: '10%',
-        paddingHorizontal: '5%',
         height: '100%',
     },
 
@@ -186,13 +205,14 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        width: '100%',
+        marginHorizontal: '5%'
     },
 
     invoice: {
-        backgroundColor: '#DDD',
-        padding: 10,
-        marginVertical: '5%'
+        // backgroundColor: '#DDD',
+        paddingHorizontal: '5%',
+        paddingVertical: '5%'
+
     },
 
     invoiceItem: {
@@ -203,12 +223,20 @@ const styles = StyleSheet.create({
     },
     
     invoiceHeading: {
-        fontSize: 18,
-        fontWeight: '600',
+        fontSize: 20,
+        fontWeight: '500',
     },
 
     invoiceContent: {
-        fontSize: 16
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#37474F'
+    },
+
+    itemHeadingContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
 
     editCardContainer: {

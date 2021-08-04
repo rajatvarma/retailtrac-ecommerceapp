@@ -22,30 +22,35 @@ const HomePage = ({navigation}) => {
 
 
     const {categories} = useSelector((state) => state.categories)
-    const {user} = useSelector((state) => state)
+    const {cart} = useSelector((state) => state)
 
     return(
         <View style={[HomePageStyles.pageContainer, {height: dimensions.height}]}>
 
-            <Header title={`Welcome`} icons={[{icon: faUser, destination: 'Account'}, {icon: faShoppingCart, destination: 'Cart'}]} nav={navigation}/>
-
-            <View style={HomePageStyles.categoriesContainer}>
+            <View style={HomePageStyles.headingContainer}>
+                <Header title={`Welcome`} icons={[{icon: faUser, destination: 'Account'}, {icon: faShoppingCart, destination: 'Cart'}]} nav={navigation}/>
                 <Text style={HomePageStyles.categoriesHeading}>{`What would you like to buy today?\n`}</Text>
-                {categories ? 
-                    <ScrollView style={HomePageStyles.categoriesListContainer}>
-                        <View style={HomePageStyles.categoriesList}>
-                            {categories.map((item) => (
-                                <Pressable onPress={() => navigation.navigate('Category', {category: item})} key={item.category}>
-                                    <CategoryCard category={item}/>
-                                </Pressable>
-                            ))}
-                        </View>
-                    </ScrollView>                
-                :
-                <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
+            </View>
+            <View style={HomePageStyles.categoriesContainer}>
+                <ScrollView style={{height: '50%'}} showsVerticalScrollIndicator={false}>
+                    {categories ? 
+                            <View style={HomePageStyles.categoriesList}>
+                                {categories.map((item) => (
+                                    <Pressable onPress={() => navigation.navigate('Category', {category: item})} key={item.category}>
+                                        <CategoryCard category={item}/>
+                                    </Pressable>
+                                ))}
+                            </View>
+                    :
+                    <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
+                    }
+                </ScrollView>           
+                {Boolean(cart.length) &&
+                    <View style={{justifyContent: 'center', height: '10%'}}>
+                        <CartPreview navigation={navigation}/>
+                    </View>
                 }
             </View>
-            <CartPreview navigation={navigation}/>
         </View>   
     )
 }
@@ -54,40 +59,37 @@ export default HomePage
 
 const HomePageStyles = StyleSheet.create({
     pageContainer: {
-        paddingHorizontal: '3%',
-        paddingVertical: '10%',
+        backgroundColor: '#FF595F',
+        justifyContent: 'space-between'
     },
 
     headingContainer: {
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingEnd: '5%'
-    },
-
-    mainHeading: {
-        fontSize: 22,
-        fontWeight: 'bold',
+        paddingHorizontal: '5%',
     },
 
     categoriesContainer: {
+        paddingHorizontal: 10,
+        paddingVertical: '5%',
         flexDirection: 'column',
-        marginTop: '5%',
-    },
-
-    categoriesListContainer: {
-        height: '80%'
+        backgroundColor: 'white',
+        height: '80%',
+        justifyContent: 'space-between',
+        borderTopLeftRadius: 35,
+        borderTopRightRadius: 35,
     },
 
     categoriesHeading: {
         fontSize: 16,
-        fontWeight: '400',
+        fontFamily: 'Epilogue_600SemiBold',
+        color: 'white',
+        marginVertical: '5%',
     },
     
     categoriesList: {
         flexDirection: 'row',
         flexWrap: 'wrap', 
-        justifyContent: 'space-between'
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        overflow: 'hidden'
     }
 })

@@ -116,40 +116,34 @@ const SignUpPage = ({navigation}) => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.inner}>
                     <Text style={styles.mainHeading}>Sign Up</Text>
-                    <View style={{marginVertical: 15, flexDirection: 'row'}}>
-                        <Text style={{fontSize: 16, fontWeight: '400'}}>Already have an account? </Text>
-                        <Pressable onPress={() => {navigation.navigate('Login')}}>
-                            <Text style={{fontSize: 16, fontWeight: '600', textDecorationLine: 'underline'}}>Log In</Text>
-                        </Pressable>
-                    </View>
                     
                     {formError && <FormErrorMessage message={formErrorMessage} />}
                     
                     {!isOTPSent &&
                     <View style={styles.formContainer}>
                         <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your name" state={name} setState={setName} type='name'/>
+                            <Input placeholder="Enter your name" state={name} setState={setName} type='name' styleType="secondary" />
                         </View>                
                         <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your email address" state={email} setState={setEmail} type='email' validate={verifyEmail}/>
+                            <Input placeholder="Enter your email address" state={email} setState={setEmail} type='email' validate={verifyEmail} styleType="secondary" />
                         </View>
                         <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your PIN code" atate={pincode} setState={setPincode} type='pincode'/>
+                            <Input placeholder="Enter your PIN code" atate={pincode} setState={setPincode} type='pincode' styleType="secondary" />
                         </View>
                         <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={verifyPhoneNumber}/>
+                            <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={verifyPhoneNumber} styleType="secondary" />
                         </View>
                         <View style={styles.fieldContainer}>
                             {/* {This has been left empty to make the design look better} */}
                         </View>
-                        <GeneralButton text="Next" onPress={getOTPHandler}/>
+                        <GeneralButton text="Next" onPress={getOTPHandler} styleType="secondary" />
                     </View>
                     }
                     
                     {isOTPSent && !isOTPVerified && 
                         <View style={styles.formContainer}>
-                            <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' validate={verifyPhoneNumber}/>
-                            <GeneralButton text="Next" onPress={verifyOTPHandler}/>
+                            <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' validate={verifyPhoneNumber} styleType="secondary" />
+                            <GeneralButton text="Next" onPress={verifyOTPHandler} styleType="secondary" />
                         </View>
                     }
                     
@@ -157,20 +151,20 @@ const SignUpPage = ({navigation}) => {
                         <View style={styles.formContainer}>
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldHeading}>Address Line 1</Text>
-                                <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address'/>
+                                <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address' styleType="secondary" />
                             </View>
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldHeading}>Area</Text>
-                                <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area'/>
+                                <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
                             </View>
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldHeading}>City</Text>
-                                <Input placeholder="Enter your city" state={city} setState={setCity} type='city'/>                
+                                <Input placeholder="Enter your city" state={city} setState={setCity} type='city' styleType="secondary" />                
                             </View>
                             <View style={styles.fieldContainer}>
                                 {/* {This has been left empty to make the design look better} */}
                             </View>
-                            <GeneralButton text="Submit" onPress={() => setAddressEntered(true)} />
+                            <GeneralButton text="Submit" onPress={() => setAddressEntered(true)} styleType="secondary" />
                         </View>
                     }    
                     
@@ -183,7 +177,7 @@ const SignUpPage = ({navigation}) => {
                             <View style={styles.fieldContainer}>
                                 {/* {This has been left empty to make the design look better} */}
                             </View>
-                            <GeneralButton text="Submit" onPress={registerUserHandler} />
+                            <GeneralButton text="Submit" onPress={registerUserHandler} styleType="secondary"/>
                         </>
                     }
                     
@@ -194,62 +188,42 @@ const SignUpPage = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    pageContainer: {
-        marginHorizontal: '3%',
-        marginTop: '5%'
-    },
-
     mainHeading: {
         fontSize: 42,
+        marginTop: '10%',
+        // fontFamily: 'Epilogue_700Bold',
         fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'white'
     },
 
     fieldContainer: {
         marginVertical: '3%'
     },
 
-    fieldHeading: {
-        marginBottom: '2%',
-        fontSize: 18, 
-        fontWeight: '500'
-    },
     container: {
         flex: 1
     },
     
     inner: {
-        padding: '5%',
         flex: 1,
-        justifyContent: "center"
+
+        justifyContent: 'space-between',
+        backgroundColor: '#FF595F'
     },
 
     formContainer: {
-        marginVertical: '3%',
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
+        paddingVertical: '15%',
+        elevation: 20,
+        shadowColor: '#f11212',
+        shadowOffset: {width: 0, height: -10},
+        shadowOpacity: 0.8,
+        shadowRadius: 10,
+        paddingHorizontal: '10%',
+        backgroundColor: 'white'
     }
 })
 
 export default SignUpPage
-
-
-
-// {/* <View style={styles.fieldContainer}>
-//                     <Text style={styles.fieldHeading}>Phone Number</Text>
-//                     <Input placeholder="Enter your phone number" submit={submit} type='phone' validate={verifyPhoneNumber}/>
-//                 </View>
-//                 <View style={styles.fieldContainer}>
-//                     <Text style={styles.fieldHeading}>Address Line 1</Text>
-//                     <Input placeholder="Enter your building name & apartment no. or house no." submit={submit} type='address'/>
-//                 </View>
-//                 <View style={styles.fieldContainer}>
-//                     <Text style={styles.fieldHeading}>Area</Text>
-//                     <Input placeholder="Enter the area you live in" submit={submit} type='area'/>
-//                 </View>
-//                 <View style={styles.fieldContainer}>
-//                     <Text style={styles.fieldHeading}>City</Text>
-//                     <Input placeholder="Enter your city" submit={submit} type='city'/>                
-//                 </View>
-//                 <View style={styles.fieldContainer}>
-//                     <Text style={styles.fieldHeading}>PIN Code</Text>
-//                     <Input placeholder="Enter your PIN code" submit={submit} type='pincode'/>
-//                 </View>
-// </View>                 */}

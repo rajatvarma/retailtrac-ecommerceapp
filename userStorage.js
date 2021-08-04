@@ -8,5 +8,7 @@ export async function getUserData(key) {
     let result = await SecureStore.getItemAsync(key)
     if (result) {
         return result
+    } else {
+        return false
     }
 }

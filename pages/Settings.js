@@ -3,8 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import Option from '../components/Option'
 import {WebView} from 'react-native-webview'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import Header from '../components/Header'
+import { faCheckCircle, faCommentDollar, faDollarSign, faLock, faPersonBooth, faPhone, faPortrait, faTimes } from '@fortawesome/free-solid-svg-icons'
+import Header, { BannerHeader } from '../components/Header'
 
 const SettingsPage = () => {
 
@@ -22,22 +22,26 @@ const SettingsPage = () => {
         <>
         {!showWebView ? 
         <View style={styles.pageContainer}>
-            <Header title="Settings" />
+            <BannerHeader title="Policies" />
             <View>
-                <Option text="About Us" onPress={()=>{
+                <Option text="About Us" icon={faPortrait} onPress={()=>{
                     setUrl(urls.aboutUs)
                     setWebView(true)
                 }}/>
-                <Option text="Contact Us" onPress={()=>{
-                    setUrl(urls.contactUs)
-                    setWebView(true)
-                }}/>
-                <Option text="Terms & Conditions" onPress={()=>{
+                <Option text="Terms & Conditions" icon={faCheckCircle} onPress={()=>{
                     setUrl(urls.terms)
                     setWebView(true)
                 }}/>
-                <Option text="Refund & Cancellation Policy" onPress={()=>{
+                <Option text="Refund & Cancellation Policy" icon={faDollarSign} onPress={()=>{
                     setUrl(urls.refund)
+                    setWebView(true)
+                }}/>
+                <Option text="Privacy Policy" icon={faLock} onPress={()=>{
+                    setUrl(urls.contactUs)
+                    setWebView(true)
+                }}/>
+                <Option text="Contact Us" icon={faPhone} onPress={()=>{
+                    setUrl(urls.contactUs)
                     setWebView(true)
                 }}/>
             </View>
@@ -56,8 +60,6 @@ const SettingsPage = () => {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingTop: '10%',
-        paddingHorizontal: '5%',
         height: '100%'
     },
 

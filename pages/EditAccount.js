@@ -3,13 +3,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../actions/userAction'
 import GeneralButton from '../components/Button'
-import Header from '../components/Header'
+import { BannerHeader } from '../components/Header'
 import Input from '../components/TextInput'
 
-const EditAccountPage = ({navigation}) => {
+const EditAccountPage = ({route, navigation}) => {
 
     const {user} = useSelector(state => state)
-    console.log(user)
+    
+    console.log(route.params)
 
     const dispatch = useDispatch()
 
@@ -17,9 +18,18 @@ const EditAccountPage = ({navigation}) => {
     const [phone, setPhone] = useState(user.telephone1)
     const [email, setEmail] = useState(user.email)
 
+    const checkoutEditHandler = () => {
+        navigation.navigate('Checkout', {'user': {...user, customer_name: name, telephone1: phone, email: email}})
+    }
+
+    const defaultEditHandler = () => {
+        dispatch(setUser({...user, customer_name: name, telephone1: phone, email: email}))
+        navigation.navigate('Account')
+    }
+
     return(
         <View style={styles.pageContainer}>
-            <Header title="Edit Account" />
+            <BannerHeader title="Edit Account" />
             <View style={styles.infoContainer}>
                 <View style={styles.fieldContainer}>
                     <Input placeholder="Name" state={name} setState={setName} type={name} />
@@ -30,19 +40,18 @@ const EditAccountPage = ({navigation}) => {
                 <View style={styles.fieldContainer}>
                     <Input placeholder="Email Address" state={email} setState={setEmail} type={email} />
                 </View>
+                <View style={{marginHorizontal: '20%', marginVertical: '10%'}}>
+                        <GeneralButton text='Submit' styleType='secondary' onPress={route.params ? checkoutEditHandler : defaultEditHandler}/>
+                </View>
+
             </View>
-            <GeneralButton text='Submit' onPress={()=>{
-                dispatch(setUser({...user, customer_name: name, telephone1: phone, email: email}))
-                navigation.navigate('Account')
-            }}/>
+            
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingTop: '10%',
-        paddingHorizontal: '5%',
         height: '100%'
     },
 

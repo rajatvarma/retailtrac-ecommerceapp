@@ -17,7 +17,7 @@ const SearchBar = ({state, setState}) => {
                     value={state}
                     onChangeText={(val) => {setState(val)}}/>
                 <Pressable style={SearchBarStyles.searchIconContainer} onPress={() => {setState('')}}>
-                    <FontAwesomeIcon icon={ faTimes } size={14} color='grey'></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={ faTimes } size={12} color='grey'></FontAwesomeIcon>
                 </Pressable>
             </View>
         </View>
@@ -26,7 +26,7 @@ const SearchBar = ({state, setState}) => {
 
 const SearchBarStyles = StyleSheet.create({
     searchBarContainer: {
-        marginTop: '5%',
+        marginVertical: '5%',
     },
         
     searchBox: {
@@ -35,17 +35,22 @@ const SearchBarStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',        
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     },
 
     searchIconContainer: {
         justifyContent: 'center',
         width: '10%',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginRight: 5
     }, 
     
     input: {
-        width: '80%'
+        width: '80%',
+        fontFamily: 'Epilogue_400Regular',
+        fontSize: 18,
+        color: '#5EC401'
     }
 })
 

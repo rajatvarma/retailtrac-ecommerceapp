@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import getProductsFromCategory from '../actions/productsAction'
 import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
+import { getImagesFromServer } from '../actions/imagesAction'
 
 
 const CategoryPage = ({route, navigation}) => {
@@ -16,9 +17,22 @@ const CategoryPage = ({route, navigation}) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getProductsFromCategory(category.category));
+        dispatch(getImagesFromServer())
     }, [dispatch, category])
 
+
+    const {images} = useSelector(state => state)
+
     const {cart} = useSelector((state) => state)
+
+    function getImages(id) {
+        const images_url = 'https://pvanam.retailtrac360.com/images_item/'
+        if(images[id]) {
+            return images_url+images[id]
+        }
+        return images_url+'Noimage.jpg'
+
+    }
 
     const [searchText, setSearchText] = useState('')
 
@@ -44,9 +58,9 @@ const CategoryPage = ({route, navigation}) => {
                     <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                         {products.filter((item) => {return item.item_name.toLowerCase().includes(searchText.toLowerCase())}).map((item) => {
                             if (checkCartForItem(item)) {
-                                return <ProductCard product={checkCartForItem(item)} key={item.item_code}/>
+                                return <ProductCard product={checkCartForItem(item)} image_url={getImages(item.item_code)} key={item.item_code}/>
                             } else {
-                                return <ProductCard product={item} key={item.item_code}/>
+                                return <ProductCard product={item} image_url={getImages(item.item_code)} key={item.item_code}/>
                             }
                         })}
                     </ScrollView>
@@ -58,9 +72,9 @@ const CategoryPage = ({route, navigation}) => {
                     <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                         {products.map((item) => {
                             if (checkCartForItem(item)) {
-                                return <ProductCard product={checkCartForItem(item)} key={item.item_code}/>
+                                return <ProductCard product={checkCartForItem(item)} image_url={getImages(item.item_code)} key={item.item_code}/>
                             } else {
-                                return <ProductCard product={item} key={item.item_code}/>
+                                return <ProductCard product={item} image_url={getImages(item.item_code)} key={item.item_code}/>
                             }
                         })}
                     </ScrollView>
@@ -70,16 +84,18 @@ const CategoryPage = ({route, navigation}) => {
                     <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
                 }
             </View>
-            <CartPreview navigation={navigation}/>
+            <View style={{justifyContent: 'center', height: '12.5%', alignSelf: 'flex-end'}}>
+                <CartPreview navigation={navigation}/>
+            </View>
         </View>
     )
 }
 
 const CategoryPageStyles = StyleSheet.create({
     pageContainer: {
-        maxHeight: '100%',
-        paddingTop: '10%',
-        paddingHorizontal: '3%',
+        height: '100%',
+        paddingHorizontal: '5%',
+        backgroundColor: '#FE595F'
     },
 
     navContainer: {
@@ -88,11 +104,10 @@ const CategoryPageStyles = StyleSheet.create({
     },
 
     productsContainer: {
-        paddingTop: '5%'
     },
 
     scrollContainer: {
-        height: '72.5%'
+        height: '65%'
     }
 })
 

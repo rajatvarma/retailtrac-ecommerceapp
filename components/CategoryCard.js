@@ -4,14 +4,14 @@ import React from 'react'
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native'
 
 const CategoryCard = ({category}) => {
-    dimensions = useWindowDimensions()
+    const dimensions = useWindowDimensions()
     return(
         <View style={[styles.container, {
-            width: dimensions.width*0.45, 
+            width: dimensions.width*0.40, 
             // height: dimensions.height*0.3
         }]}>
             <View style={styles.categoryImage}>
-                <FontAwesomeIcon icon={faImage} size={64} color="#CCC"/>
+                <FontAwesomeIcon icon={faImage} size={64} color="#FF595F"/>
             </View>
             <View>
                 <Text style={styles.categoryName}>{category.category}</Text>
@@ -23,11 +23,11 @@ const CategoryCard = ({category}) => {
 const styles = StyleSheet.create({
     container: {
         elevation: 7,
-        shadowColor: '#0002',
-        shadowOffset:{height: 2, width: 1},
-        shadowRadius: 3,
+        shadowColor: '#0004',
+        shadowOffset:{height: 2, width: 0},
+        shadowRadius: 5,
         shadowOpacity: 0.9,
-        marginHorizontal: 2,
+        marginHorizontal: 5,
         marginVertical: 10,
         padding: 10,
         backgroundColor: 'white',
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
 
     categoryName: {
         textAlign: 'center',
+        fontFamily: 'Epilogue_600SemiBold',
         fontSize: 16,
         flexWrap: 'wrap',
         fontWeight: 'bold',

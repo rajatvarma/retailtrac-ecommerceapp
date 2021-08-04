@@ -11,7 +11,6 @@ const OrdersReducer = (state=[], action) => {
 export const OrderDetailsReducer = (state=[], action) => {
     switch (action.type) {
         case 'GET_ORDER_DETAILS':
-            console.log("Reducer", action.payload)
             return action.payload
     
         default:

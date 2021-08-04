@@ -1,12 +1,11 @@
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { faInfo, faMapMarker, faMapMarkerAlt, faMapPin, faPen, faShoppingBasket, faUser, faUserAlt, faUserSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
-import { Text, View , StyleSheet, ScrollView, Pressable} from 'react-native'
+import { Text, View , StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../actions/userAction'
 import GeneralButton from '../components/Button'
-import Header  from '../components/Header'
-import { DotsWave } from '../components/LoadingAnimations'
+import { BannerHeader }  from '../components/Header'
 import Option from '../components/Option'
 import { saveUserData } from '../userStorage'
 
@@ -17,18 +16,25 @@ const AccountPage = ({navigation}) => {
 
     return(
         <View style={styles.pageContainer}>
-            <Header title='Your Account' />
+            <BannerHeader title="Your Account" />
             <View style={styles.userProfileContainer}>
-                <Text style={styles.userName}>{user.customer_name}</Text>
-                <Text style={styles.userDetails}>{user.telephone1} • {user.email}</Text>
+                <View style={{padding: '5%', borderRadius: 100, backgroundColor: '#FF595F', marginRight: '5%'}}>
+                    <FontAwesomeIcon icon={faUserAlt} color="white" />
+                </View>
+                <View>
+                    <Text style={styles.userName}>{user.customer_name}</Text>
+                    <Text style={styles.userDetails}>{user.telephone1}</Text>
+                    <Text style={styles.userDetails}>{user.email}</Text>
+                </View> 
             </View>
-            <Option text="Previous Orders" redirectTo={'Orders'} navigation={navigation}/>
-            <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation}/>
-            {/* <Option text="Manage Addresses" redirectTo={null} navigation={navigation}/>
-            <Option text="Edit Payment Details" redirectTo={null} navigation={navigation}/> */}
-            <Option text="More Info" redirectTo={'Settings'} navigation={navigation}/>
+            
+            <Option text="Previous Orders" redirectTo='Orders' navigation={navigation} icon={faShoppingBasket} />
+            <Option text="Manage Addresses" redirectTo={"UserAddresses"} navigation={navigation} icon={faMapMarkerAlt} />            
+            <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} />
+            <Option text="Policies" redirectTo={'Settings'} navigation={navigation} icon={faInfo} />
+            
             <View style={styles.buttonContainer}>
-                <GeneralButton text='Sign Out' onPress={() => {
+                <GeneralButton text='Sign Out' styleType="secondary" onPress={() => {
                     dispatch(setUser({}))
                     saveUserData('phone', '')
                     saveUserData('password', '')
@@ -40,36 +46,32 @@ const AccountPage = ({navigation}) => {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingTop: '10%',
-        paddingHorizontal: '5%',
+        backgroundColor: 'white',
         height: '100%'
     },
 
-    mainHeading: {
-        fontSize: 42,
-        fontWeight: 'bold',
-        marginBottom: '10%'
-
-    },
-
     userProfileContainer: {
-        marginVertical: '5%'
+        alignItems: 'center',
+        paddingHorizontal: '5%',
+        marginVertical: '5%',
+        flexDirection: 'row'
     },
 
     userName:{
-        fontSize: 30,
-        fontWeight: '700',
+        fontSize: 24,
+        fontFamily: 'Epilogue_700Bold',
         marginBottom: 5
     },
 
     userDetails: {
         fontSize: 16,
-        fontWeight: '500'
+        fontFamily: 'Epilogue_500Medium',
     },
 
     buttonContainer: {
         width: '100%',
-        marginVertical: '5%'
+        marginVertical: '10%',
+        paddingHorizontal: '20%'
     },
 })
 
