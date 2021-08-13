@@ -17,13 +17,13 @@ const FormErrorMessage = ({message}) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 5
+        padding: 10
     },
 
     text: {
         color: 'white',
         fontSize: 12,
-        fontWeight: '600'
+        fontWeight: '700'
     }
 
 })

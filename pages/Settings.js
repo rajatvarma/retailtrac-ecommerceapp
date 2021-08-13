@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import Option from '../components/Option'
 import {WebView} from 'react-native-webview'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCheckCircle, faCommentDollar, faDollarSign, faLock, faPersonBooth, faPhone, faPortrait, faTimes } from '@fortawesome/free-solid-svg-icons'
-import Header, { BannerHeader } from '../components/Header'
+import { faCheckCircle, faDollarSign, faLock, faPhone, faPortrait, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { BannerHeader } from '../components/Header'
 
 const SettingsPage = () => {
 
@@ -48,8 +48,8 @@ const SettingsPage = () => {
         </View>
         :
         <View style={styles.pageContainer}>
-            <Pressable onPress={() => {setWebView(false)}} style={{marginBottom: '5%', alignSelf: 'flex-end'}}>
-                <FontAwesomeIcon icon={faTimes} size={20} />
+            <Pressable onPress={() => {setWebView(false)}} style={{margin: '2.5%', alignSelf: 'flex-end'}}>
+                <FontAwesomeIcon icon={faTimes} size={24} />
             </Pressable>
             <WebView source={{uri: url}} />
         </View>

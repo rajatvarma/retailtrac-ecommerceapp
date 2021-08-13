@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
 import axios from 'axios'
 import Header, { BannerHeader } from '../components/Header'
@@ -45,6 +45,8 @@ const OrderSummaryPage = ({route, navigation}) => {
 
     const dispatch = useDispatch()
 
+    const [buttonLoading, setButtonLoading] = useState(false)
+
     useEffect(() => {
         dispatch(getOrderSummary(order_id))
     }, [dispatch])
@@ -53,17 +55,20 @@ const OrderSummaryPage = ({route, navigation}) => {
 
     const validateOrderStatus = () => {
 
+        setButtonLoading(true)
+
         const url = validateOrderStatusURL + `?salesOrderCode=${order_id}`
 
         axios.get(url).then(r => {
+            setButtonLoading(false)
             if (r.data) {
-            Alert.alert('Attention', r.data.params[0].status, [
-                {
-                    text: 'OK',
-                    onPress: () => {}
-                }
-            ])
-        }
+                Alert.alert('Attention', r.data.params[0].status, [
+                    {
+                        text: 'OK',
+                        onPress: () => {}
+                    }
+                ])
+            }
         })
     }
 
@@ -78,8 +83,8 @@ const OrderSummaryPage = ({route, navigation}) => {
                 <Text style={styles.descriptionText}>Total: Rs. {order_amount}</Text>
             </View>
             {order_status !== "complete" &&
-            <View style={{marginVertical: '5%', paddingHorizontal: '20%'}}>
-                <GeneralButton styleType="secondary" text="Validate" onPress={validateOrderStatus} />
+            <View style={{marginVertical: '5%', paddingHorizontal: '10%'}}>
+                <GeneralButton styleType="secondary" text="Validate" onPress={validateOrderStatus} isLoading={buttonLoading} />
             </View>
             }
             <ScrollView style={{paddingHorizontal: '5%'}}>

@@ -13,8 +13,8 @@ export default ({radioed, address, navigation}) => {
     return (
         <View style={[styles.container, {width: radioed ? '95%' : '100%'}]}>
             <View>
-                <Text style={styles.title}>{address.nickname ? address.nickname : 'Primary Address'}</Text>
-                <Text style={styles.text}>{address.line1},{'\n'}{address.line2}</Text>
+                <Text style={styles.title}>{address.customerName ? address.customerName : 'Primary Address'}</Text>
+                <Text style={styles.text}>{address.address},{'\n'}{address.area}</Text>
                 <Text style={styles.text}>{address.city}, {address.pincode}</Text>  
             </View>
             {address.id !== 0 &&
@@ -22,7 +22,7 @@ export default ({radioed, address, navigation}) => {
                 <Pressable style={[styles.iconContainer, {backgroundColor: '#F37A20'}]} onPress={() => navigation.navigate('AddAddress', {address: address})}>
                     <FontAwesomeIcon icon={faPen} color='white' size={16} />
                 </Pressable>
-                <Pressable style={[styles.iconContainer, {backgroundColor: '#FF5552'}]} onPress={() => {dispatch(deleteAddress(address.id))}}>
+                <Pressable style={[styles.iconContainer, {backgroundColor: 'grey'}]} onPress={() => {}}>
                     <FontAwesomeIcon icon={faTrash} color='white' size={16} />
                 </Pressable>
             </View>

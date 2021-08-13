@@ -5,7 +5,7 @@ const getOrders = (customer_id) => async (dispatch) => {
 
     let error
 
-    const data = await axios.get(getCustomerOrdersURL+`?customer_id=CI1005`).catch(e => error = e)
+    const data = await axios.get(getCustomerOrdersURL+`?customer_id=${customer_id}`).catch(e => error = e)
     
     let  ordersList = []
 

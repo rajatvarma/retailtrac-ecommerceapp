@@ -21,7 +21,9 @@ export const registerOTPURL = BASE_URL + 'rest/EcomCustomer/eCommerceSendOTP'
 
 export const userRegistrationURL = BASE_URL + 'rest/EcomCustomer/verifyOTPInsertCsutomers'
 
+export const getUserAddressesURL = BASE_URL + 'rest/EcomSales/EcomGetDeliveryAddresses'
 
+export const addUserAddressURL = BASE_URL + 'rest/EcomCustomer/ecomInsert_CustomerDeliveryAddresses'
 
 export const getPaymentDataURL = BASE_URL + 'rest/EcomInventory/getPaymentGatewayProperties'
 

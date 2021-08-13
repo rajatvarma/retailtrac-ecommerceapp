@@ -1,5 +1,3 @@
-const initState = []
-
 const cartReducer = (state=[], action) => {
     switch (action.type) {
         case 'ADD_TO_CART':
@@ -14,7 +12,7 @@ const cartReducer = (state=[], action) => {
             newState[item_index] = action.payload
             return newState
         case 'CLEAR_CART':
-            return state
+            return []
         default:
             return state
     }

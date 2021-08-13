@@ -7,7 +7,7 @@ const Input = ({placeholder, state, setState, type, validate, styleType}) => {
     const [error, setError] = useState(false)
 
     var styles = styles_secondary
-
+    
     if (styleType == 'primary') {
         styles = styles_primary
     } else if (styleType == 'secondary') {
@@ -23,10 +23,9 @@ const Input = ({placeholder, state, setState, type, validate, styleType}) => {
                     onChangeText={(val) => {setState(val)}}
                     style={styles.input}
                     keyboardType={type=='phone' || type=='OTP' || type=='pincode' ? 'numeric' : 'default'}
-                    onEndEditing={validate ? () => setError(validate()) : null}
                 />
                 
-                <TextInputError display={error}/>
+                <TextInputError display={validate && state.length}/>
             </View>
             {/* <Text style={styles.label}>Hello</Text> */}
         </View>

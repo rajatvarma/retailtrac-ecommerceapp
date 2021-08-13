@@ -11,7 +11,7 @@ const Header = ({title, icons, nav}) => {
             const onPress = icons[i].onPress
             iconsList.push(
                 <Pressable style={styles.icon} onPress={destination ? () => nav.navigate(destination) : onPress ? () => {
-                        onPress
+                        onPress()
                     } : ()=>{}} key={i}>
                     <FontAwesomeIcon icon={icons[i].icon} size={24} color="white"></FontAwesomeIcon>
                 </Pressable>

@@ -9,20 +9,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import getCategories from '../actions/categoriesAction'
 import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
+import { getAddresses } from '../actions/addressesAction'
 
 const HomePage = ({navigation}) => {
 
     const dispatch = useDispatch();
 
+    const {user, cart} = useSelector((state) => state)
+
     useEffect(() => {
         dispatch(getCategories());
+        dispatch(getAddresses(user.customer_id))
     }, [dispatch])
 
     const dimensions = useWindowDimensions()
 
 
     const {categories} = useSelector((state) => state.categories)
-    const {cart} = useSelector((state) => state)
 
     return(
         <View style={[HomePageStyles.pageContainer, {height: dimensions.height}]}>

@@ -1,6 +1,5 @@
 import * as crypto from 'expo-crypto'
 import CryptoES from 'crypto-es'
-// const qs = require('qs')
 
 function getBytes(string) {
     var bytes = new Array
@@ -17,12 +16,6 @@ function toHex(byteArray) {
 }
 
 export async function generateCheckSum(input) {
-    // const hash = crypto.createHash('sha256')
-    // // console.log(getBytes(input))
-    // hash.update(getBytes(input))
-    // const byteData = hash.digest()
-    // const hexString = toHex(byteData)
-    // return hexString.toString()
     const sha256 = CryptoES.algo.SHA256.create()
     sha256.update(input)
     const hash = sha256.finalize()
@@ -32,8 +25,18 @@ export async function generateCheckSum(input) {
 export function encryptForPayment(input, key) {
     const keyArray = CryptoES.enc.Utf8.parse(key)
     const encrypted = CryptoES.AES.encrypt(input, keyArray, {mode: CryptoES.mode.ECB, padding: CryptoES.pad.Pkcs7})
-    // console.log(encrypted.ciphertext.toString(CryptoES.enc.Base64))
-    // console.log(encrypted.key.toString(CryptoES.enc.Utf8))
     const encryptedString = encrypted.ciphertext.toString(CryptoES.enc.Base64)
+    return encryptedString
+}
+
+
+export function ccavenue(input, key) {
+    const hash = CryptoES.MD5(key)
+    const keyMod = hash.toString(CryptoES.enc.Hex)
+    const iv = '\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f'
+    const ivArray = CryptoES.enc.Utf8.parse(iv)
+    const keyArray = CryptoES.enc.Hex.parse(keyMod)
+    const encrypted = CryptoES.AES.encrypt(input, keyArray, {mode: CryptoES.mode.CBC, iv: ivArray})
+    const encryptedString = encrypted.ciphertext.toString(CryptoES.enc.Hex)
     return encryptedString
 }

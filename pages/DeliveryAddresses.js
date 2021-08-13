@@ -45,39 +45,25 @@ const RadioButton = ({pressed}) => {
 
 const DeliveryAddresses = ({navigation, route}) => {
 
-    const {user, addresses} = useSelector(state => state)
+    const {addresses} = useSelector(state => state)
 
-    const tempAddress = {
-        id: 0,
-        line1: user.addressLine1,
-        line2: user.addressLine2,
-        city: user.city,
-        pincode: user.pincode
-    }
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(getAddresses())
-    }, [dispatch])
-
-    // console.log(addresses);
+    console.log(addresses)
 
     const [pressed, setPressed] = useState(0)
 
-    const allAddressesList = [tempAddress, ...addresses]
+    // const allAddressesList = [tempAddress, ...addresses]
 
     return(
         <View style={styles.page}>
             <BannerHeader title="My Addresses" />
             <ScrollView style={{height: '60%'}}>
-                {allAddressesList.map((address) => 
+                {addresses.map((address) => 
                 (   
-                    <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', paddingHorizontal: '5%'}} key={address.id}>
+                    <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', paddingHorizontal: '5%'}} key={address.Id}>
                     
                     {route.params && 
-                        <TouchableOpacity onPress={() => setPressed(address.id)} style={{justifyContent: 'center'}}>
-                            <RadioButton pressed={address.id == pressed}/>
+                        <TouchableOpacity onPress={() => setPressed(address.Id)} style={{justifyContent: 'center'}}>
+                            <RadioButton pressed={address.Id == pressed}/>
                         </TouchableOpacity>}
                     <Address address={address} navigation={navigation} radioed={route.params} />
                     </View>
@@ -86,7 +72,7 @@ const DeliveryAddresses = ({navigation, route}) => {
             </ScrollView>
             <View style={{marginHorizontal: '5%', flexDirection: 'row', justifyContent: 'space-around'}}>
                 <GeneralButton styleType="secondary" text="Add Address" onPress={()=>navigation.navigate('AddAddress')}/>
-                {route.params && <GeneralButton styleType="secondary" text="Continue     " onPress={() => navigation.navigate('Checkout', {user: route.params.user, address: allAddressesList.filter(address => address.id == pressed)[0]})}/>}
+                {route.params && <GeneralButton styleType="secondary" text="Continue     " onPress={() => navigation.navigate('Checkout', {user: route.params.user, address: addresses.filter(address => address.Id == pressed)[0]})}/>}
             </View>
         </View>
     )

@@ -1,11 +1,2 @@
-const dict = {
-    name: 'rajat',
-    age: 15,
-    chungus: true
-}
-
-const list = Array(3).fill(dict)
-
-const json = JSON.stringify({'list': list})
-
-console.log(JSON.parse(json).list[0].name);
+const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+console.log(re.test('rvar@codonsoft.com'.toLowerCase()));

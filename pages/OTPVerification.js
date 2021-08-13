@@ -1,86 +1,148 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { getForgotPasswordOTP, resetPasswordURL } from '../apiCalls';
+import querystring from 'querystring'
 import GeneralButton from '../components/Button';
+import Input from '../components/TextInput';
 
 export const OtpVerificationPage = ({route, navigation}) => {
 
     const inputs = Array(6).fill()
 
-    const [otp, setOTP] = useState('')
+    const [otpSent, setOtpSent] = useState(false)
+    const [response, setResponse] = useState('')
+    const [otpVerified, setOTPVerified] = useState(false)
 
-    const {phone, serverOTP} = route.params
+    const [phone, setPhone] = useState("")
+    const [password, setPassword] = useState("")
+    const [otp, setOTP] = useState('')
 
     console.log(otp)
 
     const otpTextInputs = []
 
-    const verifyOTP = () => {
+    const forgotPasswordOTPHandler = () => {
+        axios.post(getForgotPasswordOTP, querystring.stringify({
+            'email': '',
+            'mob_num': phone
+        }),
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(r => {
+            console.log(r.data)
+            setResponse(r.data)
+            setOtpSent(true)
+            
+        }).catch((e) => {
+            console.log(e);
+            // SetLoginError(true)
+            // setErrorMessage(e)
+        })
+    }
 
+    const changePasswordHandler = () => {
+        axios.post(resetPasswordURL, querystring.stringify({
+            'otpmsg': otp,
+            'newPwd': password,
+            'mobileNum': phone
+        }), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(response => {
+            if (response.status == '200') {
+                Alert.alert('Attention', response.data, [
+                    {
+                        text: 'Ok',
+                        onPress: () => {
+                            navigation.navigate('Login')
+                        }
+                    }
+                ])
+            }
+        })
     }
 
     return(
         <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "height" : "padding"}>
-        <View style={styles.pageConatiner}>
+        <View style={styles.pageContainer}>
             <View style={styles.imageContainer}>
-                <Image 
-                    source={require('../assets/images/otp_page/Group.png')}
-                />
+                {!otpSent ?
+                    <Image source={require('../assets/images/otp_page/Group_475.png')}/> 
+                    :
+                    <Image source={require('../assets/images/otp_page/Group.png')} />
+                }
             </View>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View>
-                <Text style={styles.headingText}>OTP Verification</Text>
-                <Text style={styles.text}>Enter the OTP sent to <Text style={{
-                    fontFamily: 'Epilogue_700Bold',
-                    color: 'black'
-                }}>{phone}</Text></Text>
-                <View style={styles.inputContainer}>
-                    {Array.from(inputs.keys()).map((i) => (
-                        <TextInput 
-                            style={styles.input} 
-                            maxLength={1} 
-                            keyboardType='numeric'
-                            onChangeText={(value) => {
-                                if (value) {
-                                    setOTP(otp => otp+value)
-                                    if(i < otpTextInputs.length-1) {
-                                        otpTextInputs[i+1].focus()
+            {otpSent ? 
+                <View>
+                    <Text style={styles.headingText}>OTP Verification</Text>
+                    <Text style={styles.text}>Enter the OTP sent to <Text style={{
+                        fontFamily: 'Epilogue_700Bold',
+                        color: 'black'
+                    }}>{phone}</Text></Text>
+                    <View style={styles.inputContainer}>
+                        {Array.from(inputs.keys()).map((i) => (
+                            <TextInput 
+                                style={styles.input} 
+                                maxLength={1} 
+                                keyboardType='numeric'
+                                onChangeText={(value) => {
+                                    if (value) {
+                                        setOTP(otp => otp+value)
+                                        if(i < otpTextInputs.length-1) {
+                                            otpTextInputs[i+1].focus()
+                                        }
+                                        if(i == otpTextInputs.length) {
+                                            Keyboard.dismiss
+                                        }
+                                    } else {
+                                        setOTP(otp => otp.slice(0, otp.length-1))
+                                        if(i !== 0) {
+                                            otpTextInputs[i-1].focus()
+                                        }
                                     }
-                                    if(i == otpTextInputs.length) {
-                                        Keyboard.dismiss
-                                    }
-                                } else {
-                                    setOTP(otp => otp.slice(0, otp.length-1))
-                                    if(i !== 0) {
-                                        otpTextInputs[i-1].focus()
-                                    }
-                                }
-                            }}
-                            key={i}
-                            ref={ref => otpTextInputs[i] = ref}
-                        />
-                    ))}
+                                }}
+                                key={i}
+                                ref={ref => otpTextInputs[i] = ref}
+                            />
+                        ))}
+                    </View>
+                    <View style={{
+                        flexDirection: 'row', 
+                        marginVertical: '5%', 
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Text style={styles.text}>Didn't receive the OTP?  </Text>
+                        <Pressable onPress={() => {}}>
+                            <Text style={styles.highlightText}>Resend OTP</Text>
+                        </Pressable>
+                    </View>
+                    <View style={{marginHorizontal: '10%', marginTop: '5%'}}>
+                        <GeneralButton styleType="secondary" text="Confirm" onPress={() => {
+                            setOTPVerified(true)
+                            setOtpSent(false)
+                            }} />
+                    </View>
                 </View>
-                <View style={{
-                    flexDirection: 'row', 
-                    marginVertical: '5%', 
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <Text style={styles.text}>Didn't receive the OTP?  </Text>
-                    <Pressable onPress={() => {}}>
-                        <Text style={styles.highlightText}>Resend OTP</Text>
-                    </Pressable>
-                </View>
-                <View style={{marginHorizontal: '10%', marginTop: '5%'}}>
-                    <GeneralButton styleType="secondary" text="Confirm" onPress={() => {
-                        console.log(serverOTP)
-                        if(otp == serverOTP) {
-                            
-                            navigation.navigate('Login', {otp: otp})
+                :
+                <View>
+                    <Text style={styles.headingText}>{otpVerified ? 'Enter new Password' : 'Enter your mobile number'}</Text>
+                    <View style={styles.inputContainer}>
+                        {!otpVerified ? 
+                            <Input styleType="secondary" state={phone} setState={setPhone} placeholder='Your mobile number' />
+                            :
+                            <Input styleType="secondary" state={password} setState={setPassword} placeholder='New Password' />
                         }
-                    }} />
+                        
+                    </View>
+                    <GeneralButton styleType="secondary" onPress={otpVerified ? changePasswordHandler : forgotPasswordOTPHandler} text="Submit" />
                 </View>
-            </View>
+            }
             </TouchableWithoutFeedback>
         </View>
         </KeyboardAvoidingView>
@@ -88,7 +150,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    pageConatiner: {
+    pageContainer: {
         paddingHorizontal: '5%',
         paddingVertical: '10%',
         backgroundColor: 'white',

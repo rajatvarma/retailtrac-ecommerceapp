@@ -1,12 +1,11 @@
-import { faMapMarker, faMapMarkerAlt, faPen, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarkerAlt, faPen, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { checkoutHandler } from '../paymentGatewayHandler'
 import GeneralButton from '../components/Button'
-import Header, { BannerHeader } from '../components/Header'
-import Input from '../components/TextInput'
+import { BannerHeader } from '../components/Header'
 
 const ErrorBanner = () => {
     return(
@@ -16,67 +15,24 @@ const ErrorBanner = () => {
     )
 }
 
-
-const FieldEditCard = ({field, close, state, setState}) => {
-    const [line1, setLine1] = useState(state.line1)
-    const [line2, setLine2] = useState(state.line2)
-    const [city, setCity] = useState(state.city)
-    const [pincode, setPincode] = useState(state.pincode)
-    return(
-        <Pressable style={styles.editCardContainer} onPress = {close}>
-            <View style={styles.editCard}>
-            {field !== "address" ?
-                <>
-                    <Text style={styles.editCardHeading}>New {field}</Text>
-                    <View style={styles.editCardInput}>
-                        <Input placeholder={`Enter new ${field}`} state={state} setState={setState} type={field} />
-                    </View>
-                    <GeneralButton text="Submit" onPress={close}/>
-                </>
-                :
-                <>
-                    <Text>Edit Address</Text>
-                    <Input placeholder={`Enter Address Line 1`} state={line1} setState={setLine1} />
-                    <Input placeholder={`Enter Address Line 2`} state={line2} setState={setLine2} />
-                    <Input placeholder={`Enter City`} state={city} setState={setCity} />
-                    <Input placeholder={`Enter Pincode`} state={pincode} setState={setPincode} />
-                    <GeneralButton text="Submit" onPress={
-                        () => {
-                            setState({
-                                ...state ,
-                                line1: line1,
-                                line2: line2, 
-                                city: city,
-                                pincode: pincode
-                                
-                            })
-                            close()
-                        }
-                    }/>
-                </>
-            }
-            </View>
-        </Pressable>
-    )
-}
-
-
 const CheckoutPage = ({navigation, route}) => {
 
-    const {cart, user} = useSelector(state => state) 
+    const {cart, user, addresses} = useSelector(state => state)
+
+    console.log(addresses[0])
 
     const name = route.params ? route.params.user.customer_name : user.customer_name
     const phone = route.params in route ? route.params.user.telephone1 : user.telephone1
     const address = route.params ? route.params.address ? route.params.address : {
-        line1: user.addressLine1,
-        line2: user.addressLine2,
-        city: user.city,
-        pincode: user.pincode
+        address: addresses[0].address,
+        area: addresses[0].area,
+        city: addresses[0].city,
+        pincode: addresses[0].pincode
     } : {
-        line1: user.addressLine1,
-        line2: user.addressLine2,
-        city: user.city,
-        pincode: user.pincode
+        address: addresses[0].address,
+        area: addresses[0].area,
+        city: addresses[0].city,
+        pincode: addresses[0].pincode
     }
 
     const [cartTotal, setCartTotal] = useState(0)
@@ -85,8 +41,6 @@ const CheckoutPage = ({navigation, route}) => {
     const [checkoutError, setCheckoutError] = useState(false)
 
     const [checkoutStage, setCheckoutStage] = useState(0)
-
-    console.log(checkoutStage);
 
     useEffect(() => {
         let sum = 0
@@ -140,7 +94,7 @@ const CheckoutPage = ({navigation, route}) => {
                         </View>
                         <View style={{justifyContent: 'space-between'}}>
                             <Text style={styles.invoiceContent}>
-                                {`${address.line1}\n${address.line2}\n${address.city}, ${address.pincode}`}
+                                {`${address.address}\n${address.area}\n${address.city}, ${address.pincode}`}
                             </Text>
                         </View>
                     </View>
@@ -173,8 +127,8 @@ const CheckoutPage = ({navigation, route}) => {
                     const paymentURL = await checkoutHandler({...user, 
                         customer_name: name, 
                         telephone1: phone, 
-                        addressLine1: address.line1, 
-                        addressLine2: address.line2, 
+                        addressLine1: address.address, 
+                        addressLine2: address.area, 
                         city: address.city,
                         pincode: address.pincode
                     }, cart, cartTotal)

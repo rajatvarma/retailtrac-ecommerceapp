@@ -1,6 +1,6 @@
 import axios from 'axios'
 import querystring from 'querystring'
-import { encryptForPayment, generateCheckSum } from './algorithms'
+import { ccavenue, encryptForPayment, generateCheckSum } from './algorithms'
 import { getPaymentDataURL, getPaymentTokenURL, raiseSaleURL } from './apiCalls'
 
 const getPaymentData = async () => {
@@ -77,18 +77,38 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         .catch(console.log('Failed to raise query'))
         .then(response => {
             if (response.data) {
+                console.log(response.data)
                 salesCode = response.data['Sales_code'].split(';')[0]
+                amount = response.data['Sales_code'].split(';')[1]
+                // amount = Number(amount).toFixed(2)
             }
         })
     } catch (error) {
         return {...rsp, error: true}
     }
     
-    console.log(salesCode)
+    console.log(salesCode, amount)
     
-    // let amount = response.data['Sales_code'].split(';')[1]
-    // amount = Number(amount).toFixed(2)
+    const redirect_url = generateCCAvenueRequest(user, amount, salesCode)
 
+    return {...rsp, url: redirect_url}
+    
+}
+
+const getPaymentToken = async (so_code, crn) => {
+    var token
+    const url = getPaymentTokenURL+`?tokenID=&crn=${crn}&so_code=${so_code}`
+    console.log(url)
+    await axios.get(url)
+    .then(response => {
+        token = JSON.parse(response.data.getCallData).token
+    })
+    .catch('Failed to get token')
+
+    return token
+}
+
+async function generateAxisBankRequest() {
     const amount = '1.00'
     const CRN = Math.floor(Math.random() * (999999))
 
@@ -136,15 +156,27 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
     return {...rsp, url: returnURL}
 }
 
-const getPaymentToken = async (so_code, crn) => {
-    var token
-    const url = getPaymentTokenURL+`?tokenID=&crn=${crn}&so_code=${so_code}`
-    console.log(url)
-    await axios.get(url)
-    .then(response => {
-        token = JSON.parse(response.data.getCallData).token
-    })
-    .catch('Failed to get token')
+function generateCCAvenueRequest(user, total, order_id) {
+    const url = 'https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction'
+    const encryptionKey = 'C23410A32619F7738F408BC9D7062551'
+    const access_code = 'AVUJ13IG97CN98JUNC'
+    const data = {
+        merchant_id: '433650',
+        order_id: order_id,
+        currency: 'INR',
+        amount: total,
+        redirect_url: 'http://prakruthivanam.com/',
+        cancel_url: 'http://prakruthivanam.com/',
+        language: 'EN',
+        billing_name: user.customer_name,
+        billing_address: `${user.addressLine1}_${user.addressLine2}_${user.city}`,
+        billing_city: user.city,
+        billing_zip: user.pincode,
+        billing_tel: user.telephone1,
+    }
 
-    return token
+    const query = querystring.stringify(data)
+    const enc_query = ccavenue(query, encryptionKey)
+    const out = url+'&merchant_id=433650&encRequest='+enc_query+'&access_code='+access_code
+    return out
 }

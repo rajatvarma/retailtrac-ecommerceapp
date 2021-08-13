@@ -1,7 +1,7 @@
 import { faInfo, faMapMarker, faMapMarkerAlt, faMapPin, faPen, faShoppingBasket, faUser, faUserAlt, faUserSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
-import { Text, View , StyleSheet } from 'react-native'
+import { Text, View , StyleSheet, Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../actions/userAction'
 import GeneralButton from '../components/Button'

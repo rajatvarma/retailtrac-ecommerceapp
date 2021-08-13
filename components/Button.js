@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import { StyleSheet, View, Text, Pressable, ActivityIndicator } from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-const GeneralButton = ({text, onPress, styleType}) => {
+const GeneralButton = ({text, onPress, styleType, ...props}) => {
     const [disabled, setDisabled] = useState(false)
 
     var styles = styles_primary
@@ -25,7 +25,8 @@ const GeneralButton = ({text, onPress, styleType}) => {
                     end={{x:0.9, y: 0}}
                     colors={['#00C2FF', '#0066FF']}
                     style={styles.container}>
-                    <Text style={styles.text}>{text}</Text>
+                    {props.isLoading && <ActivityIndicator animating={true} size='small' color='white' /> }
+                    <Text style={styles.text}>{!props.isLoading ? text : 'Please Wait...'}</Text>
                 </LinearGradient>
             </Pressable>
 
@@ -47,6 +48,7 @@ const styles_primary = StyleSheet.create({
         paddingVertical: 15,
         borderRadius: 5,
         alignSelf: 'stretch',
+        flexDirection: 'row',
         justifyContent: 'center'
     },
 
@@ -67,7 +69,9 @@ const styles_secondary = StyleSheet.create({
         paddingHorizontal: 15,
         borderRadius: 15,
         alignSelf: 'stretch',
-        justifyContent: 'center'
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     },
 
     text: {
@@ -86,6 +90,7 @@ export const SmallButton = ({icon, text, onPress}) => {
         container: {
             flexDirection: 'row',
             backgroundColor: '#067DFF',
+            alignItems: 'center',
             padding: '5%',
             borderRadius: 10,
             justifyContent: 'space-evenly',
@@ -102,7 +107,7 @@ export const SmallButton = ({icon, text, onPress}) => {
 
     return(
         <Pressable style={styles.container} onPress={() => onPress()}>
-            <FontAwesomeIcon icon={icon} size={14} color="white" />
+            <FontAwesomeIcon icon={icon} size={12} color="white" />
             <Text style={styles.text}>{text}</Text>
         </Pressable>
     )

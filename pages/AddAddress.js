@@ -1,14 +1,13 @@
-import { faCheckCircle, faMapPin, faSmile, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faMapPin, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAddress, editAddress } from '../actions/addressesAction';
 import GeneralButton, { SmallButton } from '../components/Button';
 import { BannerHeader } from '../components/Header';
 import Input from '../components/TextInput';
-import { getUserData, saveUserData } from '../userStorage';
 
 
 const ResponseMessageBox = ({status}) => {
@@ -61,18 +60,23 @@ export default ({route, navigation, ...props}) => {
         address = route.params.address
     } else {
         address = {
-            line1: "",
-            line2: "",
+            address: "",
+            area: "",
             city: "",
-            pincode: ""
+            pincode: "",
+            phone: "",
+            landmark: "",
+            customerName: ""
         }
     }
 
-    const [line1, setLine1] = useState(address.line1)
+    const [line1, setLine1] = useState(address.address)
     const [city, setCity] = useState(address.city)
-    const [area, setArea]= useState(address.line2)
-    const [nickname, setNickname]= useState("")
-    const [pincode, setPincode] = useState(address.pincode)
+    const [area, setArea]= useState(address.area)
+    const [nickname, setNickname]= useState(address.customerName)
+    const [pincode, setPincode] = useState(String(address.pincode))
+    const [phone, setPhone] = useState(address.phone)
+    const [landmark, setLandmark] = useState(address.landmark)
 
     const [pincodeValidated, setPincodeValidated] = useState(false)
     const [error, setError] = useState(false)
@@ -82,7 +86,6 @@ export default ({route, navigation, ...props}) => {
     async function validatePincode(pincode) {
         Keyboard.dismiss()
         axios.get(`http://pvanam.retailtrac360.com:8080/eComWS/rest/EcomSales/eComPincodeValidation?pin_code=${pincode}`).then(response => {
-            console.log(response.data);
             if (response.data == 'true'){
                 setPincodeSent(true)
                 setPincodeValidated(true)
@@ -97,15 +100,16 @@ export default ({route, navigation, ...props}) => {
     }
 
     const dispatch = useDispatch()
-
-    async function writeAddress() {
-        const currentAddress = {line1: line1, line2: area, city: city, pincode: pincode, nickname: nickname}
-
+    const {user} = useSelector(state => state)
+    
+    async function writeAddress() {        
+        const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: nickname, phone: phone, landmark: landmark, Id: 0}
+        
         if(isEditingAddress) {
-            dispatch(editAddress({...address, line1: line1, line2: area, city: city, pincode: pincode}))
+            dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: nickname, phone: phone, landmark: landmark}, user.customer_id))
             navigation.navigate('UserAddresses')
         } else {
-            dispatch(addAddress(currentAddress))
+            dispatch(addAddress(currentAddress, user.customer_id))
             navigation.navigate('UserAddresses')
         }
     }
@@ -128,45 +132,53 @@ export default ({route, navigation, ...props}) => {
                 }
                 {isPincodeSent && <ResponseMessageBox status={pincodeValidated} /> }
                 {pincodeValidated && 
-                <>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" />
-                </View>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="The area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
-                </View>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="City" state={city} setState={setCity} type='city' styleType="secondary" />                
-                </View>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="Address Nickname" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
-                </View>
-                {/* <View style={styles.fieldContainer}>
-                    <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
-                </View> */}
-                <GeneralButton text="Submit" styleType="secondary" onPress={() => {writeAddress()}} />
-                </>
+                <ScrollView>
+                    <View onStartShouldSetResponder={() => true}>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" />
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="The area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="City" state={city} setState={setCity} type='city' styleType="secondary" />                
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Name" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Phone Number" state={phone} setState={setPhone} type="phone" />
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Landmark" state={landmark} setState={setLandmark} type="landmark" />
+                    </View>
+                    <GeneralButton text="Submit" styleType="secondary" onPress={writeAddress} />
+                    </View>
+                </ScrollView>
                 }
 
                 {isEditingAddress && 
-                <>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" />
-                </View>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="The area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
-                </View>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="City" state={city} setState={setCity} type='city' styleType="secondary" />                
-                </View>
-                <View style={styles.fieldContainer}>
-                    <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
-                </View>
-                <GeneralButton text="Submit" styleType="secondary" onPress={() => {writeAddress()}} />
-                </>
+                <ScrollView>
+                    <View onStartShouldSetResponder={() => true}>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" />
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="The area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="City" state={city} setState={setCity} type='city' styleType="secondary" />                
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Name" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
+                    </View>
+                    <GeneralButton text="Submit" styleType="secondary" onPress={() => {writeAddress()}} />
+                    </View>
+                </ScrollView>
                 }
-
-
             </View>
         </View>
         </TouchableWithoutFeedback>
@@ -194,7 +206,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 35,
         paddingVertical: '15%',
         elevation: 20,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         shadowColor: '#1112',
         shadowOffset: {width: 0, height: -10},
         shadowOpacity: 0.8,
