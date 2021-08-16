@@ -65,28 +65,6 @@ const AppContent = () => {
     loginAttempt()
   }, [dispatch])
 
-
-  // const user = {
-  //   addressLine1: "161/1, Road No: 13A",
-  //   addressLine2: "Jubilee Hills",
-  //   city: "Hyderabad",
-  //   company_user: "superuser",
-  //   customer_id: "CI1005",
-  //   customer_name: "Rajat",
-  //   email: "rvar@codonsoft.com",
-  //   latitude: " ",
-  //   location: "PrakruthiVanam",
-  //   longitude: " ",
-  //   pincode: "500033",
-  //   telephone1: "9871994814",
-  //   telephone2: "",
-  // }
-
-  // useEffect(() => {
-  //   dispatch(setUser(user))
-  // }, [])
-
-
   let [fontsLoaded] = useFonts({Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black})
 
   return(
@@ -128,8 +106,6 @@ export default function App() {
   
   const store = createStore(rootReducer, applyMiddleware(thunk))
 
-  // let [fontsLoaded] = useFonts({Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black})
-
   return (
     <Provider store={store}>
       <StatusBar
@@ -137,10 +113,4 @@ export default function App() {
       <AppContent />
     </Provider>
     );
-
-  // if(fontsLoaded) {
-  //   return <OtpVerificationPage />
-  // } else {
-  //   return null
-  // }
 }
