@@ -7,7 +7,7 @@
       "**/*"
     ],
     "android": {
-      "package": "com.retailTrac.ecommerceapp"
+      "package": "com.codon.retailtrac.ecommerce"
     },
     "ios": {
       "bundleIdentifier": "com.retailTrac.ecommerceapp"
