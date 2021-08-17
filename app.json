@@ -1,17 +1,22 @@
 {
   "expo": {
-    "name": "retailtrac-POS",
+    "name": "Prakruthivanam",
     "slug": "retailtrac-POS",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
-      "package": "com.codon.retailtrac.ecommerce"
+      "package": "com.codon.retailtrac.ecommerce",
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "ios": {
       "bundleIdentifier": "com.retailTrac.ecommerceapp"
-    }
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics"
+    ]
   },
   "name": "retailtrac-POS"
 }

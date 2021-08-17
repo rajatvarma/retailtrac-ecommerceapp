@@ -121,7 +121,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", false)
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -132,7 +132,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.retailtracpos"
+        applicationId "com.codon.retailtrac.ecommerce"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -148,10 +148,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('eComApp-key.keystore')
+            storePassword 'eCOMApp'
+            keyAlias 'ecomapp'
+            keyPassword 'eCOMApp'
         }
     }
     buildTypes {
@@ -201,7 +201,7 @@ dependencies {
     addUnimodulesDependencies()
 
     if (enableHermes) {
-        def hermesPath = "../../node_modules/hermes-engine/android/";
+        def hermesPath = "../../node_modules/hermes-engine/android/"
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
@@ -219,3 +219,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
