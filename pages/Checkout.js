@@ -19,7 +19,7 @@ const CheckoutPage = ({navigation, route}) => {
 
     const {cart, user, addresses} = useSelector(state => state)
 
-    console.log(addresses[0])
+    // console.log(addresses[0])
 
     const name = route.params ? route.params.user.customer_name : user.customer_name
     const phone = route.params in route ? route.params.user.telephone1 : user.telephone1
@@ -133,7 +133,7 @@ const CheckoutPage = ({navigation, route}) => {
                         pincode: address.pincode
                     }, cart, cartTotal)
                     if (paymentURL.url) {
-                        navigation.navigate('PaymentGateway', {url: paymentURL.url})
+                        navigation.navigate('PaymentGateway', {url: paymentURL.url, ...paymentURL})
                     } else if (paymentURL.error) {
                         setCheckoutError(true)
                     }

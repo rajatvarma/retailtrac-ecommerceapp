@@ -107,7 +107,7 @@ export const SmallButton = ({icon, text, onPress}) => {
 
     return(
         <Pressable style={styles.container} onPress={() => onPress()}>
-            <FontAwesomeIcon icon={icon} size={12} color="white" />
+            {icon && <FontAwesomeIcon icon={icon} size={12} color="white" />}
             <Text style={styles.text}>{text}</Text>
         </Pressable>
     )

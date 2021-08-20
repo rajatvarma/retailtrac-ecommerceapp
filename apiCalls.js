@@ -30,3 +30,5 @@ export const getPaymentDataURL = BASE_URL + 'rest/EcomInventory/getPaymentGatewa
 export const raiseSaleURL = BASE_URL + 'rest/EcomSales/ecommerceValidatePincode'
 
 export const getPaymentTokenURL = 'http://pvanam.retailtrac360.com:8080/generateTokendIDForAndroid'
+
+export const createSalesOrderURL = BASE_URL + 'rest/EcomSales/ecommerceInsert_salesOrderData'

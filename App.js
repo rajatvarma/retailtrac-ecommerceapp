@@ -109,7 +109,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar
-        hidden={true} />
+        hidden={false} />
       <AppContent />
     </Provider>
     );
