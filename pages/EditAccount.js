@@ -21,7 +21,7 @@ const EditAccountPage = ({route, navigation}) => {
     const [emailError, setEmailError] = useState(false)
 
     const checkoutEditHandler = () => {
-        navigation.navigate('Checkout', {'user': {...user, customer_name: name, telephone1: phone, email: email}})
+        navigation.navigate('Checkout', {'user': {...user, customer_name: name, telephone1: phone}})
     }
 
     const defaultEditHandler = () => {
@@ -44,8 +44,7 @@ const EditAccountPage = ({route, navigation}) => {
             setEmailError(true)
         }
     }
-
-
+    
     return(
         <View style={styles.pageContainer}>
             <BannerHeader title="Edit Account" />
@@ -56,9 +55,11 @@ const EditAccountPage = ({route, navigation}) => {
                 <View style={styles.fieldContainer}>
                     <Input placeholder="Phone number" validate={phoneError} state={phone} setState={setPhone} type='phone'/>
                 </View>
+                {!route.params &&
                 <View style={styles.fieldContainer}>
-                    <Input placeholder="Email Address" validate={emailError} state={email} setState={setEmail} type='email'/>
+                    <Input placeholder="Email ID" validate={emailError} state={email} setState={setEmail} type='email'/>
                 </View>
+                }
                 <View style={{marginHorizontal: '20%', marginVertical: '10%'}}>
                         <GeneralButton text='Submit' styleType='secondary' onPress={validateForm}/>
                 </View>

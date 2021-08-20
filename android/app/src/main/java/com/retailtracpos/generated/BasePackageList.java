@@ -1,4 +1,4 @@
-package com.retailtracpos.generated;
+package com.codon.retailtrac.ecommerce.generated;
 
 import java.util.Arrays;
 import java.util.List;
