@@ -1,14 +1,12 @@
 import axios from 'axios'
 import querystring from 'querystring'
 import { ccavenue, encryptForPayment, generateCheckSum } from './algorithms'
-import { getPaymentDataURL, getPaymentTokenURL, raiseSaleURL } from './apiCalls'
+import { createSalesOrderURL, getPaymentDataURL, getPaymentTokenURL, raiseSaleURL } from './apiCalls'
 
 const getPaymentData = async () => {
     let values = {}
-    console.log(getPaymentDataURL)
     await axios.get(getPaymentDataURL)
     .then(response => {
-        console.log(response.data)
         if (typeof(response) === 'object') {
             for (let index = 0; index < response.data.data.length; index++) {
                 const item = response.data.data[index]
@@ -30,8 +28,6 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
     let totalItemCount = 0
     let salesCode
 
-    console.log('Starting...')
-
     cart.forEach(item => {
         itemCodes = itemCodes + `${item.item_code}:`
         itemQuantites = itemQuantites + `${item.cart_quantity}:`
@@ -39,7 +35,7 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         itemCost = itemCost + `${item.sell_price}:`
     });
     
-    var data = querystring.stringify({
+    var data = {
         'line1': user.addressLine1,
         'line2': `${user.addressLine1}_${user.addressLine2}_${user.city}`,
         'mob': user.telephone1,
@@ -64,20 +60,17 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         'customer_name': user.customer_name,
         'city': user.city,
         'name': user.customer_id
-    });
-
-    console.log(data);
+    }
 
     try {
-        await axios.post(raiseSaleURL, data, {
+        await axios.post(raiseSaleURL, querystring.stringify(data), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
-        .catch(console.log('Failed to raise query'))
+        .catch(() => {})
         .then(response => {
             if (response.data) {
-                console.log(response.data)
                 salesCode = response.data['Sales_code'].split(';')[0]
                 amount = response.data['Sales_code'].split(';')[1]
                 // amount = Number(amount).toFixed(2)
@@ -87,18 +80,17 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         return {...rsp, error: true}
     }
     
-    console.log(salesCode, amount)
-    
     const redirect_url = generateCCAvenueRequest(user, amount, salesCode)
 
-    return {...rsp, url: redirect_url}
+    // console.log(redirect_url)5
+
+    return {...rsp, url: redirect_url, data: data, so_code: salesCode}
     
 }
 
 const getPaymentToken = async (so_code, crn) => {
     var token
     const url = getPaymentTokenURL+`?tokenID=&crn=${crn}&so_code=${so_code}`
-    console.log(url)
     await axios.get(url)
     .then(response => {
         token = JSON.parse(response.data.getCallData).token
@@ -151,8 +143,6 @@ async function generateAxisBankRequest() {
     const i = encryptForPayment(encryptionInput, paymentData.encrypt_decrypt_pwd)
 
     const returnURL = `${paymentData.payment_url}?i=${i}&j=${token}`
-    console.log(returnURL)
-    console.log('Finished')
     return {...rsp, url: returnURL}
 }
 
@@ -165,12 +155,15 @@ function generateCCAvenueRequest(user, total, order_id) {
         order_id: order_id,
         currency: 'INR',
         amount: total,
-        redirect_url: 'http://prakruthivanam.com/',
-        cancel_url: 'http://prakruthivanam.com/',
+        redirect_url: '',
+        cancel_url: '',
         language: 'EN',
         billing_name: user.customer_name,
-        billing_address: `${user.addressLine1}_${user.addressLine2}_${user.city}`,
+        billing_email: user.email,
+        billing_address: `${user.addressLine1}, ${user.addressLine2}`,
         billing_city: user.city,
+        billing_state: 'Telangana',
+        billing_country: 'India',
         billing_zip: user.pincode,
         billing_tel: user.telephone1,
     }
@@ -179,4 +172,8 @@ function generateCCAvenueRequest(user, total, order_id) {
     const enc_query = ccavenue(query, encryptionKey)
     const out = url+'&merchant_id=433650&encRequest='+enc_query+'&access_code='+access_code
     return out
+}
+
+export function logTransactionToServer(data, so_code) {
+    axios.post(createSalesOrderURL, querystring.stringify({...data, statusUpdate: 'open-PaymentSuccess', so_code: so_code}))
 }

@@ -47,7 +47,7 @@ const DeliveryAddresses = ({navigation, route}) => {
 
     const {addresses} = useSelector(state => state)
 
-    console.log(addresses)
+    // console.log(addresses)
 
     const [pressed, setPressed] = useState(0)
 

@@ -132,7 +132,7 @@ const CheckoutPage = ({navigation, route}) => {
                         pincode: address.pincode
                     }, cart, cartTotal)
                     if (paymentURL.url) {
-                        navigation.navigate('PaymentGateway', {url: paymentURL.url})
+                        navigation.navigate('PaymentGateway', {url: paymentURL.url, ...paymentURL})
                     } else if (paymentURL.error) {
                         setCheckoutError(true)
                     }

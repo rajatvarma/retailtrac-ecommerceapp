@@ -11,7 +11,7 @@ import { faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
 const ItemCard = ({item}) => {
 
-    console.log(item)
+    // console.log(item)
 
     return(
         <View style={styles.itemCard}>
@@ -58,8 +58,9 @@ const OrderSummaryPage = ({route, navigation}) => {
         setButtonLoading(true)
 
         const url = validateOrderStatusURL + `?salesOrderCode=${order_id}`
-
+        console.log(url)
         axios.get(url).then(r => {
+            console.log(r.data)
             setButtonLoading(false)
             if (r.data) {
                 Alert.alert('Attention', r.data.params[0].status, [
@@ -82,11 +83,11 @@ const OrderSummaryPage = ({route, navigation}) => {
                 </View>
                 <Text style={styles.descriptionText}>Total: Rs. {order_amount}</Text>
             </View>
-            {order_status !== "complete" &&
+            {/* {order_status !== "complete" &&
             <View style={{marginVertical: '5%', paddingHorizontal: '10%'}}>
                 <GeneralButton styleType="secondary" text="Validate" onPress={validateOrderStatus} isLoading={buttonLoading} />
             </View>
-            }
+            } */}
             <ScrollView style={{paddingHorizontal: '5%'}}>
                 {orderDetails && orderDetails.map((item) => <ItemCard item={item} key={item.item_code} />)}
             </ScrollView>
