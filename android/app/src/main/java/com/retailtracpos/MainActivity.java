@@ -1,4 +1,4 @@
-package com.codon.retailtrac.ecommerce;
+package com.retailtracpos;
 
 import android.os.Bundle;
 
