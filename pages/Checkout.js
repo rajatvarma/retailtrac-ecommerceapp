@@ -19,8 +19,6 @@ const CheckoutPage = ({navigation, route}) => {
 
     const {cart, user, addresses} = useSelector(state => state)
 
-    // console.log(addresses[0])
-
     const name = route.params ? route.params.user.customer_name : user.customer_name
     const phone = route.params in route ? route.params.user.telephone1 : user.telephone1
     const address = route.params ? route.params.address ? route.params.address : {

@@ -64,7 +64,6 @@ const styles_primary = StyleSheet.create({
 
 const styles_secondary = StyleSheet.create({
     container: {
-        // backgroundColor: '#00B3FF',
         paddingVertical: 15,
         paddingHorizontal: 15,
         borderRadius: 15,
