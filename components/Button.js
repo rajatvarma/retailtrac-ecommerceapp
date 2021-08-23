@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Text, Pressable, ActivityIndicator } from 'react-native'
+import React from 'react'
+import { StyleSheet, Text, Pressable, ActivityIndicator } from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
 const GeneralButton = ({text, onPress, styleType, ...props}) => {
-    const [disabled, setDisabled] = useState(false)
-
     var styles = styles_primary
 
     if (styleType == 'primary') {
@@ -64,7 +61,6 @@ const styles_primary = StyleSheet.create({
 
 const styles_secondary = StyleSheet.create({
     container: {
-        // backgroundColor: '#00B3FF',
         paddingVertical: 15,
         paddingHorizontal: 15,
         borderRadius: 15,

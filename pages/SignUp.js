@@ -144,7 +144,7 @@ const SignUpPage = ({navigation}) => {
                     {isOTPSent && !isOTPVerified && 
                         <View style={styles.formContainer}>
                             <View style={styles.fieldContainer}>
-                                <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' validate={verifyPhoneNumber} styleType="secondary" />
+                                <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' styleType="secondary" />
                             </View>
                             <GeneralButton text="Next" onPress={verifyOTPHandler} styleType="secondary" isLoading={buttonLoading} />
                         </View>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     mainHeading: {
         fontSize: 40,
         marginTop: '10%',
-        // fontFamily: 'Epilogue_700Bold',
+        fontFamily: 'Epilogue_700Bold',
         fontWeight: 'bold',
         textAlign: 'center',
         color: 'white'

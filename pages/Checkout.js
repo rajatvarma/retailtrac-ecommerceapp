@@ -32,8 +32,6 @@ const CheckoutPage = ({navigation, route}) => {
         pincode: addresses[0].pincode
     }
 
-    console.log(name, phone)
-
     const [cartTotal, setCartTotal] = useState(0)
     const [shippingAmount, setShippingAmount] = useState(0)
 
@@ -162,7 +160,6 @@ const styles = StyleSheet.create({
     },
 
     invoice: {
-        // backgroundColor: '#DDD',
         paddingHorizontal: '5%',
         paddingVertical: '5%'
 

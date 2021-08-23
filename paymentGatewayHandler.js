@@ -72,8 +72,7 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         .then(response => {
             if (response.data) {
                 salesCode = response.data['Sales_code'].split(';')[0]
-                amount = response.data['Sales_code'].split(';')[1]
-                // amount = Number(amount).toFixed(2)
+                amount = response.data['Sales_code'].split(';')[1]  
             }
         })
     } catch (error) {
@@ -81,9 +80,6 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
     }
     
     const redirect_url = generateCCAvenueRequest(user, amount, salesCode)
-
-    // console.log(redirect_url)5
-
     return {...rsp, url: redirect_url, data: data, so_code: salesCode}
     
 }
@@ -175,5 +171,5 @@ function generateCCAvenueRequest(user, total, order_id) {
 }
 
 export function logTransactionToServer(data, so_code) {
-    axios.post(createSalesOrderURL, querystring.stringify({...data, statusUpdate: 'open-PaymentSuccess', so_code: so_code}))
+    axios.post(createSalesOrderURL, querystring.stringify({...data, statusUpdate: 'success', so_code: so_code}))
 }
