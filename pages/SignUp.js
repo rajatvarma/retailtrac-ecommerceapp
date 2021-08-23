@@ -33,13 +33,8 @@ const SignUpPage = ({navigation}) => {
 
     const getOTPHandler = async () => { 
         setButtonLoading(true)
-        console.log(querystring.stringify({
-            'username': name,
-            'email': email,
-            'mobileNo': phone,
-            'pincode': pincode
-            }))
-        await axios.post(registerOTPURL, querystring.stringify({
+        console.log(name, email, phone, pincode)
+        const data = await axios.post(registerOTPURL, querystring.stringify({
             'username': name,
             'email': email,
             'mobileNo': phone,
@@ -149,7 +144,7 @@ const SignUpPage = ({navigation}) => {
                     {isOTPSent && !isOTPVerified && 
                         <View style={styles.formContainer}>
                             <View style={styles.fieldContainer}>
-                                <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' validate={phoneValidation(phone)} styleType="secondary" />
+                                <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' validate={verifyPhoneNumber} styleType="secondary" />
                             </View>
                             <GeneralButton text="Next" onPress={verifyOTPHandler} styleType="secondary" isLoading={buttonLoading} />
                         </View>

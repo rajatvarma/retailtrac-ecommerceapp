@@ -20,7 +20,6 @@ const Input = ({placeholder, state, setState, type, validate, styleType}) => {
             <View style={styles.row}>
                 <TextInput  
                     value={state}
-                    secureTextEntry={type == "password"}
                     onChangeText={(val) => {setState(val)}}
                     style={styles.input}
                     keyboardType={type=='phone' || type=='OTP' || type=='pincode' ? 'numeric' : 'default'}
