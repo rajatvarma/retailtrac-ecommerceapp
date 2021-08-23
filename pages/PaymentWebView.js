@@ -131,26 +131,6 @@ const PaymentGatewayPage = ({route, navigation}) => {
         }
       </View>
     )
-    // return (
-    //     <WebView source={{uri: url}} 
-    //         startInLoadingState={true}
-    //         renderLoading={() => (
-    //             <ActivityIndicator
-    //                 color='black'
-    //                 size='large'
-    //             />
-    //         )}
-    //         ref={webViewRef}
-    //         javaScriptEnabled={true}
-    //         injectedJavaScript={injectedJS}
-    //         pullToRefreshEnabled={true}
-    //         onMessage={event => console.log('Hello', event.nativeEvent.data)}
-    //         // onNavigationStateChange={
-    //         //     (navState) => {
-
-    //         //     }
-    //         // }
-    //     />
 }
 
 export default PaymentGatewayPage

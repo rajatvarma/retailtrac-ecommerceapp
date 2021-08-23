@@ -18,6 +18,7 @@ const ErrorBanner = () => {
 const CheckoutPage = ({navigation, route}) => {
 
     const {cart, user, addresses} = useSelector(state => state)
+
     const name = route.params ? route.params.user.customer_name : user.customer_name
     const phone = route.params in route ? route.params.user.telephone1 : user.telephone1
     const address = route.params ? route.params.address ? route.params.address : {
@@ -31,8 +32,6 @@ const CheckoutPage = ({navigation, route}) => {
         city: addresses[0].city,
         pincode: addresses[0].pincode
     }
-
-    console.log(name, phone)
 
     const [cartTotal, setCartTotal] = useState(0)
     const [shippingAmount, setShippingAmount] = useState(0)

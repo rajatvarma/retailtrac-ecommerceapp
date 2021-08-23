@@ -16,7 +16,7 @@ const HomePage = ({navigation}) => {
     const {user, cart} = useSelector((state) => state)
 
     useEffect(() => {
-        dispatch(getCategories());
+        dispatch(getCategories());  
         dispatch(getAddresses(user.customer_id))
     }, [dispatch])
 

@@ -27,12 +27,12 @@ import { useFonts, Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold
 import OtpVerificationPage from './pages/OTPVerification';
 import DeliveryAddresses from './pages/DeliveryAddresses';
 import AddAddress from './pages/AddAddress';
-import crashlytics from '@react-native-firebase/crashlytics'
 
 
 const Stack = createStackNavigator();
 
 const AppContent = () => {
+
   const dispatch = useDispatch()
 
   const loginAttempt = async () => {
@@ -52,11 +52,6 @@ const AppContent = () => {
         }
     }).then(response => {
         if (response.data.user) {
-          crashlytics().log('User signed in.');
-          Promise.all([
-            crashlytics().setUserId(response.data.user.customer_id),
-          ]);
-
           dispatch(setUser(response.data.user))
         }        
       }).catch(e => console.log(e))
