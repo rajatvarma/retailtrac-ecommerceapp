@@ -41,7 +41,6 @@ const styles_primary = StyleSheet.create({
         paddingHorizontal: 15,
         justifyContent: 'center',
         borderRadius: 10,
-        marginVertical: 5
     },
 
     input: {
@@ -75,7 +74,6 @@ const styles_secondary = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#b5b5b5',
         borderRadius: 10,
-        marginVertical: 5
     },
 
     input: {

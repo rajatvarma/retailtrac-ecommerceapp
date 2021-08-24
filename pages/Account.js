@@ -32,6 +32,7 @@ const AccountPage = ({navigation}) => {
             <Option text="Manage Addresses" redirectTo={"UserAddresses"} navigation={navigation} icon={faMapMarkerAlt} />            
             <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} />
             <Option text="Policies" redirectTo={'Settings'} navigation={navigation} icon={faInfo} />
+            {/* {user.customer_name === "Rajat" && <Option text="Implement Crash" redirectTo={'crashpage'} />} */}
             
             <View style={styles.buttonContainer}>
                 <GeneralButton text='Sign Out' styleType="secondary" onPress={() => {

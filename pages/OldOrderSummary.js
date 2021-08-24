@@ -16,9 +16,9 @@ const ItemCard = ({item}) => {
     return(
         <View style={styles.itemCard}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <View style={{backgroundColor: '#F37A20', padding: '5%', borderRadius: 100, marginRight: '5%', flex: 1,}}>
+                    {/* <View style={{backgroundColor: '#F37A20', padding: '5%', borderRadius: 100, marginRight: '5%', flex: 1,}}>
                         <FontAwesomeIcon icon={faShoppingBag} color="white" />
-                    </View>
+                    </View> */}
                     <Text style={styles.itemHeading}>{item.description}</Text>
                 <Text style={styles.itemPrice}>Rs. {Number(item.price).toFixed(2)}</Text>
             </View>

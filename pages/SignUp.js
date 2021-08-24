@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, SafeAreaView } from 'react-native'
 import GeneralButton from '../components/Button'
 import Input from '../components/TextInput'
 import axios from 'axios'
@@ -111,8 +111,11 @@ const SignUpPage = ({navigation}) => {
     }
 
     return (
+        <SafeAreaView 
+        style={{flex: 1}}
+        >
         <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior="position"
             style={styles.container}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.inner}>
@@ -187,6 +190,7 @@ const SignUpPage = ({navigation}) => {
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }
 
@@ -205,11 +209,11 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        flex: 1
+        // flex: 1
     },
     
     inner: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'space-between',
         backgroundColor: '#FF595F'
     },
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 50,
         borderTopRightRadius: 50,
         minHeight: '70%',
-        paddingVertical: '5%',
+        paddingTop: '5%',
         paddingHorizontal: '10%',
         backgroundColor: 'white'
     }
