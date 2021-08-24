@@ -114,7 +114,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar
-        hidden={false} />
+        hidden={true} />
       <AppContent />
     </Provider>
     );

@@ -171,5 +171,9 @@ function generateCCAvenueRequest(user, total, order_id) {
 }
 
 export function logTransactionToServer(data, so_code) {
-    axios.post(createSalesOrderURL, querystring.stringify({...data, statusUpdate: 'success', so_code: so_code}))
+    axios.post(createSalesOrderURL, querystring.stringify({
+        ...data,
+        statusUpdate: 'open-PaymentSuccess',
+        so_code: so_code
+    }))
 }
