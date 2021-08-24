@@ -5,18 +5,30 @@ export const getImagesFromServer = () => async (dispatch) => {
 
     const images = await axios.get('http://pvanam.retailtrac360.com:8080/eComWS/rest/EcomInventory/ecomGetImages')
 
-    images_list = images.data.Images
+    const images_list = images.data.Images
 
-    let imagesMap = {}
+    let productsImagesMap = {}
+    let categoriesImagesMap = {}
 
     images_list.forEach(element => {
-        const product_id = element.item_image.split('Prakruthi')[0].slice(0, -1)
-        imagesMap[product_id] = element.item_image
+        if (element.item_image) {
+            const product_id = element.item_image.split('Prakruthi')[0].slice(0, -1)
+            productsImagesMap[product_id] = element.item_image
+        }
+        if (element.category_image) {
+            const category_name = element.category_image
+            categoriesImagesMap[category_name] = element.category_image
+        }
+
+        console.log(categoriesImagesMap)
     });
 
     dispatch({
         type: 'GET_IMAGES',
-        payload: imagesMap
+        payload: {
+            products: productsImagesMap,
+            categories: categoriesImagesMap
+        }
     })
     
 }

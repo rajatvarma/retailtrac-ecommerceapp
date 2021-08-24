@@ -26,11 +26,10 @@ const CategoryPage = ({route, navigation}) => {
 
     function getImages(id) {
         const images_url = 'https://pvanam.retailtrac360.com/images_item/'
-        if(images[id]) {
+        if(images.products[id]) {
             return images_url+images[id]
         }
         return images_url+'Noimage.jpg'
-
     }
 
     const [searchText, setSearchText] = useState('')

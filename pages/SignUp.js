@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, SafeAreaView, ScrollView } from 'react-native'
 import GeneralButton from '../components/Button'
 import Input from '../components/TextInput'
 import axios from 'axios'
@@ -8,6 +8,8 @@ import querystring from 'querystring'
 import FormErrorMessage from '../components/FormErrorMessage'
 import { registerOTPURL, userRegistrationURL } from '../apiCalls'
 import { emailValidation, phoneValidation } from '../formValidations'
+import crashlytics from '@react-native-firebase/crashlytics'
+import { BannerHeader } from '../components/Header'
 
 
 const SignUpPage = ({navigation}) => {
@@ -48,14 +50,14 @@ const SignUpPage = ({navigation}) => {
                 if (r.data.includes('CI')) {
                     setResponse({customer_id: r.data.split(':')[0], otp: r.data.split(':')[1]})
                     setOTPSent(true)
+                    crashlytics().log(r)
                 } else {
-                    console.log()
                     setFormError(true)
                     setFormErrorMessage(r.data.replace('\n', ''))
                 }
         }).catch(e => {
             setButtonLoading(false)
-            console.log(e)
+            crashlytics().log(e)
             setFormError(true)
             setFormErrorMessage('There was an error. Please try again later.')
         })
@@ -79,13 +81,13 @@ const SignUpPage = ({navigation}) => {
             'addressLine1': address,
             'mobileNo': phone,
             'area': area,
-            'city ': city,
-            'location': '',
+            'city': city,
+            'location': city,
             'customer_id': response.customer_id,
             'pincode': pincode 
           });
 
-
+          crashlytics().log(data)
           console.log(data);
           var config = {
             method: 'post',
@@ -106,76 +108,70 @@ const SignUpPage = ({navigation}) => {
             }
           })
           .catch(function (error) {
-            console.log(error);
+            crashlytics.log(error)
           });
     }
 
     return (
-        <SafeAreaView 
-        style={{flex: 1}}
-        >
-        <KeyboardAvoidingView
-            behavior="position"
-            style={styles.container}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.inner}>
-                    <Text style={styles.mainHeading}>Sign Up</Text>
-                    
-                    {formError && <FormErrorMessage message={formErrorMessage} />}
-                    
-                    {!isOTPSent &&
-                    <View style={styles.formContainer}>
-                        <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your name" state={name} setState={setName} type='name' styleType="secondary" />
-                        </View>                
-                        <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your email address" state={email} setState={setEmail} type='email' validate={emailValidation(email)} styleType="secondary" />
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your PIN code" atate={pincode} setState={setPincode} type='pincode' styleType="secondary" />
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={phoneValidation(phone)} styleType="secondary" />
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            {/* {This has been left empty to make the design look better} */}
-                        </View>
-                        <GeneralButton text="Next" onPress={getOTPHandler} styleType="secondary" isLoading={buttonLoading}/>
-                    </View>
-                    }
-                    
-                    {isOTPSent && !isOTPVerified && 
-                        <View style={styles.formContainer}>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{flex:1}}>
+            <SafeAreaView style={styles.container}>
+                <BannerHeader title="Sign Up" />
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.inner}>
+                        {formError && <FormErrorMessage message={formErrorMessage} />}
+                        <ScrollView style={styles.formContainer}>
+                        {!isOTPSent &&
+                            <>
                             <View style={styles.fieldContainer}>
-                                <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' styleType="secondary" />
-                            </View>
-                            <GeneralButton text="Next" onPress={verifyOTPHandler} styleType="secondary" isLoading={buttonLoading} />
-                        </View>
-                    }
-                    
-                    {!isAddressEntered && isOTPVerified &&
-                        <View style={styles.formContainer}>
+                                <Input placeholder="Enter your name" state={name} setState={setName} type='name' styleType="secondary" />
+                            </View>                
                             <View style={styles.fieldContainer}>
-                                <Text style={styles.fieldHeading}>Address Line 1</Text>
-                                <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address' styleType="secondary" />
+                                <Input placeholder="Enter your email address" state={email} setState={setEmail} type='email' validate={emailValidation(email)} styleType="secondary" />
                             </View>
                             <View style={styles.fieldContainer}>
-                                <Text style={styles.fieldHeading}>Area</Text>
-                                <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+                                <Input placeholder="Enter your PIN code" atate={pincode} setState={setPincode} type='pincode' styleType="secondary" />
                             </View>
                             <View style={styles.fieldContainer}>
-                                <Text style={styles.fieldHeading}>City</Text>
-                                <Input placeholder="Enter your city" state={city} setState={setCity} type='city' styleType="secondary" />                
+                                <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={phoneValidation(phone)} styleType="secondary" />
                             </View>
                             <View style={styles.fieldContainer}>
-                                {/* {This has been left empty to make the design look better} */}
+                                {/* <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={phoneValidation(phone)} styleType="secondary" /> */}
                             </View>
-                            <GeneralButton text="Submit" onPress={() => setAddressEntered(true)} styleType="secondary" isLoading={buttonLoading} />
-                        </View>
-                    }    
-                    
-                    {isAddressEntered &&
-                        <View style={styles.formContainer}>
+                            <GeneralButton text="Next" onPress={getOTPHandler} styleType="secondary" isLoading={buttonLoading}/>
+                            </>
+                        }
+                        {isOTPSent && !isOTPVerified && 
+                            <>
+                                <View style={styles.fieldContainer}>
+                                    <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' styleType="secondary" />
+                                </View>
+                                <GeneralButton text="Next" onPress={verifyOTPHandler} styleType="secondary" isLoading={buttonLoading} />
+                            </>
+                        }
+                        {!isAddressEntered && isOTPVerified &&
+                            <>
+                                <View style={styles.fieldContainer}>
+                                    <Text style={styles.fieldHeading}>Address Line 1</Text>
+                                    <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address' styleType="secondary" />
+                                </View>
+                                <View style={styles.fieldContainer}>
+                                    <Text style={styles.fieldHeading}>Area</Text>
+                                    <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+                                </View>
+                                <View style={styles.fieldContainer}>
+                                    <Text style={styles.fieldHeading}>City</Text>
+                                    <Input placeholder="Enter your city" state={city} setState={setCity} type='city' styleType="secondary" />                
+                                </View>
+                                <View style={styles.fieldContainer}>
+                                    {/* {This has been left empty to make the design look better} */}
+                                </View>
+                                <GeneralButton text="Submit" onPress={() => setAddressEntered(true)} styleType="secondary" isLoading={buttonLoading} />
+                            </>
+                        }       
+                        {isAddressEntered &&
+                        <>
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.fieldHeading}>Set a password</Text>
                                 <Input placeholder="Choose a strong password" state={password} setState={setPassword} type='password'/>                
@@ -184,48 +180,113 @@ const SignUpPage = ({navigation}) => {
                                 {/* {This has been left empty to make the design look better} */}
                             </View>
                             <GeneralButton text="Submit" onPress={registerUserHandler} styleType="secondary" isLoading={buttonLoading} />
-                        </View>
-                    }
-                    
-                </View>
-            </TouchableWithoutFeedback>
+                        </>
+                        }                                  
+                        </ScrollView>
+                    </View>
+                </TouchableWithoutFeedback>
+            </SafeAreaView>
         </KeyboardAvoidingView>
-        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    mainHeading: {
-        fontSize: 40,
-        marginTop: '10%',
-        fontFamily: 'Epilogue_700Bold',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: 'white'
-    },
-
     fieldContainer: {
         marginVertical: '5%'
     },
 
     container: {
-        // flex: 1
+        flex: 1,
     },
     
     inner: {
-        // flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: '#FF595F'
+        flex: 1,
+        backgroundColor: '#FF595F',
+        justifyContent: 'flex-end',
     },
 
     formContainer: {
         borderTopLeftRadius: 50,
+        // height: '87.5%',
         borderTopRightRadius: 50,
-        minHeight: '70%',
-        paddingTop: '5%',
+        paddingVertical: '5%',
         paddingHorizontal: '10%',
         backgroundColor: 'white'
     }
 })
 
 export default SignUpPage
+
+// {/* <SafeAreaView style={{flex: 1}}>
+//             <BannerHeader title="Sign Up" />
+//             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+//                 <View style={styles.inner}>
+//                     {formError && <FormErrorMessage message={formErrorMessage} />}
+//                     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "position"}>
+//                     {!isOTPSent &&
+//                     <View style={styles.formContainer}>
+//                         <View style={styles.fieldContainer}>
+//                             <Input placeholder="Enter your name" state={name} setState={setName} type='name' styleType="secondary" />
+//                         </View>                
+//                         <View style={styles.fieldContainer}>
+//                             <Input placeholder="Enter your email address" state={email} setState={setEmail} type='email' validate={emailValidation(email)} styleType="secondary" />
+//                         </View>
+//                         <View style={styles.fieldContainer}>
+//                             <Input placeholder="Enter your PIN code" atate={pincode} setState={setPincode} type='pincode' styleType="secondary" />
+//                         </View>
+//                         <View style={styles.fieldContainer}>
+//                             <Input placeholder="Enter your phone number" state={phone} setState={setPhone} type='phone' validate={phoneValidation(phone)} styleType="secondary" />
+//                         </View>
+//                         <View style={styles.fieldContainer}>
+//                             {/* {This has been left empty to make the design look better} */}
+//                         </View>
+//                         <GeneralButton text="Next" onPress={getOTPHandler} styleType="secondary" isLoading={buttonLoading}/>
+//                     </View>
+//                     }
+                    
+//                     {isOTPSent && !isOTPVerified && 
+//                         <View style={styles.formContainer}>
+//                             <View style={styles.fieldContainer}>
+//                                 <Input placeholder="Enter the OTP you just received" state={otp} setState={setOTP} type='OTP' styleType="secondary" />
+//                             </View>
+//                             <GeneralButton text="Next" onPress={verifyOTPHandler} styleType="secondary" isLoading={buttonLoading} />
+//                         </View>
+//                     }
+                    
+//                     {!isAddressEntered && isOTPVerified &&
+//                         <View style={styles.formContainer}>
+//                             <View style={styles.fieldContainer}>
+//                                 <Text style={styles.fieldHeading}>Address Line 1</Text>
+//                                 <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address' styleType="secondary" />
+//                             </View>
+//                             <View style={styles.fieldContainer}>
+//                                 <Text style={styles.fieldHeading}>Area</Text>
+//                                 <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+//                             </View>
+//                             <View style={styles.fieldContainer}>
+//                                 <Text style={styles.fieldHeading}>City</Text>
+//                                 <Input placeholder="Enter your city" state={city} setState={setCity} type='city' styleType="secondary" />                
+//                             </View>
+//                             <View style={styles.fieldContainer}>
+//                                 {/* {This has been left empty to make the design look better} */}
+//                             </View>
+//                             <GeneralButton text="Submit" onPress={() => setAddressEntered(true)} styleType="secondary" isLoading={buttonLoading} />
+//                         </View>
+//                     }    
+                    
+//                     {isAddressEntered &&
+//                         <View style={styles.formContainer}>
+//                             <View style={styles.fieldContainer}>
+//                                 <Text style={styles.fieldHeading}>Set a password</Text>
+//                                 <Input placeholder="Choose a strong password" state={password} setState={setPassword} type='password'/>                
+//                             </View>
+//                             <View style={styles.fieldContainer}>
+//                                 {/* {This has been left empty to make the design look better} */}
+//                             </View>
+//                             <GeneralButton text="Submit" onPress={registerUserHandler} styleType="secondary" isLoading={buttonLoading} />
+//                         </View>
+//                     }
+//                     </KeyboardAvoidingView>
+//                 </View>
+//             </TouchableWithoutFeedback>
+// </SafeAreaView> */}

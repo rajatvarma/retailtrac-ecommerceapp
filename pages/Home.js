@@ -8,6 +8,7 @@ import getCategories from '../actions/categoriesAction'
 import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
 import { getAddresses } from '../actions/addressesAction'
+import { clearProducts } from '../actions/productsAction'
 
 const HomePage = ({navigation}) => {
 
@@ -18,6 +19,7 @@ const HomePage = ({navigation}) => {
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getAddresses(user.customer_id))
+        dispatch(clearProducts())
     }, [dispatch])
 
     const dimensions = useWindowDimensions()
@@ -37,7 +39,11 @@ const HomePage = ({navigation}) => {
                     {categories ? 
                             <View style={HomePageStyles.categoriesList}>
                                 {categories.map((item) => (
-                                    <Pressable onPress={() => navigation.navigate('Category', {category: item})} key={item.category}>
+                                    <Pressable 
+                                        onPress={() => {
+                                            navigation.navigate('Category', {category: item})
+                                        }}
+                                        key={item.category}>
                                         <CategoryCard category={item}/>
                                     </Pressable>
                                 ))}

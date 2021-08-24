@@ -10,4 +10,10 @@ const getProductsFromCategory = (category_name) => async (dispatch) => {
     })
 }
 
+export const clearProducts = () => async (dispatch) => {
+    dispatch({
+        type: "CLEAR_PRODUCTS",
+    })
+}
+
 export default getProductsFromCategory
