@@ -1,4 +1,3 @@
-import * as crypto from 'expo-crypto'
 import CryptoES from 'crypto-es'
 
 function getBytes(string) {

@@ -1,7 +1,6 @@
-import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import { View, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable'
 
 const TextInputError = ({display = false}) => {
@@ -11,7 +10,6 @@ const TextInputError = ({display = false}) => {
 
     return (
         <Animatable.View
-            // style={}
             animation='shake'
             duration={200}
             easing="linear">

@@ -1,7 +1,7 @@
-import { faInfo, faMapMarker, faMapMarkerAlt, faMapPin, faPen, faShoppingBasket, faUser, faUserAlt, faUserSlash } from '@fortawesome/free-solid-svg-icons'
+import { faInfo, faMapMarkerAlt, faPen, faShoppingBasket, faUserAlt} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
-import { Text, View , StyleSheet, Alert } from 'react-native'
+import { Text, View , StyleSheet} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from '../actions/userAction'
 import GeneralButton from '../components/Button'
@@ -32,7 +32,6 @@ const AccountPage = ({navigation}) => {
             <Option text="Manage Addresses" redirectTo={"UserAddresses"} navigation={navigation} icon={faMapMarkerAlt} />            
             <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} />
             <Option text="Policies" redirectTo={'Settings'} navigation={navigation} icon={faInfo} />
-            {/* {user.customer_name === "Rajat" && <Option text="Implement Crash" redirectTo={'crashpage'} />} */}
             
             <View style={styles.buttonContainer}>
                 <GeneralButton text='Sign Out' styleType="secondary" onPress={() => {

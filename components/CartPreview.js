@@ -2,8 +2,7 @@ import { faAngleRight, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { useSelector, useStore } from 'react-redux'
-import GeneralButton, { CartAddButton } from './Button'
+import { useSelector} from 'react-redux'
 
 const CartPreview = ({navigation}) => {
 

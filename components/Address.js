@@ -4,11 +4,8 @@ import React from 'react';
 
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { deleteAddress } from '../actions/addressesAction';
 
 export default ({radioed, address, navigation}) => {
-
-    const dispatch = useDispatch()
 
     return (
         <View style={[styles.container, {width: radioed ? '95%' : '100%'}]}>
@@ -54,7 +51,6 @@ const styles = StyleSheet.create({
     },
 
     iconsContainer: {
-        // justifyContent: 'space-between',
     },
 
     iconContainer: {

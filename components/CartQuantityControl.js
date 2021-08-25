@@ -25,23 +25,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignContent: 'stretch',
         borderRadius: 10,
-        // shadowColor: '#0002',
-        // shadowOffset: { width: 0, height: 1 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 2,  
-        // elevation: 5
     },
 
     button: {
-        // backgroundColor: 'white',
         borderRadius: 5,
         paddingHorizontal: 10,
         justifyContent: 'center',
-        // shadowColor: '#0002',
-        // shadowOffset: { width: 0, height: 1 },
-        // shadowOpacity: 0.8,
-        // shadowRadius: 2,  
-        // elevation: 5
     },
 
     text: {

@@ -29,8 +29,6 @@ const Header = ({title, icons, nav}) => {
 
 const styles = StyleSheet.create({
     container: {
-        // height: '5%',
-        // flex: 1,
         backgroundColor: '#FF595F',
         width: '100%',
         paddingTop: '7.5%',

@@ -46,11 +46,7 @@ const DeliveryAddresses = ({navigation, route}) => {
 
     const {addresses} = useSelector(state => state)
 
-    // console.log(addresses)
-
     const [pressed, setPressed] = useState(0)
-
-    // const allAddressesList = [tempAddress, ...addresses]
 
     return(
         <View style={styles.page}>

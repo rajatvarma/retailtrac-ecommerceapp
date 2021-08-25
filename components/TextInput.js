@@ -4,8 +4,6 @@ import { StyleSheet, Text, TextInput, View } from 'react-native'
 import TextInputError from './TextInputError'
 
 const Input = ({placeholder, state, setState, type, validate, styleType}) => {
-    const [error, setError] = useState(false)
-
     var styles = styles_secondary
     
     if (styleType == 'primary') {
@@ -28,7 +26,6 @@ const Input = ({placeholder, state, setState, type, validate, styleType}) => {
                 
                 <TextInputError display={validate && state.length}/>
             </View>
-            {/* <Text style={styles.label}>Hello</Text> */}
         </View>
     )
 }

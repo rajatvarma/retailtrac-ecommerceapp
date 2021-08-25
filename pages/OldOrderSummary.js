@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
 import axios from 'axios'
-import Header, { BannerHeader } from '../components/Header'
+import { BannerHeader } from '../components/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { getOrderSummary } from '../actions/ordersAction'
-import GeneralButton from '../components/Button'
 import { validateOrderStatusURL } from '../apiCalls'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
 const ItemCard = ({item}) => {
-
-    // console.log(item)
 
     return(
         <View style={styles.itemCard}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    {/* <View style={{backgroundColor: '#F37A20', padding: '5%', borderRadius: 100, marginRight: '5%', flex: 1,}}>
-                        <FontAwesomeIcon icon={faShoppingBag} color="white" />
-                    </View> */}
                     <Text style={styles.itemHeading}>{item.description}</Text>
                 <Text style={styles.itemPrice}>Rs. {Number(item.price).toFixed(2)}</Text>
             </View>

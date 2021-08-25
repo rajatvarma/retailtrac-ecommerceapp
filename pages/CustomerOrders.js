@@ -53,7 +53,12 @@ const OrdersPage = ({navigation}) => {
         <View style={styles.pageContainer}>
             <BannerHeader title="Your Orders" />
                 <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
-                    {ordersCardList.length ? ordersCardList : <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Your previous orders show up here</Text>}
+                    {ordersCardList.length ? ordersCardList : 
+                    <Text style={
+                        {textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}
+                    }>
+                        There are no orders to display.
+                        </Text>}
                 </ScrollView>
         </View>
     )

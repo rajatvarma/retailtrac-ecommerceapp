@@ -16,7 +16,6 @@ const LoginPage = ({navigation}) => {
 
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
-    // const [email, setEmail] = useState("")
     const dispatch = useDispatch()
 
     const [loginError, SetLoginError] = useState(false)

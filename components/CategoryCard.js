@@ -7,8 +7,7 @@ const CategoryCard = ({category}) => {
     const dimensions = useWindowDimensions()
     return(
         <View style={[styles.container, {
-            width: dimensions.width*0.40, 
-            // height: dimensions.height*0.3
+            width: dimensions.width*0.40,
         }]}>
             <View style={styles.categoryImage}>
                 <FontAwesomeIcon icon={faImage} size={64} color="#FF595F"/>

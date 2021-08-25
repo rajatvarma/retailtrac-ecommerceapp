@@ -35,7 +35,7 @@ const Cart = ({navigation}) => {
             </ScrollView>
 
             <View style={styles.buttonContainer}>
-                {cart.length > 0 && <GeneralButton text='Proceed to checkout' onPress={() => navigation.navigate('Checkout')} styleType="secondary" />}
+                {cart.length > 0 && <GeneralButton text='Proceed to CheckOut' onPress={() => navigation.navigate('Checkout')} styleType="secondary" />}
             </View>
         </View>
     )

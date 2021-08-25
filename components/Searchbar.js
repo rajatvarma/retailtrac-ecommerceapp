@@ -2,7 +2,7 @@ import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native'
+import {View, StyleSheet, TextInput, Pressable} from 'react-native'
 
 const SearchBar = ({state, setState}) => {
     return(
