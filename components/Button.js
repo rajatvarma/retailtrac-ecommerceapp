@@ -86,16 +86,16 @@ export const SmallButton = ({icon, text, onPress}) => {
         container: {
             flexDirection: 'row',
             backgroundColor: '#067DFF',
-            alignItems: 'center',
             padding: '5%',
             borderRadius: 10,
-            justifyContent: 'space-evenly',
-            alignItems: 'center'
+            alignItems: 'center',
+            justifyContent: 'space-evenly'
         },
 
         text: {
             color: 'white',
-            marginHorizontal: '5%',
+            textAlign: 'center',
+            marginLeft: '10%',
             fontSize: 14,
             fontFamily: 'Epilogue_700Bold',
         }

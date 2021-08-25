@@ -19,8 +19,6 @@ export const getImagesFromServer = () => async (dispatch) => {
             const category_name = element.category_image
             categoriesImagesMap[category_name] = element.category_image
         }
-
-        console.log(categoriesImagesMap)
     });
 
     dispatch({

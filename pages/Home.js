@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, Pressable, useWindowDimensions }  from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Pressable, useWindowDimensions, ActivityIndicator }  from 'react-native'
 import { faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons'
 import CategoryCard from '../components/CategoryCard'
 import { useEffect } from 'react'
@@ -49,7 +49,7 @@ const HomePage = ({navigation}) => {
                                 ))}
                             </View>
                     :
-                    <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
+                    <ActivityIndicator size="large" color="#222" />
                     }
                 </ScrollView>           
                 {Boolean(cart.length) &&

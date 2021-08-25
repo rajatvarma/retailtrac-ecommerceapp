@@ -65,7 +65,7 @@ const DeliveryAddresses = ({navigation, route}) => {
                 )
                 )}
             </ScrollView>
-            <View style={{marginHorizontal: '5%', flexDirection: 'row', justifyContent: 'space-around'}}>
+            <View style={{marginHorizontal: '5%', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                 <GeneralButton styleType="secondary" text="Add Address" onPress={()=>navigation.navigate('AddAddress')}/>
                 {route.params && <GeneralButton styleType="secondary" text="Continue" onPress={() => navigation.navigate('Checkout', {user: route.params.user, address: addresses.filter(address => address.Id == pressed)[0]})}/>}
             </View>

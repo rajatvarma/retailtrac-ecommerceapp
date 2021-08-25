@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 
     optionText: {
         textAlign: 'left',
+        fontFamily: 'Epilogue_400Regular',
         fontSize: 20,
     }
 })

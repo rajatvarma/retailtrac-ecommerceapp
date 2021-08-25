@@ -125,8 +125,8 @@ export default ({route, navigation, ...props}) => {
                         <View style={{flex: 2, marginRight: '5%'}}>
                             <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
                         </View>
-                        <View style={{flex: 1}}>
-                            <SmallButton text="Validate Pincode" icon={faMapPin} onPress={() => {validatePincode(pincode)}} />
+                        <View style={{flex: 1, height: '100%', backgroundColor: 'red', justifyContent: 'center'}}>
+                            <SmallButton text="Validate" icon={faMapPin} onPress={() => {validatePincode(pincode)}} />
                         </View>
                     </View>
                 }

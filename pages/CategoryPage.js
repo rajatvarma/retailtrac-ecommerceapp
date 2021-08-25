@@ -1,6 +1,6 @@
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import SearchBar from '../components/Searchbar'
 import ProductCard from '../components/ProductCard'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,21 +8,19 @@ import getProductsFromCategory from '../actions/productsAction'
 import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
 import { getImagesFromServer } from '../actions/imagesAction'
+import { clearCart } from '../actions/cartActions'
 
 
 const CategoryPage = ({route, navigation}) => {
  
     const {category} = route.params
+    
+    const {images, cart} = useSelector(state => state)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getProductsFromCategory(category.category));
         dispatch(getImagesFromServer())
-    }, [dispatch, category])
-
-
-    const {images} = useSelector(state => state)
-
-    const {cart} = useSelector((state) => state)
+    }, [dispatch, category, cart])
 
     function getImages(id) {
         const images_url = 'https://pvanam.retailtrac360.com/images_item/'
@@ -79,7 +77,7 @@ const CategoryPage = ({route, navigation}) => {
 
                     :
 
-                    <Text style={{textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}}>Loading...</Text>
+                    <ActivityIndicator size="large" color="#EEE" />
                 }
             </View>
             <View style={{justifyContent: 'center', height: '12.5%', alignSelf: 'flex-end'}}>

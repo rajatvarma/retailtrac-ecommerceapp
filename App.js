@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StatusBar, Text, View } from 'react-native';
+import { ActivityIndicator, StatusBar, Text, View } from 'react-native';
 import CategoryPage from './pages/CategoryPage';
 import HomePage from './pages/Home';
 import { NavigationContainer } from '@react-navigation/native';
@@ -101,7 +101,9 @@ const AppContent = () => {
             </Stack.Navigator>
           </NavigationContainer>
           :
-          <View><Text>Loading</Text></View>
+          <View style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+            <ActivityIndicator size="large" color="blue" />
+          </View>
       }
     </>
   )

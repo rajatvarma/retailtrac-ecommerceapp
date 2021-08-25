@@ -101,26 +101,29 @@ const styles = StyleSheet.create({
 
     itemText: {
         fontSize: 16,
+        fontFamily: 'Epilogue_400Regular',
         color: '#37474F'
     },
 
     descriptionText: {
         color: '#FF595F',
         fontSize: 18, 
-        fontWeight: '700', 
+        fontFamily: 'Epilogue_700Bold',
         marginVertical: '2%'
     },
 
     itemHeading: {
         fontSize: 18,
-        fontWeight: '500',
+        fontWeight: '600',
+        fontFamily: 'Epilogue_600SemiBold',
         flex: 9
     },
 
     itemPrice: {
         flex: 5,
-        fontWeight: '600',
-        fontSize: 18,
+        fontWeight: '700',
+        fontFamily: 'Epilogue_700Bold',
+        fontSize: 20,
         textAlign: 'right'
     }
 })

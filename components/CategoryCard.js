@@ -1,7 +1,7 @@
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
-import { View, Text, StyleSheet, useWindowDimensions } from 'react-native'
+import { View, Text, StyleSheet, useWindowDimensions, Image } from 'react-native'
 
 const CategoryCard = ({category}) => {
     const dimensions = useWindowDimensions()
@@ -10,7 +10,7 @@ const CategoryCard = ({category}) => {
             width: dimensions.width*0.40,
         }]}>
             <View style={styles.categoryImage}>
-                <FontAwesomeIcon icon={faImage} size={64} color="#FF595F"/>
+                <Image style={{height: 100, width: 100}} source={{uri: 'https://pvanam.retailtrac360.com/RTRAC/images_category/NoImageCategory.jpg'}}></Image>
             </View>
             <View>
                 <Text style={styles.categoryName}>{category.category}</Text>

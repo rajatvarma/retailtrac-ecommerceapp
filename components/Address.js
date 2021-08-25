@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 export default ({radioed, address, navigation}) => {
 
@@ -19,9 +18,9 @@ export default ({radioed, address, navigation}) => {
                 <Pressable style={[styles.iconContainer, {backgroundColor: '#F37A20'}]} onPress={() => navigation.navigate('AddAddress', {address: address})}>
                     <FontAwesomeIcon icon={faPen} color='white' size={16} />
                 </Pressable>
-                <Pressable style={[styles.iconContainer, {backgroundColor: 'grey'}]} onPress={() => {}}>
+                {/* <Pressable style={[styles.iconContainer, {backgroundColor: 'grey'}]} onPress={() => {}}>
                     <FontAwesomeIcon icon={faTrash} color='white' size={16} />
-                </Pressable>
+                </Pressable> */}
             </View>
             }
         </View>

@@ -12,7 +12,8 @@ const SettingsPage = () => {
         aboutUs: 'https://prakruthivanam.com/about-us/',
         contactUs: 'https://prakruthivanam.com/contact-us/',
         refund: 'https://prakruthivanam.com/cancellation-and-refund-policy/',
-        terms: 'https://prakruthivanam.com/terms-and-conditions/'
+        terms: 'https://prakruthivanam.com/terms-and-conditions/',
+        privacyPolicy: 'https://prakruthivanam.com/privacy-policy/'
     }
 
     const [showWebView, setWebView] = useState(false)
@@ -37,7 +38,7 @@ const SettingsPage = () => {
                     setWebView(true)
                 }}/>
                 <Option text="Privacy Policy" icon={faLock} onPress={()=>{
-                    setUrl(urls.contactUs)
+                    setUrl(urls.privacyPolicy)
                     setWebView(true)
                 }}/>
                 <Option text="Contact Us" icon={faPhone} onPress={()=>{
