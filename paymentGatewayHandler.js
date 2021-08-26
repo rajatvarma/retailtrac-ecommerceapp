@@ -18,7 +18,7 @@ const getPaymentData = async () => {
     return values
 }   
 
-export const checkoutHandler = async (user, cart, cartTotal) => {
+export const checkoutHandler = async (user, cart, cartTotal, shipping) => {
 
     let rsp = {}
 
@@ -55,7 +55,7 @@ export const checkoutHandler = async (user, cart, cartTotal) => {
         'temp_id': Date.now(),
         'delivery_details_id': '34',
         'address': user.addressLine1,
-        'freight': 50*totalItemCount,
+        'freight': shipping,
         'customer_id': user.customer_id,
         'customer_name': user.customer_name,
         'city': user.city,

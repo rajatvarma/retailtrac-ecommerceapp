@@ -29,41 +29,19 @@ const ItemCard = ({item}) => {
 }
 
 
-const OrderSummaryPage = ({route, navigation}) => {
+const OrderSummaryPage = ({route}) => {
 
-    const {order_id, order_date, order_status, order_amount} = route.params
+    const {order_id, order_date, order_amount} = route.params
 
     const {orderDetails} = useSelector(state => state)
 
     const dispatch = useDispatch()
 
-    const [buttonLoading, setButtonLoading] = useState(false)
-
     useEffect(() => {
         dispatch(getOrderSummary(order_id))
     }, [dispatch])
 
-    // console.log(orderDetails)
-
-    const validateOrderStatus = () => {
-
-        setButtonLoading(true)
-
-        const url = validateOrderStatusURL + `?salesOrderCode=${order_id}`
-        console.log(url)
-        axios.get(url).then(r => {
-            console.log(r.data)
-            setButtonLoading(false)
-            if (r.data) {
-                Alert.alert('Attention', r.data.params[0].status, [
-                    {
-                        text: 'OK',
-                        onPress: () => {}
-                    }
-                ])
-            }
-        })
-    }
+    console.log(orderDetails)
 
     return(
         <View style={styles.pageContainer}>
@@ -75,11 +53,6 @@ const OrderSummaryPage = ({route, navigation}) => {
                 </View>
                 <Text style={styles.descriptionText}>Total: Rs. {order_amount}</Text>
             </View>
-            {/* {order_status !== "complete" &&
-            <View style={{marginVertical: '5%', paddingHorizontal: '10%'}}>
-                <GeneralButton styleType="secondary" text="Validate" onPress={validateOrderStatus} isLoading={buttonLoading} />
-            </View>
-            } */}
             <ScrollView style={{paddingHorizontal: '5%'}}>
                 {orderDetails && orderDetails.map((item) => <ItemCard item={item} key={item.item_code} />)}
             </ScrollView>

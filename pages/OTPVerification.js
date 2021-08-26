@@ -38,8 +38,6 @@ export const OtpVerificationPage = ({route, navigation}) => {
             
         }).catch((e) => {
             console.log(e);
-            // SetLoginError(true)
-            // setErrorMessage(e)
         })
     }
 

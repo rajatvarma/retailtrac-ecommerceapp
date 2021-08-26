@@ -123,12 +123,12 @@ const CheckoutPage = ({navigation, route}) => {
                 <GeneralButton styleType='secondary' text="Continue" onPress={async () => {
                     const paymentURL = await checkoutHandler({...user, 
                         customer_name: name, 
-                        telephone1: phone, 
+                        telephone1: phone,
                         addressLine1: address.address, 
                         addressLine2: address.area, 
                         city: address.city,
                         pincode: address.pincode
-                    }, cart, cartTotal)
+                    }, cart, cartTotal, shippingAmount)
                     if (paymentURL.url) {
                         navigation.navigate('PaymentGateway', {url: paymentURL.url, ...paymentURL})
                     } else if (paymentURL.error) {

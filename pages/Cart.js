@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     pageContainer: {
         paddingHorizontal: '5%',
         height: '100%',
-        backgroundColor: '#FE595F'
+        backgroundColor: '#FF595F'
     },
 
     mainHeading: {
