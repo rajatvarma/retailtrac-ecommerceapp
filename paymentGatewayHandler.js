@@ -27,6 +27,7 @@ export const checkoutHandler = async (user, cart, cartTotal, shipping) => {
     let itemCost = ""
     let totalItemCount = 0
     let salesCode
+    let amount
 
     cart.forEach(item => {
         itemCodes = itemCodes + `${item.item_code}:`
@@ -71,11 +72,13 @@ export const checkoutHandler = async (user, cart, cartTotal, shipping) => {
         .catch(() => {})
         .then(response => {
             if (response.data) {
+                console.log(response.data)
                 salesCode = response.data['Sales_code'].split(';')[0]
                 amount = response.data['Sales_code'].split(';')[1]  
             }
         })
     } catch (error) {
+        console.log(error)
         return {...rsp, error: true}
     }
     
@@ -143,9 +146,9 @@ async function generateAxisBankRequest() {
 }
 
 function generateCCAvenueRequest(user, total, order_id) {
-    const url = 'https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction'
-    const encryptionKey = 'C23410A32619F7738F408BC9D7062551'
-    const access_code = 'AVUJ13IG97CN98JUNC'
+    const url = 'https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction'
+    const encryptionKey = '262E8FF2ECF72C43F4B34319FC8BD3F0'
+    const access_code = 'AVTP16IH22CA18PTAC'
     const data = {
         merchant_id: '433650',
         order_id: order_id,

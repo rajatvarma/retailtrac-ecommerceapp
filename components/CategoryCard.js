@@ -3,14 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 import { View, Text, StyleSheet, useWindowDimensions, Image } from 'react-native'
 
-const CategoryCard = ({category}) => {
+const CategoryCard = ({category, image_url}) => {
     const dimensions = useWindowDimensions()
+    console.log(image_url)
     return(
         <View style={[styles.container, {
             width: dimensions.width*0.40,
         }]}>
             <View style={styles.categoryImage}>
-                <Image style={{height: 100, width: 100}} source={{uri: 'https://pvanam.retailtrac360.com/RTRAC/images_category/NoImageCategory.jpg'}}></Image>
+                <Image style={{height: 100, width: 100}} source={{uri: image_url}}></Image>
             </View>
             <View>
                 <Text style={styles.categoryName}>{category.category}</Text>

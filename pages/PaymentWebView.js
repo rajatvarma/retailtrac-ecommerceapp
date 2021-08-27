@@ -108,8 +108,7 @@ const PaymentGatewayPage = ({route, navigation}) => {
           ref={webViewRef}
           onMessage={
             (event) => {
-              console.log(event.nativeEvent.data)
-              if(event.nativeEvent.url.includes('BankRespReceive')){
+              console.log(event.nativeEvent.url)
                   if (event.nativeEvent.data.includes('Successful')) {
                       setTransactionFinished(true)
                       setTransactionStatus('success')
@@ -119,7 +118,6 @@ const PaymentGatewayPage = ({route, navigation}) => {
                       setTransactionStatus('failed')
                       console.log('Fail')
                   }
-              }
               if (event.nativeEvent.data.includes('Aborted')) {
                 setTransactionFinished(true)
                 setTransactionStatus('aborted')

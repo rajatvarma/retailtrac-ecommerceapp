@@ -46,7 +46,7 @@ const CheckoutPage = ({navigation, route}) => {
         cart.forEach(element => {
             sum = sum + (element.cart_quantity*Number(element.sell_price))
             totalItemCount = totalItemCount + element.cart_quantity
-            shipping = shipping + Number(element.charges)
+            shipping = shipping + (Number(element.charges)*element.cart_quantity)
         });
         setCartTotal(sum)
         setShippingAmount(shipping)

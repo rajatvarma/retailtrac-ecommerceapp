@@ -9,23 +9,52 @@ import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
 import { getAddresses } from '../actions/addressesAction'
 import { clearProducts } from '../actions/productsAction'
+import { getImagesFromServer } from '../actions/imagesAction'
 
 const HomePage = ({navigation}) => {
 
     const dispatch = useDispatch();
 
-    const {user, cart} = useSelector((state) => state)
+    const {user, cart, images} = useSelector((state) => state)
+
+    console.log(images)
 
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getAddresses(user.customer_id))
         dispatch(clearProducts())
+        dispatch(getImagesFromServer())
     }, [dispatch])
 
     const dimensions = useWindowDimensions()
 
+    function getImageURL(name) {
+        let base_url
+        let default_url
+        let image_url
+        images.categories.forEach(element => {
+            if (element.URL) {
+                base_url = element.URL
+            }
+            if (element.default_image) {
+                default_url = element.default_image
+            }
+            if (element.category_code) {
+                console.log(element.category_code == name)
+                if (element.category_code == name) {
+                    image_url = base_url + element.category_images
+                }
+            } else {
+                image_url = base_url+default_url
+            }
+        });
+        // console.log(image_url)
+        return image_url
+    }
 
     const {categories} = useSelector((state) => state.categories)
+
+    // console.log(categories)
 
     return(
         <View style={[HomePageStyles.pageContainer, {height: dimensions.height}]}>
@@ -36,7 +65,7 @@ const HomePage = ({navigation}) => {
             </View>
             <View style={HomePageStyles.categoriesContainer}>
                 <ScrollView style={{height: '50%'}} showsVerticalScrollIndicator={false}>
-                    {categories ? 
+                    {categories && images.categories ? 
                             <View style={HomePageStyles.categoriesList}>
                                 {categories.map((item) => (
                                     <Pressable 
@@ -44,7 +73,7 @@ const HomePage = ({navigation}) => {
                                             navigation.navigate('Category', {category: item})
                                         }}
                                         key={item.category}>
-                                        <CategoryCard category={item}/>
+                                        <CategoryCard category={item} image_url={getImageURL(item.category)}/>
                                     </Pressable>
                                 ))}
                             </View>
