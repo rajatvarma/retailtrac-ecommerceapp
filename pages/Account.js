@@ -39,6 +39,7 @@ const AccountPage = ({navigation}) => {
                     saveUserData('phone', '')
                     saveUserData('password', '')
                 }} />
+                <Text style={{textAlign: 'center', marginTop: '5%'}}>Ver. 1.1.20</Text>
             </View>
         </View>
     )
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         width: '100%',
-        marginVertical: '10%',
+        marginVertical: '5%',
         paddingHorizontal: '20%'
     },
 })

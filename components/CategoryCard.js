@@ -1,11 +1,8 @@
-import { faImage } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 import { View, Text, StyleSheet, useWindowDimensions, Image } from 'react-native'
 
 const CategoryCard = ({category, image_url}) => {
     const dimensions = useWindowDimensions()
-    console.log(image_url)
     return(
         <View style={[styles.container, {
             width: dimensions.width*0.40,

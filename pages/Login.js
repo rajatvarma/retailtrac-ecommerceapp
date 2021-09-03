@@ -20,10 +20,11 @@ const LoginPage = ({navigation}) => {
 
     const [loginError, SetLoginError] = useState(false)
     const [loginErrorMessage, setErrorMessage] = useState('')
+    const [buttonLoading, setButtonLoading] = useState(false)
 
 
     const loginHandler = async () => {
-        console.log('login')
+        setButtonLoading(true)
         SetLoginError(false)
         axios.post(loginURL, querystring.stringify({
             'username': phone,
@@ -33,21 +34,21 @@ const LoginPage = ({navigation}) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then((r) => {
-            console.log(r.data)
             if (r.data.user) {
                 try {
                     saveUserData('phone', phone)
                     saveUserData('password', password)
                 } catch (error) {
-                    console.log(error)
                 }
                 dispatch(setUser(r.data.user))
+                setButtonLoading(false)
             }
             else if (r.data.erorr || r.data.error) {
+                setButtonLoading(false)
                 SetLoginError(true)
                 setErrorMessage(r.data.erorr)
             }
-        }).catch(e => console.log(e))
+        }).catch(e => {console.log(e)})
     }
 
     return (

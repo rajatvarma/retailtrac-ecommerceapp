@@ -59,7 +59,7 @@ const AppContent = () => {
 
           dispatch(setUser(response.data.user))
         }        
-      }).catch(e => console.log(e))
+      }).catch(e => {})
       
 
   }
