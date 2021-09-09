@@ -55,7 +55,7 @@ const OrdersPage = ({navigation}) => {
                 <ScrollView style={styles.listContainer} showsVerticalScrollIndicator={false}>
                     {ordersCardList.length ? ordersCardList : 
                     <Text style={
-                        {textAlign: 'center', paddingVertical: '40%', color: '#999', fontWeight: '600'}
+                        {textAlign: 'center', paddingVertical: '40%', color: '#999', fontFamily: 'Epilogue_600SemiBold'}
                     }>
                         There are no orders to display.
                         </Text>}

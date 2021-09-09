@@ -22,7 +22,6 @@ const CategoryPage = ({route, navigation}) => {
         axios.get(productByCategoryURL + `?categoryName=${category.category}`)
         .then(response => {
             setProducts(response.data.Items)
-            console.log('products set')
         })
     }
 
@@ -90,11 +89,12 @@ const CategoryPage = ({route, navigation}) => {
                             }
                         })}
                     </ScrollView>
-
                     :
+                    !Boolean(searchText.length) ?
                     <View style={CategoryPageStyles.scrollContainer}>
                         <ActivityIndicator size="large" color="#EEE" />
                     </View>
+                    : <></>
                 }
             </View>
             <View style={{justifyContent: 'center', height: '12.5%', alignSelf: 'flex-end'}}>

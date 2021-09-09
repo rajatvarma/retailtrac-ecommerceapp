@@ -39,7 +39,7 @@ const AccountPage = ({navigation}) => {
                     saveUserData('phone', '')
                     saveUserData('password', '')
                 }} />
-                <Text style={{textAlign: 'center', marginTop: '5%'}}>Ver. 1.1.20</Text>
+                <Text style={{textAlign: 'center', marginTop: '5%', fontFamily: 'Epilogue_400Regular'}}>Ver. 1.1.22</Text>
             </View>
         </View>
     )

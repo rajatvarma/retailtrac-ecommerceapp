@@ -18,8 +18,6 @@ export const OtpVerificationPage = ({route, navigation}) => {
     const [password, setPassword] = useState("")
     const [otp, setOTP] = useState('')
 
-    console.log(otp)
-
     const otpTextInputs = []
 
     const forgotPasswordOTPHandler = () => {
@@ -32,7 +30,6 @@ export const OtpVerificationPage = ({route, navigation}) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then(r => {
-            console.log(r.data)
             setResponse(r.data)
             setOtpSent(true)
             
@@ -149,7 +146,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingHorizontal: '5%',
+        paddingHorizontal: '10%',
         paddingVertical: '10%',
         backgroundColor: 'white',
         height: '100%'
@@ -186,7 +183,7 @@ const styles = StyleSheet.create({
         marginVertical: '5%',
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingHorizontal: '5%'
+        // paddingHorizontal: '5%'
     },
 
     input: {

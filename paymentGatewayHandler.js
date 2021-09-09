@@ -161,8 +161,6 @@ function generateCCAvenueRequest(user, total, order_id) {
         billing_email: user.email,
         billing_address: `${user.addressLine1}, ${user.addressLine2}`,
         billing_city: user.city,
-        billing_state: 'Telangana',
-        billing_country: 'India',
         billing_zip: user.pincode,
         billing_tel: user.telephone1,
     }

@@ -20,16 +20,20 @@ const CheckoutPage = ({navigation, route}) => {
     const {cart, user, addresses} = useSelector(state => state)
     const name = route.params ? route.params.user.customer_name : user.customer_name
     const phone = route.params in route ? route.params.user.telephone1 : user.telephone1
-    const address = route.params ? route.params.address ? route.params.address : {
-        address: addresses[0].address,
-        area: addresses[0].area,
-        city: addresses[0].city,
-        pincode: addresses[0].pincode
-    } : {
-        address: addresses[0].address,
-        area: addresses[0].area,
-        city: addresses[0].city,
-        pincode: addresses[0].pincode
+    let checkoutAddress = {}
+
+    if (addresses.length) {
+        checkoutAddress = route.params ? route.params.address ? route.params.address : {
+            address: addresses[0].address,
+            area: addresses[0].area,
+            city: addresses[0].city,
+            pincode: addresses[0].pincode
+        } : {
+            address: addresses[0].address,
+            area: addresses[0].area,
+            city: addresses[0].city,
+            pincode: addresses[0].pincode
+        }
     }
 
     const [cartTotal, setCartTotal] = useState(0)
@@ -91,7 +95,12 @@ const CheckoutPage = ({navigation, route}) => {
                         </View>
                         <View style={{justifyContent: 'space-between'}}>
                             <Text style={styles.invoiceContent}>
-                                {`${address.address}\n${address.area}\n${address.city}, ${address.pincode}`}
+                                {
+                                    Object.keys(checkoutAddress).length ? 
+                                        `${checkoutAddress.address}\n${checkoutAddress.area}\n${checkoutAddress.city}, ${checkoutAddress.pincode}`
+                                    :
+                                    `You have no addresses. Please add an address to proceed with the order.`
+                                }
                             </Text>
                         </View>
                     </View>
@@ -124,10 +133,10 @@ const CheckoutPage = ({navigation, route}) => {
                     const paymentURL = await checkoutHandler({...user, 
                         customer_name: name, 
                         telephone1: phone,
-                        addressLine1: address.address, 
-                        addressLine2: address.area, 
-                        city: address.city,
-                        pincode: address.pincode
+                        addressLine1: checkoutAddress.address, 
+                        addressLine2: checkoutAddress.area, 
+                        city: checkoutAddress.city,
+                        pincode: checkoutAddress.pincode
                     }, cart, cartTotal, shippingAmount)
                     if (paymentURL.url) {
                         navigation.navigate('PaymentGateway', {url: paymentURL.url, ...paymentURL})
@@ -173,13 +182,13 @@ const styles = StyleSheet.create({
     },
     
     invoiceHeading: {
+        fontFamily: 'Epilogue_500Medium',
         fontSize: 20,
-        fontWeight: '500',
     },
 
     invoiceContent: {
         fontSize: 18,
-        fontWeight: '500',
+        fontFamily: 'Epilogue_400Regular',
         color: '#37474F'
     },
 

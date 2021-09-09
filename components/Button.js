@@ -50,7 +50,6 @@ const styles_primary = StyleSheet.create({
     },
 
     text: {
-        fontWeight: '700',
         color: '#C6012C',
         fontFamily: 'Epilogue_700Bold',
         fontSize: 20,
@@ -71,7 +70,6 @@ const styles_secondary = StyleSheet.create({
     },
 
     text: {
-        fontWeight: '700',
         color: 'white',
         fontSize: 20,
         fontFamily: 'Epilogue_700Bold',
@@ -89,13 +87,12 @@ export const SmallButton = ({icon, text, onPress}) => {
             padding: '5%',
             borderRadius: 10,
             alignItems: 'center',
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
         },
 
         text: {
             color: 'white',
             textAlign: 'center',
-            marginLeft: '10%',
             fontSize: 14,
             fontFamily: 'Epilogue_700Bold',
         }
@@ -103,7 +100,7 @@ export const SmallButton = ({icon, text, onPress}) => {
 
     return(
         <Pressable style={styles.container} onPress={() => onPress()}>
-            {icon && <FontAwesomeIcon icon={icon} size={12} color="white" />}
+            {icon && <FontAwesomeIcon icon={icon} size={12} color="white" style={{marginRight: '10%'}} />}
             <Text style={styles.text}>{text}</Text>
         </Pressable>
     )

@@ -8,7 +8,7 @@ const CategoryCard = ({category, image_url}) => {
             width: dimensions.width*0.40,
         }]}>
             <View style={styles.categoryImage}>
-                <Image style={{height: 100, width: 100}} source={{uri: image_url}}></Image>
+                <Image style={{height: '100%', width: '100%'}} source={{uri: image_url}}></Image>
             </View>
             <View>
                 <Text style={styles.categoryName}>{category.category}</Text>
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Epilogue_600SemiBold',
         fontSize: 16,
         flexWrap: 'wrap',
-        fontWeight: 'bold',
         paddingTop: 10
     }
 })

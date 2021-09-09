@@ -10,12 +10,13 @@ import { BannerHeader } from '../components/Header';
 import Input from '../components/TextInput';
 
 
-const ResponseMessageBox = ({status}) => {
+export const ResponseMessageBox = ({status}) => {
 
     const styles = StyleSheet.create({
         container: {
             borderWidth: 1,
             borderColor: status ? 'green' : 'red',
+            marginVertical: '2%',
             paddingHorizontal: '5%',
             paddingVertical: '2%',
             flexDirection: 'row',
@@ -123,9 +124,9 @@ export default ({route, navigation, ...props}) => {
                 {!isEditingAddress &&
                     <View style={styles.pincodeContainer}>
                         <View style={{flex: 2, marginRight: '5%'}}>
-                            <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
+                            <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" editable={!pincodeValidated}/>
                         </View>
-                        <View style={{flex: 1, height: '100%', justifyContent: 'center'}}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
                             <SmallButton text="Validate" icon={faMapPin} onPress={() => {validatePincode(pincode)}} />
                         </View>
                     </View>
@@ -201,12 +202,11 @@ const styles = StyleSheet.create({
 
     formContainer: {
         flex: 2,
-        // borderRadius: 35,
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
         paddingVertical: '15%',
         elevation: 20,
-        // justifyContent: 'center',
+        justifyContent: 'center',
         shadowColor: '#1112',
         shadowOffset: {width: 0, height: -10},
         shadowOpacity: 0.8,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import Address from '../components/Address';
 import GeneralButton from '../components/Button';
@@ -51,6 +51,7 @@ const DeliveryAddresses = ({navigation, route}) => {
     return(
         <View style={styles.page}>
             <BannerHeader title="My Addresses" />
+            {addresses.length ?
             <ScrollView style={{height: '60%'}}>
                 {addresses.map((address) => 
                 (   
@@ -65,6 +66,11 @@ const DeliveryAddresses = ({navigation, route}) => {
                 )
                 )}
             </ScrollView>
+            :
+            <View style={{height: '80%', justifyContent: 'center', paddingHorizontal: '5%'}}>
+                <Text style={{fontSize: 14, fontFamily: 'Epilogue_400Regular', textAlign: 'center'}}>You have not added any delivery addresses. {`\n`} Please add a delivery address to place orders.</Text>
+            </View>
+            }
             <View style={{marginHorizontal: '5%', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                 <GeneralButton styleType="secondary" text="Add Address" onPress={()=>navigation.navigate('AddAddress')}/>
                 {route.params && <GeneralButton styleType="secondary" text="Continue" onPress={() => navigation.navigate('Checkout', {user: route.params.user, address: addresses.filter(address => address.Id == pressed)[0]})}/>}
