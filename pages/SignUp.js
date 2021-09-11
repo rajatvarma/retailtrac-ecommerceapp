@@ -35,7 +35,6 @@ const SignUpPage = ({navigation}) => {
 
     const getOTPHandler = async () => { 
         setButtonLoading(true)
-        console.log(name, email, phone, pincode)
         const data = await axios.post(registerOTPURL, querystring.stringify({
             'username': name,
             'email': email,
@@ -71,7 +70,6 @@ const SignUpPage = ({navigation}) => {
 
     const registerUserHandler = async () => {
         setButtonLoading(true)
-        console.log('Start')
         var data = querystring.stringify({
             'username': name,
             'password': password,
@@ -88,7 +86,6 @@ const SignUpPage = ({navigation}) => {
           });
 
           crashlytics().log(data)
-          console.log(data);
           var config = {
             method: 'post',
             url: userRegistrationURL,
@@ -101,9 +98,7 @@ const SignUpPage = ({navigation}) => {
           axios(config)
           .then(function (response) {
                 setButtonLoading(false)
-                console.log(response.data)
             if(response.data == true) {
-                console.log(response.data)
                 navigation.navigate('Login')   
             }
           })

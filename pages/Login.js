@@ -11,6 +11,7 @@ import FormErrorMessage from '../components/FormErrorMessage'
 import { loginURL } from '../apiCalls'
 import { saveUserData } from '../userStorage'
 import { phoneValidation } from '../formValidations'
+import crashlytics from '@react-native-firebase/crashlytics'
 
 const LoginPage = ({navigation}) => {
 
@@ -48,7 +49,7 @@ const LoginPage = ({navigation}) => {
                 SetLoginError(true)
                 setErrorMessage(r.data.erorr)
             }
-        }).catch(e => {console.log(e)})
+        }).catch(error => {crashlytics().log(error)})
     }
 
     return (

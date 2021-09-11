@@ -99,7 +99,7 @@ const CheckoutPage = ({navigation, route}) => {
                                     Object.keys(checkoutAddress).length ? 
                                         `${checkoutAddress.address}\n${checkoutAddress.area}\n${checkoutAddress.city}, ${checkoutAddress.pincode}`
                                     :
-                                    `You have no addresses. Please add an address to proceed with the order.`
+                                    `You have no addresses.\nPlease add an address\nto proceed with the order.`
                                 }
                             </Text>
                         </View>
@@ -127,8 +127,13 @@ const CheckoutPage = ({navigation, route}) => {
 
             <View style={styles.buttonContainer}>
                 {checkoutStage !== 2 ? 
-                <GeneralButton styleType='secondary' text="Continue" onPress={() => {setCheckoutStage(checkoutStage => checkoutStage+1)}} />
-                :
+                <GeneralButton styleType='secondary' 
+                    text={
+                        checkoutStage === 1 && Object.keys(checkoutAddress).length ? "Continue": "Add Address"} 
+                        onPress={checkoutStage === 1 && Object.keys(checkoutAddress).length ? 
+                            () => {setCheckoutStage(checkoutStage => checkoutStage+1)} : 
+                            () => {navigation.navigate('UserAddresses', {fromCheckout: true, user: {customer_name: name, telephone1: phone}})}} /> 
+                    :
                 <GeneralButton styleType='secondary' text="Continue" onPress={async () => {
                     const paymentURL = await checkoutHandler({...user, 
                         customer_name: name, 
