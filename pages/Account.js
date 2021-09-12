@@ -8,6 +8,7 @@ import GeneralButton from '../components/Button'
 import { BannerHeader }  from '../components/Header'
 import Option from '../components/Option'
 import { saveUserData } from '../userStorage'
+import Constants from 'expo-constants'
 
 const AccountPage = ({navigation}) => {
 
@@ -39,7 +40,7 @@ const AccountPage = ({navigation}) => {
                     saveUserData('phone', '')
                     saveUserData('password', '')
                 }} />
-                <Text style={{textAlign: 'center', marginTop: '5%', fontFamily: 'Epilogue_400Regular'}}>Ver. 1.1.23</Text>
+                <Text style={{textAlign: 'center', marginTop: '2.5%', fontFamily: 'Epilogue_400Regular'}}>Ver. 1.1.24, {Constants.deviceName}</Text>
             </View>
         </View>
     )

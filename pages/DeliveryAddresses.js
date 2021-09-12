@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
-import { useSelector } from 'react-redux';
+import { add } from 'react-native-reanimated';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAddresses } from '../actions/addressesAction';
 import Address from '../components/Address';
 import GeneralButton from '../components/Button';
 import { BannerHeader } from '../components/Header';
@@ -44,9 +47,14 @@ const RadioButton = ({pressed}) => {
 
 const DeliveryAddresses = ({navigation, route}) => {
 
-    const {addresses} = useSelector(state => state)
+    const {addresses, user} = useSelector(state => state)
 
     const [pressed, setPressed] = useState(0)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAddresses(user.customer_id))
+    }, [dispatch])
 
     return(
         <View style={styles.page}>

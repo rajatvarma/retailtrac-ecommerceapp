@@ -46,7 +46,8 @@
     "react-native-webview": "^11.6.5",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "expo-constants": "~11.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

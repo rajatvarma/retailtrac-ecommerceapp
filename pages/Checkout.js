@@ -2,10 +2,11 @@ import { faMapMarkerAlt, faPen, faUser } from '@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { checkoutHandler } from '../paymentGatewayHandler'
 import GeneralButton from '../components/Button'
 import { BannerHeader } from '../components/Header'
+import { getAddresses } from '../actions/addressesAction'
 
 const ErrorBanner = () => {
     return(
@@ -43,6 +44,10 @@ const CheckoutPage = ({navigation, route}) => {
 
     const [checkoutStage, setCheckoutStage] = useState(0)
 
+    console.log(checkoutStage, checkoutAddress)
+
+    const dispatch = useDispatch()
+
     useEffect(() => {
         let sum = 0
         let totalItemCount = 0
@@ -52,6 +57,7 @@ const CheckoutPage = ({navigation, route}) => {
             totalItemCount = totalItemCount + element.cart_quantity
             shipping = shipping + (Number(element.charges)*element.cart_quantity)
         });
+        dispatch(getAddresses(user.customer_id))
         setCartTotal(sum)
         setShippingAmount(shipping)
     }, [cart])
@@ -127,12 +133,19 @@ const CheckoutPage = ({navigation, route}) => {
 
             <View style={styles.buttonContainer}>
                 {checkoutStage !== 2 ? 
-                <GeneralButton styleType='secondary' 
-                    text={
-                        checkoutStage === 1 && Object.keys(checkoutAddress).length ? "Continue": "Add Address"} 
-                        onPress={checkoutStage === 1 && Object.keys(checkoutAddress).length ? 
-                            () => {setCheckoutStage(checkoutStage => checkoutStage+1)} : 
-                            () => {navigation.navigate('UserAddresses', {fromCheckout: true, user: {customer_name: name, telephone1: phone}})}} /> 
+                    checkoutStage === 0 ? 
+                        <GeneralButton styleType='secondary' text='Continue' onPress={() => setCheckoutStage(checkoutStage => checkoutStage+1)} />
+                    :
+                        checkoutStage === 1 && Object.keys(checkoutAddress).length ? 
+                            <GeneralButton styleType='secondary' text='Continue' onPress={
+                                () => setCheckoutStage(checkoutStage => checkoutStage+1)
+                            } />
+                        :
+                            <GeneralButton styleType='secondary' text='Add Address' onPress={
+                                () => {navigation.navigate('UserAddresses', 
+                                    {fromCheckout: true, user: {customer_name: name, telephone1: phone}
+                                })}
+                            }/>
                     :
                 <GeneralButton styleType='secondary' text="Continue" onPress={async () => {
                     const paymentURL = await checkoutHandler({...user, 

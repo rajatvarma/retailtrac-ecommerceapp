@@ -47,6 +47,7 @@ const SignUpPage = ({navigation}) => {
             }).then(r => {
                 setButtonLoading(false)
                 if (r.data.includes('CI')) {
+                    console.log(r.data)
                     setResponse({customer_id: r.data.split(':')[0], otp: r.data.split(':')[1]})
                     setOTPSent(true)
                     crashlytics().log(r)
@@ -148,15 +149,15 @@ const SignUpPage = ({navigation}) => {
                         {!isAddressEntered && isOTPVerified &&
                             <>
                                 <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldHeading}>Address Line 1</Text>
+                                    {/* <Text style={styles.fieldHeading}>Address Line 1</Text> */}
                                     <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address' styleType="secondary" />
                                 </View>
                                 <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldHeading}>Area</Text>
+                                    {/* <Text style={styles.fieldHeading}>Area</Text> */}
                                     <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
                                 </View>
                                 <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldHeading}>City</Text>
+                                    {/* <Text style={styles.fieldHeading}>City</Text> */}
                                     <Input placeholder="Enter your city" state={city} setState={setCity} type='city' styleType="secondary" />                
                                 </View>
                                 <View style={styles.fieldContainer}>
@@ -168,7 +169,7 @@ const SignUpPage = ({navigation}) => {
                         {isAddressEntered &&
                         <>
                             <View style={styles.fieldContainer}>
-                                <Text style={styles.fieldHeading}>Set a password</Text>
+                                {/* <Text style={styles.fieldHeading}>Set a password</Text> */}
                                 <Input placeholder="Choose a strong password" state={password} setState={setPassword} type='password'/>                
                             </View>
                             <View style={styles.fieldContainer}>
