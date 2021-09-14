@@ -65,8 +65,8 @@ export default ({route, navigation, ...props}) => {
             area: "",
             city: "",
             pincode: "",
-            phone: "",
-            landmark: "",
+            mobileNumber: "",
+            landMark: "",
             customerName: ""
         }
     }
@@ -76,8 +76,8 @@ export default ({route, navigation, ...props}) => {
     const [area, setArea]= useState(address.area)
     const [nickname, setNickname]= useState(address.customerName)
     const [pincode, setPincode] = useState(String(address.pincode))
-    const [phone, setPhone] = useState(address.phone)
-    const [landmark, setLandmark] = useState(address.landmark)
+    const [phone, setPhone] = useState(address.mobileNumber)
+    const [landmark, setLandmark] = useState(address.landMark)
 
     const [pincodeValidated, setPincodeValidated] = useState(false)
     const [error, setError] = useState(false)
@@ -174,7 +174,13 @@ export default ({route, navigation, ...props}) => {
                         <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
                     </View>
                     <View style={styles.fieldContainer}>
+                        <Input placeholder="Landmark" state={landmark} setState={setLandmark} type="landmark" />
+                    </View>
+                    <View style={styles.fieldContainer}>
                         <Input placeholder="Name" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Phone Number" state={phone} setState={setPhone} type="phone" />
                     </View>
                     <GeneralButton text="Submit" styleType="secondary" onPress={() => {writeAddress()}} />
                     </View>

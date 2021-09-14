@@ -15,7 +15,7 @@ const OrderCard = ({data, nav}) => {
                     <FontAwesomeIcon icon={faShoppingBasket} color="white" size={20} />
                 </View>
                 <View style={{justifyContent: 'space-between'}}>
-                    <Text style={styles.orderID} >#{data[0].slice(2)}</Text>
+                    <Text style={styles.orderID} >{data[0]}</Text>
                     <Text style={styles.orderDate} >{data[3]}</Text>
                 </View>
             </View>
@@ -35,8 +35,6 @@ const OrdersPage = ({navigation}) => {
     const {user, orders} = useSelector(state => state)
 
     let ordersCardList = []
-
-    // console.log(orders)
 
     orders.forEach(element => {
         data = element.split(":")
@@ -107,20 +105,21 @@ const styles = StyleSheet.create({
 
     orderID: {
         fontSize: 18,
-        fontWeight: '500',
+        fontFamily: 'Epilogue_500Medium',
         color: '#37474F',
         marginBottom: '10%'
     },
 
     orderDate: {
         fontSize: 16,
+        fontFamily: 'Epilogue_400Regular',
         color: '#37474FAA',
     },
 
     orderAmount: {
         fontSize: 20,
         textAlign: 'right',
-        fontWeight: '600',
+        fontFamily: 'Epilogue_600SemiBold',
         marginBottom: '10%'
     },
 
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
         color: '#5EC401',
         textTransform: 'capitalize',
         textAlign: 'right',
-        fontWeight: '600',
+        fontFamily: 'Epilogue_600SemiBold',
         // width: '90%',
     },
 

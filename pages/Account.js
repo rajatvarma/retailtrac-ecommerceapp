@@ -31,7 +31,7 @@ const AccountPage = ({navigation}) => {
             
             <Option text="Previous Orders" redirectTo='Orders' navigation={navigation} icon={faShoppingBasket} />
             <Option text="Manage Addresses" redirectTo={"UserAddresses"} navigation={navigation} icon={faMapMarkerAlt} />            
-            <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} />
+            {/* <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} /> */}
             <Option text="Policies" redirectTo={'Settings'} navigation={navigation} icon={faInfo} />
             
             <View style={styles.buttonContainer}>
@@ -40,7 +40,7 @@ const AccountPage = ({navigation}) => {
                     saveUserData('phone', '')
                     saveUserData('password', '')
                 }} />
-                <Text style={{textAlign: 'center', marginTop: '2.5%', fontFamily: 'Epilogue_400Regular'}}>Ver. 1.1.24, {Constants.deviceName}</Text>
+                <Text style={{textAlign: 'center', marginTop: '2.5%', fontFamily: 'Epilogue_400Regular'}}>Ver. 1.1.25, {Constants.deviceName}</Text>
             </View>
         </View>
     )
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         width: '100%',
-        marginVertical: '5%',
+        marginVertical: '20%',
         paddingHorizontal: '20%'
     },
 })

@@ -62,7 +62,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
     }
 
     return(
-        <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "height" : "padding"}>
+        <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.pageContainer}>
             <View style={styles.imageContainer}>
                 {!otpSent ?
@@ -129,7 +129,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
                     <Text style={styles.headingText}>{otpVerified ? 'Enter new Password' : 'Enter your mobile number'}</Text>
                     <View style={styles.inputContainer}>
                         {!otpVerified ? 
-                            <Input styleType="secondary" state={phone} setState={setPhone} placeholder='Your mobile number' />
+                            <Input styleType="secondary" state={phone} setState={setPhone} placeholder='Your mobile number' type="phone"/>
                             :
                             <Input styleType="secondary" state={password} setState={setPassword} placeholder='New Password' />
                         }

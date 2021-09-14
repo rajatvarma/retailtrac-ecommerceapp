@@ -41,8 +41,6 @@ const OrderSummaryPage = ({route}) => {
         dispatch(getOrderSummary(order_id))
     }, [dispatch])
 
-    console.log(orderDetails)
-
     return(
         <View style={styles.pageContainer}>
             <BannerHeader title="Order Summary" />
