@@ -12,12 +12,25 @@ const Cart = ({navigation}) => {
     const {cart, images} = useSelector((state) => state)
 
     function getImages(id) {
-        const images_url = 'https://pvanam.retailtrac360.com/images_item/'
-        if(images[id]) {
-            return images_url+images[id]
-        }
-        return images_url+'Noimage.jpg'
-
+        let base_url
+        let default_url
+        let image_url
+        images.products.forEach(element => {
+            if(element.URL) {
+                base_url = element.URL
+            }
+            if (element['default_image']) {
+                default_url = element['default_image']
+            } 
+            if (element.item_code) {
+                if (element.item_code == id) {
+                    image_url = base_url+element.item_image
+                }
+            } else {
+                image_url = base_url+default_url
+            }
+        });
+        return image_url
     }
     
     const dispatch = useDispatch()

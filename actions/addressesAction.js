@@ -15,11 +15,16 @@ export const getAddresses = (cid) => async (dispatch) => {
 }
 
 export const addAddress = (address, customer_id) => async (dispatch) => {
-    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landMark}:${address.phone}:${address.Id}#`
+    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landmark}:${address.phone}:${address.Id}#`
+    console.log(QueryString.stringify({
+        address_list: thisAddress,
+        customer_id: customer_id,
+        customer_name: address.customerName
+    }))
     axios.post(addUserAddressURL, QueryString.stringify({
         address_list: thisAddress,
         customer_id: customer_id,
-        customer_name: address.nickname
+        customer_name: address.customerName
     })).then(r => console.log(r.data)).catch(e => console.log(e))
     dispatch({
         type: 'ADD_ADDRESS',
@@ -35,11 +40,16 @@ export const deleteAddress = (id) => async (dispatch) => {
 }
 
 export const editAddress = (address, customer_id) => async (dispatch) => {
-    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landMark}:${address.phone}:${address.Id}#`
+    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landmark}:${address.phone}:${address.Id}#`
+    console.log(QueryString.stringify({
+        address_list: thisAddress,
+        customer_id: customer_id,
+        customer_name: address.customerName
+    }))
     axios.post(addUserAddressURL, QueryString.stringify({
         address_list: thisAddress,
         customer_id: customer_id,
-        customer_name: address.nickname
+        customer_name: address.customerName
     })).then(r => console.log(r.data)).catch(e => console.log(e))
     dispatch({
         type: 'EDIT_ADDRESS',

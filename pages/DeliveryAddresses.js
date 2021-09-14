@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { add } from 'react-native-reanimated';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAddresses } from '../actions/addressesAction';
 import Address from '../components/Address';
 import GeneralButton from '../components/Button';
 import { BannerHeader } from '../components/Header';
@@ -44,13 +47,19 @@ const RadioButton = ({pressed}) => {
 
 const DeliveryAddresses = ({navigation, route}) => {
 
-    const {addresses} = useSelector(state => state)
+    const {addresses, user} = useSelector(state => state)
 
     const [pressed, setPressed] = useState(0)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getAddresses(user.customer_id))
+    }, [dispatch])
 
     return(
         <View style={styles.page}>
             <BannerHeader title="My Addresses" />
+            {addresses.length ?
             <ScrollView style={{height: '60%'}}>
                 {addresses.map((address) => 
                 (   
@@ -65,6 +74,11 @@ const DeliveryAddresses = ({navigation, route}) => {
                 )
                 )}
             </ScrollView>
+            :
+            <View style={{height: '80%', justifyContent: 'center', paddingHorizontal: '5%'}}>
+                <Text style={{fontSize: 14, fontFamily: 'Epilogue_400Regular', textAlign: 'center'}}>You have not added any delivery addresses. {`\n`} Please add a delivery address to place orders.</Text>
+            </View>
+            }
             <View style={{marginHorizontal: '5%', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                 <GeneralButton styleType="secondary" text="Add Address" onPress={()=>navigation.navigate('AddAddress')}/>
                 {route.params && <GeneralButton styleType="secondary" text="Continue" onPress={() => navigation.navigate('Checkout', {user: route.params.user, address: addresses.filter(address => address.Id == pressed)[0]})}/>}

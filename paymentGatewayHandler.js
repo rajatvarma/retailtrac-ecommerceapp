@@ -2,6 +2,7 @@ import axios from 'axios'
 import querystring from 'querystring'
 import { ccavenue, encryptForPayment, generateCheckSum } from './algorithms'
 import { createSalesOrderURL, getPaymentDataURL, getPaymentTokenURL, raiseSaleURL } from './apiCalls'
+import crashlytics from '@react-native-firebase/crashlytics'
 
 const getPaymentData = async () => {
     let values = {}
@@ -72,13 +73,12 @@ export const checkoutHandler = async (user, cart, cartTotal, shipping) => {
         .catch(() => {})
         .then(response => {
             if (response.data) {
-                console.log(response.data)
                 salesCode = response.data['Sales_code'].split(';')[0]
                 amount = response.data['Sales_code'].split(';')[1]  
             }
         })
     } catch (error) {
-        console.log(error)
+        crashlytics().log(error)
         return {...rsp, error: true}
     }
     
@@ -105,16 +105,15 @@ async function generateAxisBankRequest() {
 
     try {
         var paymentData = await getPaymentData()
-        console.log(paymentData)
     } catch (error) {
-        console.log('Payment Gateway Error')
+        crashlytics().log(error)
         return {...rsp, error: true}
     }
 
     try {
         var token = await getPaymentToken(salesCode, CRN)
     } catch (error) {
-        console.log('Token Error')
+        crashlytics().log(error)
         return {...rsp, error: true}
     }
 
@@ -161,8 +160,6 @@ function generateCCAvenueRequest(user, total, order_id) {
         billing_email: user.email,
         billing_address: `${user.addressLine1}, ${user.addressLine2}`,
         billing_city: user.city,
-        billing_state: 'Telangana',
-        billing_country: 'India',
         billing_zip: user.pincode,
         billing_tel: user.telephone1,
     }

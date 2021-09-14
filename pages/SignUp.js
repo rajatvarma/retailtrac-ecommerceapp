@@ -35,7 +35,6 @@ const SignUpPage = ({navigation}) => {
 
     const getOTPHandler = async () => { 
         setButtonLoading(true)
-        console.log(name, email, phone, pincode)
         const data = await axios.post(registerOTPURL, querystring.stringify({
             'username': name,
             'email': email,
@@ -48,6 +47,7 @@ const SignUpPage = ({navigation}) => {
             }).then(r => {
                 setButtonLoading(false)
                 if (r.data.includes('CI')) {
+                    console.log(r.data)
                     setResponse({customer_id: r.data.split(':')[0], otp: r.data.split(':')[1]})
                     setOTPSent(true)
                     crashlytics().log(r)
@@ -71,7 +71,6 @@ const SignUpPage = ({navigation}) => {
 
     const registerUserHandler = async () => {
         setButtonLoading(true)
-        console.log('Start')
         var data = querystring.stringify({
             'username': name,
             'password': password,
@@ -88,7 +87,6 @@ const SignUpPage = ({navigation}) => {
           });
 
           crashlytics().log(data)
-          console.log(data);
           var config = {
             method: 'post',
             url: userRegistrationURL,
@@ -101,9 +99,7 @@ const SignUpPage = ({navigation}) => {
           axios(config)
           .then(function (response) {
                 setButtonLoading(false)
-                console.log(response.data)
             if(response.data == true) {
-                console.log(response.data)
                 navigation.navigate('Login')   
             }
           })
@@ -153,15 +149,15 @@ const SignUpPage = ({navigation}) => {
                         {!isAddressEntered && isOTPVerified &&
                             <>
                                 <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldHeading}>Address Line 1</Text>
+                                    {/* <Text style={styles.fieldHeading}>Address Line 1</Text> */}
                                     <Input placeholder="Enter your building name & apartment no. or house no." state={address} setState={setAddress} type='address' styleType="secondary" />
                                 </View>
                                 <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldHeading}>Area</Text>
+                                    {/* <Text style={styles.fieldHeading}>Area</Text> */}
                                     <Input placeholder="Enter the area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
                                 </View>
                                 <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldHeading}>City</Text>
+                                    {/* <Text style={styles.fieldHeading}>City</Text> */}
                                     <Input placeholder="Enter your city" state={city} setState={setCity} type='city' styleType="secondary" />                
                                 </View>
                                 <View style={styles.fieldContainer}>
@@ -173,7 +169,7 @@ const SignUpPage = ({navigation}) => {
                         {isAddressEntered &&
                         <>
                             <View style={styles.fieldContainer}>
-                                <Text style={styles.fieldHeading}>Set a password</Text>
+                                {/* <Text style={styles.fieldHeading}>Set a password</Text> */}
                                 <Input placeholder="Choose a strong password" state={password} setState={setPassword} type='password'/>                
                             </View>
                             <View style={styles.fieldContainer}>

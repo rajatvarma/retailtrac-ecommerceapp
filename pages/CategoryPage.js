@@ -1,14 +1,13 @@
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import SearchBar from '../components/Searchbar'
 import ProductCard from '../components/ProductCard'
-import { useDispatch, useSelector } from 'react-redux'
-import getProductsFromCategory from '../actions/productsAction'
+import { useSelector } from 'react-redux'
 import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
-import { getImagesFromServer } from '../actions/imagesAction'
-import { clearCart } from '../actions/cartActions'
+import axios from 'axios'
+import { productByCategoryURL } from '../apiCalls'
 
 
 const CategoryPage = ({route, navigation}) => {
@@ -16,10 +15,15 @@ const CategoryPage = ({route, navigation}) => {
     const {category} = route.params
     
     const {images, cart} = useSelector(state => state)
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getProductsFromCategory(category.category));
-    }, [dispatch, category, cart])
+
+    const [products, setProducts] = useState([])
+
+    if (products.length === 0) {
+        axios.get(productByCategoryURL + `?categoryName=${category.category}`)
+        .then(response => {
+            setProducts(response.data.Items)
+        })
+    }
 
     function getImages(id) {
         let base_url
@@ -44,8 +48,6 @@ const CategoryPage = ({route, navigation}) => {
     }
 
     const [searchText, setSearchText] = useState('')
-
-    const {products} = useSelector((state) => state.products)
 
     const checkCartForItem = (item) => {
         for (var i = 0; i < cart.length; i++) {
@@ -76,7 +78,7 @@ const CategoryPage = ({route, navigation}) => {
                 }
 
                 {
-                    products && images.products && !Boolean(searchText.length) ?
+                    products.length && images.products && !Boolean(searchText.length) ?
 
                     <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                         {products.map((item) => {
@@ -87,10 +89,12 @@ const CategoryPage = ({route, navigation}) => {
                             }
                         })}
                     </ScrollView>
-
                     :
-
-                    <ActivityIndicator size="large" color="#EEE" />
+                    !Boolean(searchText.length) ?
+                    <View style={CategoryPageStyles.scrollContainer}>
+                        <ActivityIndicator size="large" color="#EEE" />
+                    </View>
+                    : <></>
                 }
             </View>
             <View style={{justifyContent: 'center', height: '12.5%', alignSelf: 'flex-end'}}>

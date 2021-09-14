@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import productsReducer from "./ProductsReducer";
 import categoriesReducer from "./CategoriesReducer"
 import cartReducer from "./CartReducer";
 import UserReducer from "./UserReducer";
@@ -8,7 +7,6 @@ import imagesReducer from "./ImagesReducer";
 import AddressesReducer from "./AddressesReducer";
 
 const rootReducer = combineReducers({
-    products: productsReducer,
     categories: categoriesReducer,
     cart: cartReducer,
     orders: OrdersReducer,

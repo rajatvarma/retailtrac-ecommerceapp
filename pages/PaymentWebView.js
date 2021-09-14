@@ -60,8 +60,8 @@ const PaymentGatewayPage = ({route, navigation}) => {
 
         text: {
           color: 'white',
-          fontSize: 20,
-          fontWeight: '700',
+          fontSize: 18,
+          fontFamily: 'Epilogue_600SemiBold',
           textAlign: 'center',
           marginBottom: '5%'
         }
@@ -101,7 +101,7 @@ const PaymentGatewayPage = ({route, navigation}) => {
           startInLoadingState={true}
           renderLoading={()=>(
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontSize: 18}}>Please Wait while we process your order....</Text>
+                <Text style={{fontSize: 18, fontFamily: 'Epilogue_600SemiBold'}}>Please Wait while we process your order....</Text>
                 <ActivityIndicator color="black" size="large"/>
             </View>
           )}

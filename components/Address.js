@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 20,
-        fontWeight: '500',
+        fontFamily: 'Epilogue_500Medium',
         marginBottom: '2.5%'
     },
 
     text: {
         fontSize: 16,
-        fontWeight: '400'
+        fontFamily: 'Epilogue_400Regular'
     },
 
     iconsContainer: {

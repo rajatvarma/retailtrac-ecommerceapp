@@ -1,9 +1,8 @@
 import React from 'react'
-import { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import TextInputError from './TextInputError'
 
-const Input = ({placeholder, state, setState, type, validate, styleType}) => {
+const Input = ({placeholder, state, setState, type, validate, styleType, editable}) => {
     var styles = styles_secondary
     
     if (styleType == 'primary') {
@@ -22,6 +21,7 @@ const Input = ({placeholder, state, setState, type, validate, styleType}) => {
                     onChangeText={(val) => {setState(val)}}
                     style={styles.input}
                     keyboardType={type=='phone' || type=='OTP' || type=='pincode' ? 'numeric' : 'default'}
+                    editable={editable}
                 />
                 
                 <TextInputError display={validate && state.length}/>
@@ -76,7 +76,8 @@ const styles_secondary = StyleSheet.create({
     input: {
         width: '80%',
         paddingVertical: 5,
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'Epilogue_400Regular'
     },
 
     label: {

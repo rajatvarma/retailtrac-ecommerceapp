@@ -18,8 +18,6 @@ export const OtpVerificationPage = ({route, navigation}) => {
     const [password, setPassword] = useState("")
     const [otp, setOTP] = useState('')
 
-    console.log(otp)
-
     const otpTextInputs = []
 
     const forgotPasswordOTPHandler = () => {
@@ -32,7 +30,6 @@ export const OtpVerificationPage = ({route, navigation}) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then(r => {
-            console.log(r.data)
             setResponse(r.data)
             setOtpSent(true)
             
@@ -65,7 +62,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
     }
 
     return(
-        <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "height" : "padding"}>
+        <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.pageContainer}>
             <View style={styles.imageContainer}>
                 {!otpSent ?
@@ -132,7 +129,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
                     <Text style={styles.headingText}>{otpVerified ? 'Enter new Password' : 'Enter your mobile number'}</Text>
                     <View style={styles.inputContainer}>
                         {!otpVerified ? 
-                            <Input styleType="secondary" state={phone} setState={setPhone} placeholder='Your mobile number' />
+                            <Input styleType="secondary" state={phone} setState={setPhone} placeholder='Your mobile number' type="phone"/>
                             :
                             <Input styleType="secondary" state={password} setState={setPassword} placeholder='New Password' />
                         }
@@ -149,7 +146,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
     pageContainer: {
-        paddingHorizontal: '5%',
+        paddingHorizontal: '10%',
         paddingVertical: '10%',
         backgroundColor: 'white',
         height: '100%'
@@ -186,7 +183,7 @@ const styles = StyleSheet.create({
         marginVertical: '5%',
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingHorizontal: '5%'
+        // paddingHorizontal: '5%'
     },
 
     input: {

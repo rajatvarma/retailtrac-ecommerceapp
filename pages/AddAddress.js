@@ -10,12 +10,13 @@ import { BannerHeader } from '../components/Header';
 import Input from '../components/TextInput';
 
 
-const ResponseMessageBox = ({status}) => {
+export const ResponseMessageBox = ({status}) => {
 
     const styles = StyleSheet.create({
         container: {
             borderWidth: 1,
             borderColor: status ? 'green' : 'red',
+            marginVertical: '2%',
             paddingHorizontal: '5%',
             paddingVertical: '2%',
             flexDirection: 'row',
@@ -64,8 +65,8 @@ export default ({route, navigation, ...props}) => {
             area: "",
             city: "",
             pincode: "",
-            phone: "",
-            landmark: "",
+            mobileNumber: "",
+            landMark: "",
             customerName: ""
         }
     }
@@ -75,8 +76,8 @@ export default ({route, navigation, ...props}) => {
     const [area, setArea]= useState(address.area)
     const [nickname, setNickname]= useState(address.customerName)
     const [pincode, setPincode] = useState(String(address.pincode))
-    const [phone, setPhone] = useState(address.phone)
-    const [landmark, setLandmark] = useState(address.landmark)
+    const [phone, setPhone] = useState(address.mobileNumber)
+    const [landmark, setLandmark] = useState(address.landMark)
 
     const [pincodeValidated, setPincodeValidated] = useState(false)
     const [error, setError] = useState(false)
@@ -123,9 +124,9 @@ export default ({route, navigation, ...props}) => {
                 {!isEditingAddress &&
                     <View style={styles.pincodeContainer}>
                         <View style={{flex: 2, marginRight: '5%'}}>
-                            <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
+                            <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" editable={!pincodeValidated}/>
                         </View>
-                        <View style={{flex: 1, height: '100%', backgroundColor: 'red', justifyContent: 'center'}}>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
                             <SmallButton text="Validate" icon={faMapPin} onPress={() => {validatePincode(pincode)}} />
                         </View>
                     </View>
@@ -173,7 +174,13 @@ export default ({route, navigation, ...props}) => {
                         <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
                     </View>
                     <View style={styles.fieldContainer}>
+                        <Input placeholder="Landmark" state={landmark} setState={setLandmark} type="landmark" />
+                    </View>
+                    <View style={styles.fieldContainer}>
                         <Input placeholder="Name" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
+                    </View>
+                    <View style={styles.fieldContainer}>
+                        <Input placeholder="Phone Number" state={phone} setState={setPhone} type="phone" />
                     </View>
                     <GeneralButton text="Submit" styleType="secondary" onPress={() => {writeAddress()}} />
                     </View>
@@ -201,12 +208,11 @@ const styles = StyleSheet.create({
 
     formContainer: {
         flex: 2,
-        // borderRadius: 35,
         borderTopLeftRadius: 35,
         borderTopRightRadius: 35,
         paddingVertical: '15%',
         elevation: 20,
-        // justifyContent: 'center',
+        justifyContent: 'center',
         shadowColor: '#1112',
         shadowOffset: {width: 0, height: -10},
         shadowOpacity: 0.8,

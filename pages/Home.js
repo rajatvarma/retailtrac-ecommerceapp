@@ -8,7 +8,6 @@ import getCategories from '../actions/categoriesAction'
 import CartPreview from '../components/CartPreview'
 import Header from '../components/Header'
 import { getAddresses } from '../actions/addressesAction'
-import { clearProducts } from '../actions/productsAction'
 import { getImagesFromServer } from '../actions/imagesAction'
 
 const HomePage = ({navigation}) => {
@@ -17,12 +16,9 @@ const HomePage = ({navigation}) => {
 
     const {user, cart, images} = useSelector((state) => state)
 
-    console.log(images)
-
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getAddresses(user.customer_id))
-        dispatch(clearProducts())
         dispatch(getImagesFromServer())
     }, [dispatch])
 
@@ -40,7 +36,6 @@ const HomePage = ({navigation}) => {
                 default_url = element.default_image
             }
             if (element.category_code) {
-                console.log(element.category_code == name)
                 if (element.category_code == name) {
                     image_url = base_url + element.category_images
                 }
@@ -48,13 +43,10 @@ const HomePage = ({navigation}) => {
                 image_url = base_url+default_url
             }
         });
-        // console.log(image_url)
         return image_url
     }
 
     const {categories} = useSelector((state) => state.categories)
-
-    // console.log(categories)
 
     return(
         <View style={[HomePageStyles.pageContainer, {height: dimensions.height}]}>
