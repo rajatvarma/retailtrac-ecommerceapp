@@ -22,16 +22,21 @@ export const OtpVerificationPage = ({route, navigation}) => {
 
     const forgotPasswordOTPHandler = () => {
         axios.post(getForgotPasswordOTP, querystring.stringify({
-            'email': '',
-            'mob_num': phone
+            'mobileNumber': phone
         }),
         {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then(r => {
-            setResponse(r.data)
-            setOtpSent(true)
+            if (r.data === "Incorrect Phone Number") {
+                Alert.alert('Invalid Phone Number', 
+                'The phone number you have entered is not registered with us. Please enter a registered phone number.')
+            }
+            else if (r.data.length === 6) {
+                setResponse(r.data)
+                setOtpSent(true)
+            }
             
         }).catch((e) => {
             console.log(e);

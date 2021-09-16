@@ -1,5 +1,6 @@
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import {useFocusEffect} from '@react-navigation/native'
 import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import SearchBar from '../components/Searchbar'
 import ProductCard from '../components/ProductCard'
@@ -11,12 +12,24 @@ import { productByCategoryURL } from '../apiCalls'
 
 
 const CategoryPage = ({route, navigation}) => {
+
  
     const {category} = route.params
+
+    const [refresh, setRefresh] = useState(false)
     
     const {images, cart} = useSelector(state => state)
 
     const [products, setProducts] = useState([])
+
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(true)
+            return () => {
+                setRefresh(false)
+            }
+        }, [])
+    )
 
     if (products.length === 0) {
         axios.get(productByCategoryURL + `?categoryName=${category.category}`)
@@ -78,7 +91,7 @@ const CategoryPage = ({route, navigation}) => {
                 }
 
                 {
-                    products.length && images.products && !Boolean(searchText.length) ?
+                    refresh && products.length && images.products && !Boolean(searchText.length) ?
 
                     <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
                         {products.map((item) => {

@@ -11,7 +11,7 @@ export const getOrderDetailsURL = BASE_URL + 'rest/EcomSales/ezPOZListAllItemsBy
 export const validateOrderStatusURL = BASE_URL + 'rest/ecomValidate/getEcomPaymentEnquiryResponse'
 
 
-export const getForgotPasswordOTP = BASE_URL + 'rest/EcomCustomer/ecomcreateOTPSendMailMsg'
+export const getForgotPasswordOTP = BASE_URL + 'rest/EcomCustomer/ecomCreateOTPForMobileNumber'
 
 export const loginURL = BASE_URL + 'rest/EcomCustomer/ecomLoginCheck'
 

@@ -44,8 +44,6 @@ const CheckoutPage = ({navigation, route}) => {
 
     const [checkoutStage, setCheckoutStage] = useState(0)
 
-    console.log(checkoutStage, checkoutAddress)
-
     const dispatch = useDispatch()
 
     useEffect(() => {
