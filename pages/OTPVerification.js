@@ -29,14 +29,20 @@ export const OtpVerificationPage = ({route, navigation}) => {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).then(r => {
-            if (r.data === "Incorrect Phone Number") {
-                Alert.alert('Invalid Phone Number', 
-                'The phone number you have entered is not registered with us. Please enter a registered phone number.')
-            }
-            else if (r.data.length === 6) {
+            if (r.data.length === 6) {
                 setResponse(r.data)
                 setOtpSent(true)
             }
+            else if (r.data === "Invalid Phone Number") {
+                Alert.alert('Invalid Phone Number', 
+                'The phone number you have entered is not registered with us. Please enter a registered phone number.')
+                setPhone('')
+            }
+            else if (r.data === "Please Provide Registered Phone Number") {
+                Alert.alert('Enter a phone number', 
+                'Please enter your registered mobile number to reset your password.')
+            }
+
             
         }).catch((e) => {
             console.log(e);
