@@ -24,7 +24,7 @@ const Input = ({placeholder, state, setState, type, validate, styleType, editabl
                     editable={editable}
                 />
                 
-                <TextInputError display={validate && state.length}/>
+                <TextInputError display={type == 'phone' || type == 'email' ? validate && state.length : validate}/>
             </View>
         </View>
     )

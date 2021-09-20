@@ -66,8 +66,10 @@ const AppContent = () => {
 
   const {user} = useSelector((state) => state)
 
+  // const user = {"addressLine1": "1169, Rd No. 56", "addressLine2": "Jubilee Hills", "city": "Hyderabad", "company_user": "superuser", "customer_id": "CI100179", "customer_name": "Rajat", "email": "rvar@codonsoft.com", "latitude": " ", "location": "PrakruthiVanam", "longitude": " ", "pincode": "500033", "telephone1": "9871994814", "telephone2": ""}W
   useEffect(() => {
     loginAttempt()
+    // dispatch(setUser(user))
   }, [dispatch])
 
   let [fontsLoaded] = useFonts({Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black})

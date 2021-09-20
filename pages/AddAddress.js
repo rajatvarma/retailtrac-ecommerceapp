@@ -2,12 +2,13 @@ import { faCheckCircle, faMapPin, faTimesCircle } from '@fortawesome/free-solid-
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Alert, Platform, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAddress, editAddress } from '../actions/addressesAction';
 import GeneralButton, { SmallButton } from '../components/Button';
 import { BannerHeader } from '../components/Header';
 import Input from '../components/TextInput';
+import { phoneValidation } from '../formValidations';
 
 
 export const ResponseMessageBox = ({status}) => {
@@ -56,6 +57,8 @@ export default ({route, navigation, ...props}) => {
 
     let isEditingAddress
 
+    const {user} = useSelector(state => state)
+
     if(route.params) {
         isEditingAddress = true
         address = route.params.address
@@ -67,9 +70,11 @@ export default ({route, navigation, ...props}) => {
             pincode: "",
             mobileNumber: "",
             landMark: "",
-            customerName: ""
+            customerName: user.customer_name
         }
     }
+
+    
 
     const [line1, setLine1] = useState(address.address)
     const [city, setCity] = useState(address.city)
@@ -81,6 +86,15 @@ export default ({route, navigation, ...props}) => {
 
     const [pincodeValidated, setPincodeValidated] = useState(false)
     const [error, setError] = useState(false)
+
+    const [validation, setValidation] = useState({
+        address: false,
+        area: false,
+        city: false,
+
+    })
+
+    const [buttonLoading, SetButtonLoading] = useState(false)
 
     const [isPincodeSent, setPincodeSent] = useState(false)
 
@@ -101,17 +115,30 @@ export default ({route, navigation, ...props}) => {
     }
 
     const dispatch = useDispatch()
-    const {user} = useSelector(state => state)
-    
-    async function writeAddress() {        
-        const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: nickname, phone: phone, landmark: landmark, Id: 0}
-        
-        if(isEditingAddress) {
-            dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: nickname, phone: phone, landmark: landmark}, user.customer_id))
-            navigation.navigate('UserAddresses')
-        } else {
-            dispatch(addAddress(currentAddress, user.customer_id))
-            navigation.navigate('UserAddresses')
+    async function writeAddress() {       
+        setValidation({area: false, city: false, address: false})
+        if (area.length === 0 || address.length === 0 || city.length === 0 || phone.length === 0) {
+            if (area.length === 0 || address.length === 0 || city.length === 0) {
+                setValidation({
+                    address: !Boolean(address.length),
+                    area: !Boolean(area.length),
+                    city: !Boolean(city.length)
+                })
+                Alert.alert('Incomplete Form', 'Please fill in all the necessary details.')
+            }
+            if (phone.length === 0 || phoneValidation(phone)) {
+                Alert.alert('Invalid Phone Number', 'Please enter a valid phone number.')
+            }
+        }
+        else {
+            const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), phone: phone, landmark: landmark, Id: 0}
+            if(isEditingAddress) {
+                dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), phone: phone, landmark: landmark}, user.customer_id))
+                navigation.navigate('UserAddresses')
+            } else {
+                dispatch(addAddress(currentAddress, user.customer_id))
+                navigation.navigate('UserAddresses')
+            }
         }
     }
 
@@ -133,27 +160,27 @@ export default ({route, navigation, ...props}) => {
                 }
                 {isPincodeSent && <ResponseMessageBox status={pincodeValidated} /> }
                 {pincodeValidated && 
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View onStartShouldSetResponder={() => true}>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" />
+                        <Input placeholder="Your building, apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" validate={validation.address} />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="The area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+                        <Input placeholder="The area you live in" state={area} setState={setArea} type='address' styleType="secondary" validate={validation.area} />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="City" state={city} setState={setCity} type='city' styleType="secondary" />                
+                        <Input placeholder="City" state={city} setState={setCity} type='address' styleType="secondary" validate={validation.city}/>
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="Name" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
+                        <Input placeholder="Name" state={nickname} setState={setNickname} styleType="secondary" />                
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="Phone Number" state={phone} setState={setPhone} type="phone" />
+                        <Input placeholder="Phone Number" state={phone} setState={setPhone} type="address" validate={validation.phone && phoneValidation(phone)}/>
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="Landmark" state={landmark} setState={setLandmark} type="landmark" />
+                        <Input placeholder="Landmark" state={landmark} setState={setLandmark} />
                     </View>
-                    <GeneralButton text="Submit" styleType="secondary" onPress={writeAddress} />
+                    <GeneralButton text="Submit" styleType="secondary" onPress={writeAddress} isLoading={buttonLoading} />
                     </View>
                 </ScrollView>
                 }
@@ -162,13 +189,13 @@ export default ({route, navigation, ...props}) => {
                 <ScrollView>
                     <View onStartShouldSetResponder={() => true}>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' styleType="secondary" />
+                        <Input placeholder="Your building name & apartment no. or house no." state={line1} setState={setLine1} type='address' validate={validation.address} styleType="secondary" />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="The area you live in" state={area} setState={setArea} type='area' styleType="secondary" />
+                        <Input placeholder="The area you live in" state={area} setState={setArea} validate={validation.area} type='area' styleType="secondary" />
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="City" state={city} setState={setCity} type='city' styleType="secondary" />                
+                        <Input placeholder="City" state={city} setState={setCity} type='city' validate={validation.city} styleType="secondary" />                
                     </View>
                     <View style={styles.fieldContainer}>
                         <Input placeholder="Pin Code" state={pincode} setState={setPincode} type="pincode" />
@@ -180,7 +207,7 @@ export default ({route, navigation, ...props}) => {
                         <Input placeholder="Name" state={nickname} setState={setNickname} type='city' styleType="secondary" />                
                     </View>
                     <View style={styles.fieldContainer}>
-                        <Input placeholder="Phone Number" state={phone} setState={setPhone} type="phone" />
+                        <Input placeholder="Phone Number" state={phone} validate={phoneValidation(phone)} setState={setPhone} type="phone" />
                     </View>
                     <GeneralButton text="Submit" styleType="secondary" onPress={() => {writeAddress()}} />
                     </View>

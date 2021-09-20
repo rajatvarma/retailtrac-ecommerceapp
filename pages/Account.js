@@ -9,11 +9,14 @@ import { BannerHeader }  from '../components/Header'
 import Option from '../components/Option'
 import { saveUserData } from '../userStorage'
 import Constants from 'expo-constants'
+import AppData from '../app.json'
 
 const AccountPage = ({navigation}) => {
 
     const {user} = useSelector(state => state)
     const dispatch = useDispatch()
+
+    console.log(AppData)
 
     return(
         <View style={styles.pageContainer}>
@@ -40,7 +43,7 @@ const AccountPage = ({navigation}) => {
                     saveUserData('phone', '')
                     saveUserData('password', '')
                 }} />
-                <Text style={{textAlign: 'center', marginTop: '2.5%', fontFamily: 'Epilogue_400Regular'}}>Ver. 1.1.27, {Constants.deviceName}</Text>
+                <Text style={{textAlign: 'center', marginTop: '2.5%', fontFamily: 'Epilogue_400Regular'}}>{AppData.expo.version}, {Constants.deviceName}</Text>
             </View>
         </View>
     )
