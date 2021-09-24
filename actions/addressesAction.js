@@ -1,7 +1,5 @@
-import { getUserData, saveUserData } from "../userStorage"
 import axios from 'axios'
 import { addUserAddressURL, getUserAddressesURL } from "../apiCalls"
-import { useSelector } from "react-redux"
 import QueryString from "qs"
 
 export const getAddresses = (cid) => async (dispatch) => {
@@ -15,7 +13,7 @@ export const getAddresses = (cid) => async (dispatch) => {
 }
 
 export const addAddress = (address, customer_id) => async (dispatch) => {
-    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landmark}:${address.phone}:${address.Id}#`
+    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landMark}:${address.mobileNumber}:${address.Id}#`
     console.log(QueryString.stringify({
         address_list: thisAddress,
         customer_id: customer_id,
@@ -26,10 +24,10 @@ export const addAddress = (address, customer_id) => async (dispatch) => {
         customer_id: customer_id,
         customer_name: address.customerName
     })).then(r => console.log(r.data)).catch(e => console.log(e))
-    dispatch({
-        type: 'ADD_ADDRESS',
-        payload: address
-    })
+    // dispatch({
+    //     type: 'ADD_ADDRESS',
+    //     payload: address
+    // })
 }
 
 export const deleteAddress = (id) => async (dispatch) => {
@@ -40,7 +38,7 @@ export const deleteAddress = (id) => async (dispatch) => {
 }
 
 export const editAddress = (address, customer_id) => async (dispatch) => {
-    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landmark}:${address.phone}:${address.Id}#`
+    const thisAddress =  `${address.address}:${address.area}:${address.city}:${address.pincode}:${address.landmark}:${address.mobileNumber}:${address.Id}#`
     console.log(QueryString.stringify({
         address_list: thisAddress,
         customer_id: customer_id,
@@ -51,8 +49,8 @@ export const editAddress = (address, customer_id) => async (dispatch) => {
         customer_id: customer_id,
         customer_name: address.customerName
     })).then(r => console.log(r.data)).catch(e => console.log(e))
-    dispatch({
-        type: 'EDIT_ADDRESS',
-        payload: address
-    })
+    // dispatch({
+    //     type: 'EDIT_ADDRESS',
+    //     payload: address
+    // })
 }

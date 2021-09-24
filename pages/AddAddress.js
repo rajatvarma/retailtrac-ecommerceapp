@@ -117,8 +117,10 @@ export default ({route, navigation, ...props}) => {
 
     const dispatch = useDispatch()
     async function writeAddress() {       
+        SetButtonLoading(true)
         setValidation({area: false, city: false, address: false})
-        if (area.length === 0 || address.length === 0 || city.length === 0 || phone.length === 0) {
+        if (area.length === 0 || address.length === 0 || city.length === 0 || phone.length === 0 || phoneValidation(phone)) {
+            console.log(area.length === 0, address.length === 0, city.length === 0, phone.length === 0, phoneValidation(phone))
             if (area.length === 0 || address.length === 0 || city.length === 0) {
                 setValidation({
                     address: !Boolean(address.length),
@@ -126,18 +128,24 @@ export default ({route, navigation, ...props}) => {
                     city: !Boolean(city.length)
                 })
                 Alert.alert('Incomplete Form', 'Please fill in all the necessary details.')
+                SetButtonLoading(false)
             }
             if (phone.length === 0 || phoneValidation(phone)) {
+                console.log('problem', phone.length)
                 Alert.alert('Invalid Phone Number', 'Please enter a valid phone number.')
+                SetButtonLoading(false)
             }
         }
         else {
-            const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), mobileNumber: phone, landmark: landmark, Id: 0}
+            console.log(currentAddress)
+            const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), mobileNumber: phone, landMark: landmark, Id: 0}
             if(isEditingAddress) {
-                dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), mobileNumber: phone, landmark: landmark}, user.customer_id))
+                dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), mobileNumber: phone, landMark: landmark}, user.customer_id))
+                SetButtonLoading(false)
                 navigation.navigate('UserAddresses')
             } else {
                 dispatch(addAddress(currentAddress, user.customer_id))
+                SetButtonLoading(false)
                 navigation.navigate('UserAddresses')
             }
         }

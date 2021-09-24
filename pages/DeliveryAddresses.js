@@ -1,4 +1,6 @@
+import { useFocusEffect } from '@react-navigation/core';
 import React, { useState } from 'react';
+import { useCallback } from 'react';
 import { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
 import { add } from 'react-native-reanimated';
@@ -50,16 +52,28 @@ const DeliveryAddresses = ({navigation, route}) => {
     const {addresses, user} = useSelector(state => state)
 
     const [pressed, setPressed] = useState(0)
+    const [refresh, setRefresh] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(getAddresses(user.customer_id))
     }, [dispatch])
 
+    useFocusEffect(
+        useCallback(() => {
+            setRefresh(true)
+            dispatch(getAddresses(user.customer_id))
+            return () => {
+                dispatch(getAddresses(user.customer_id))
+                setRefresh(false)
+            }
+        }, [])
+    )
+
     return(
         <View style={styles.page}>
             <BannerHeader title="My Addresses" />
-            {addresses.length ?
+            {refresh && addresses.length ?
             <ScrollView style={{height: '60%'}}>
                 {addresses.map((address) => 
                 (   
