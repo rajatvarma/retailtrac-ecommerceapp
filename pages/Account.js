@@ -16,8 +16,6 @@ const AccountPage = ({navigation}) => {
     const {user} = useSelector(state => state)
     const dispatch = useDispatch()
 
-    console.log(AppData)
-
     return(
         <View style={styles.pageContainer}>
             <BannerHeader title="Your Account" />

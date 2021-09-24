@@ -62,6 +62,7 @@ export default ({route, navigation, ...props}) => {
     if(route.params) {
         isEditingAddress = true
         address = route.params.address
+        console.log(route.params.address)
     } else {
         address = {
             address: "",
@@ -131,9 +132,9 @@ export default ({route, navigation, ...props}) => {
             }
         }
         else {
-            const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), phone: phone, landmark: landmark, Id: 0}
+            const currentAddress = {address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), mobileNumber: phone, landmark: landmark, Id: 0}
             if(isEditingAddress) {
-                dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), phone: phone, landmark: landmark}, user.customer_id))
+                dispatch(editAddress({...address, address: line1, area: area, city: city, pincode: pincode, customerName: (nickname.length ? nickname : user.customer_name), mobileNumber: phone, landmark: landmark}, user.customer_id))
                 navigation.navigate('UserAddresses')
             } else {
                 dispatch(addAddress(currentAddress, user.customer_id))
