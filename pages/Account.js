@@ -14,6 +14,7 @@ import AppData from '../app.json'
 const AccountPage = ({navigation}) => {
 
     const {user} = useSelector(state => state)
+    // console.log(user)
     const dispatch = useDispatch()
 
     return(
@@ -23,24 +24,39 @@ const AccountPage = ({navigation}) => {
                 <View style={{padding: '5%', borderRadius: 100, backgroundColor: '#FF595F', marginRight: '5%'}}>
                     <FontAwesomeIcon icon={faUserAlt} color="white" />
                 </View>
+                {Boolean(Object.keys(user).length) ?
                 <View>
                     <Text style={styles.userName}>{user.customer_name}</Text>
                     <Text style={styles.userDetails}>{user.telephone1}</Text>
-                    <Text style={styles.userDetails}>{user.email}</Text>
+                    <Text style={styles.userDetails}>{user.email.length <= 25 ? user.email : user.email.substring(0, 23)+'...'}</Text>
                 </View> 
+                :
+                <View>
+                    <Text style={styles.userDetails}>{`Login to view account details`}</Text>
+                </View>
+                }
             </View>
-            
-            <Option text="Previous Orders" redirectTo='Orders' navigation={navigation} icon={faShoppingBasket} />
-            <Option text="Manage Addresses" redirectTo={"UserAddresses"} navigation={navigation} icon={faMapMarkerAlt} />            
-            {/* <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} /> */}
+            {Boolean(Object.keys(user).length) && 
+            <>
+                <Option text="Previous Orders" redirectTo='Orders' navigation={navigation} icon={faShoppingBasket} />
+                <Option text="Manage Addresses" redirectTo={"UserAddresses"} navigation={navigation} icon={faMapMarkerAlt} />
+                <Option text="Edit Account" redirectTo={'EditAccount'} navigation={navigation} icon={faPen} />
+            </>
+            }
             <Option text="Policies" redirectTo={'Settings'} navigation={navigation} icon={faInfo} />
             
             <View style={styles.buttonContainer}>
+            {Boolean(Object.keys(user).length) ?
                 <GeneralButton text='Sign Out' styleType="secondary" onPress={() => {
                     dispatch(setUser({}))
                     saveUserData('phone', '')
                     saveUserData('password', '')
                 }} />
+                :
+                <GeneralButton text='Sign In' styleType="secondary" onPress={() => {
+                    navigation.navigate('Login')
+                }} />
+            }
                 <Text style={{textAlign: 'center', marginTop: '2.5%', fontFamily: 'Epilogue_400Regular'}}>{AppData.expo.version}, {Constants.deviceName}</Text>
             </View>
         </View>
@@ -73,7 +89,7 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         width: '100%',
-        marginVertical: '20%',
+        marginVertical: '5%',
         paddingHorizontal: '20%'
     },
 })

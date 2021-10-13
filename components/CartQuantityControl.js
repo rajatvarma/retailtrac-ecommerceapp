@@ -1,18 +1,25 @@
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
-import { Pressable, StyleSheet, View, Text } from 'react-native'
+import { Pressable, StyleSheet, View, Text, Alert } from 'react-native'
 
-const QuantityControl = ({value, onPress}) => {
+const QuantityControl = ({value, onPress, maxQuantity}) => {
     return(
         <View style={styles.wrapper}>
             <Pressable style={styles.button} onPress={() => onPress(value-1)}>
                 <FontAwesomeIcon icon={faMinus} size={12}></FontAwesomeIcon>
             </Pressable>
             <Text style={styles.text}>{value}</Text>
-            <Pressable style={styles.button} onPress={() => onPress(value+1)}>
+            {value < maxQuantity && 
+            <Pressable style={styles.button} onPress={() => {
+                if (value === maxQuantity-1){
+                    Alert.alert('Maximum Stock Reached', `Available quantity for this item is ${maxQuantity}`)
+                }
+                onPress(value+1)
+            }}>
                 <FontAwesomeIcon icon={faPlus} size={12}></FontAwesomeIcon>
             </Pressable>
+            }
         </View>
     )
 }

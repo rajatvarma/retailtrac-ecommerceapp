@@ -20,7 +20,10 @@ const CategoryPage = ({route, navigation}) => {
     
     const {images, cart} = useSelector(state => state)
 
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState({
+        isLoading: true,
+        products: []
+    })
 
     useFocusEffect(
         useCallback(() => {
@@ -31,10 +34,10 @@ const CategoryPage = ({route, navigation}) => {
         }, [])
     )
 
-    if (products.length === 0) {
+    if (products.products.length === 0 && products.isLoading) {
         axios.get(productByCategoryURL + `?categoryName=${category.category}`)
         .then(response => {
-            setProducts(response.data.Items)
+            setProducts({isLoading: false, products: response.data.Items})
         })
     }
 
@@ -91,10 +94,10 @@ const CategoryPage = ({route, navigation}) => {
                 }
 
                 {
-                    refresh && products.length && images.products && !Boolean(searchText.length) ?
+                    refresh && products.products.length && images.products && !Boolean(searchText.length) ?
 
                     <ScrollView style={CategoryPageStyles.scrollContainer} showsVerticalScrollIndicator={false}>
-                        {products.map((item) => {
+                        {products.products.map((item) => {
                             if (checkCartForItem(item)) {
                                 return <ProductCard product={checkCartForItem(item)} image_url={getImages(item.item_code)} key={item.item_code}/>
                             } else {
@@ -103,7 +106,7 @@ const CategoryPage = ({route, navigation}) => {
                         })}
                     </ScrollView>
                     :
-                    !Boolean(searchText.length) ?
+                    !Boolean(searchText.length) && products.isLoading ?
                     <View style={CategoryPageStyles.scrollContainer}>
                         <ActivityIndicator size="large" color="#EEE" />
                     </View>
@@ -138,4 +141,3 @@ const CategoryPageStyles = StyleSheet.create({
 })
 
 export default CategoryPage
-

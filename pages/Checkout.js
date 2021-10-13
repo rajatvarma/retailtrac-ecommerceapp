@@ -69,9 +69,9 @@ const CheckoutPage = ({navigation, route}) => {
                 <View>
                     <View style={styles.itemHeadingContainer}>
                         <Text style={styles.invoiceHeading}>Contact Details</Text>
-                        {/* <Pressable onPress={() => {navigation.navigate('EditAccount', {fromCheckout: true})}}>
+                        <Pressable onPress={() => {navigation.navigate('EditAccount', {fromCheckout: true})}}>
                             <FontAwesomeIcon icon={faPen} color="#236CD9" size={18} />
-                        </Pressable> */}
+                        </Pressable>
                     </View>
                     <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: '5%'}}>
                         <View style={{backgroundColor: '#236CD923', padding: '5%', borderRadius: 100, marginRight: '5%'}}>

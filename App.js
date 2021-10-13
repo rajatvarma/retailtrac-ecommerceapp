@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, StatusBar, Text, View } from 'react-native';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
 import CategoryPage from './pages/CategoryPage';
 import HomePage from './pages/Home';
 import { NavigationContainer } from '@react-navigation/native';
@@ -64,12 +64,10 @@ const AppContent = () => {
 
   }
 
-  // const {user} = useSelector((state) => state)
+  const {user} = useSelector((state) => state)
 
-  const user = {"addressLine1": "1169, Rd No. 56", "addressLine2": "Jubilee Hills", "city": "Hyderabad", "company_user": "superuser", "customer_id": "CI100179", "customer_name": "Rajat", "email": "rvar@codonsoft.com", "latitude": " ", "location": "PrakruthiVanam", "longitude": " ", "pincode": "500033", "telephone1": "9871994814", "telephone2": ""}
   useEffect(() => {
-    // loginAttempt()
-    dispatch(setUser(user))
+    loginAttempt()
   }, [dispatch])
 
   let [fontsLoaded] = useFonts({Epilogue_400Regular, Epilogue_500Medium, Epilogue_600SemiBold, Epilogue_700Bold, Epilogue_800ExtraBold, Epilogue_900Black})
@@ -79,8 +77,6 @@ const AppContent = () => {
     {fontsLoaded ? 
           <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>
-              {Object.keys(user).length ? 
-                <>
                   <Stack.Screen name="Home" component={HomePage} />
                   <Stack.Screen name="Category" component={CategoryPage} />
                   <Stack.Screen name="Cart" component={Cart} />
@@ -93,13 +89,9 @@ const AppContent = () => {
                   <Stack.Screen name="PaymentGateway" component={PaymentGatewayPage} />
                   <Stack.Screen name="UserAddresses" component={DeliveryAddresses} />
                   <Stack.Screen name="AddAddress" component={AddAddress} /> 
-                </> :
-                <>
                   <Stack.Screen name="Login" component={LoginPage} />
                   <Stack.Screen name="SignUp" component={SignUpPage} />
                   <Stack.Screen name="OTP" component={OtpVerificationPage} />
-                </>
-              }
             </Stack.Navigator>
           </NavigationContainer>
           :

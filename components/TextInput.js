@@ -1,10 +1,14 @@
-import React from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import TextInputError from './TextInputError'
 
 const Input = ({placeholder, state, setState, type, validate, styleType, editable}) => {
     var styles = styles_secondary
     
+    const [isPasswordVisible, setPasswordVisible] = useState(false)
+
     if (styleType == 'primary') {
         styles = styles_primary
     } else if (styleType == 'secondary') {
@@ -17,13 +21,17 @@ const Input = ({placeholder, state, setState, type, validate, styleType, editabl
             <View style={styles.row}>
                 <TextInput  
                     value={state}
-                    secureTextEntry={type=="password"}
+                    secureTextEntry={type==="password" && !isPasswordVisible}
                     onChangeText={(val) => {setState(val)}}
                     style={styles.input}
                     keyboardType={type=='phone' || type=='OTP' || type=='pincode' ? 'numeric' : 'default'}
                     editable={editable}
                 />
-                
+                {type==="password" && 
+                    <Pressable onPress={() => setPasswordVisible(isPasswordVisible => !isPasswordVisible)}>
+                        <FontAwesomeIcon icon={isPasswordVisible ? faEyeSlash : faEye} />
+                    </Pressable>
+                }
                 <TextInputError display={type == 'phone' || type == 'email' ? validate && state.length : validate}/>
             </View>
         </View>
@@ -42,7 +50,8 @@ const styles_primary = StyleSheet.create({
 
     input: {
         width: '80%',
-        paddingVertical: 5
+        paddingVertical: 5,
+        fontFamily: 'Epilogue_500Medium'
     },
 
     label: {
@@ -50,7 +59,7 @@ const styles_primary = StyleSheet.create({
         color: '#373737',
         fontWeight: '600',
         paddingVertical: 5,
-        fontFamily: 'Epilogue_500Medium'
+        fontFamily: 'Epilogue_600SemiBold'
 
     },
     
@@ -83,10 +92,9 @@ const styles_secondary = StyleSheet.create({
     label: {
         fontSize: 11,
         color: '#373737',
-        fontWeight: '600',
         paddingVertical: 2,
         marginTop: 5,
-        fontFamily: 'Epilogue_500Medium'
+        fontFamily: 'Epilogue_600SemiBold'
 
     },
     

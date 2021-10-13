@@ -73,6 +73,7 @@ export const checkoutHandler = async (user, cart, cartTotal, shipping) => {
         .catch(() => {})
         .then(response => {
             if (response.data) {
+                console.log(response.data)
                 salesCode = response.data['Sales_code'].split(';')[0]
                 amount = response.data['Sales_code'].split(';')[1]  
             }

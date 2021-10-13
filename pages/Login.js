@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { View, Text, Pressable, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, Alert, Image, ImageBackground } from 'react-native'
 import GeneralButton from '../components/Button'
 import Input from '../components/TextInput'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import querystring from 'querystring'
 import { setUser } from '../actions/userAction'
 import FormErrorMessage from '../components/FormErrorMessage'
@@ -23,6 +23,7 @@ const LoginPage = ({navigation}) => {
     const [loginErrorMessage, setErrorMessage] = useState('')
     const [buttonLoading, setButtonLoading] = useState(false)
 
+    const {cart} = useSelector(state => state)
 
     const loginHandler = async () => {
         setButtonLoading(true)
@@ -43,6 +44,12 @@ const LoginPage = ({navigation}) => {
                 }
                 dispatch(setUser(r.data.user))
                 setButtonLoading(false)
+                if (cart.length) {
+                    navigation.replace('Checkout')
+                }
+                else {
+                    navigation.navigate('Home')
+                }
             }
             else if (r.data.erorr || r.data.error) {
                 setButtonLoading(false)
@@ -127,13 +134,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Epilogue_400Regular',
         fontSize: 16,
         color: 'white',
-        fontWeight: '400'
     },
 
     forgotPassword: {
         marginVertical: '10%',
         color: 'white', 
-        fontWeight: '700', 
         fontSize: 16,
         alignSelf: 'flex-end',
         fontFamily: 'Epilogue_700Bold'

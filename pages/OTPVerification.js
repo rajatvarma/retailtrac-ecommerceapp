@@ -142,7 +142,7 @@ export const OtpVerificationPage = ({route, navigation}) => {
                         {!otpVerified ? 
                             <Input styleType="secondary" state={phone} setState={setPhone} placeholder='Your mobile number' type="phone"/>
                             :
-                            <Input styleType="secondary" state={password} setState={setPassword} placeholder='New Password' />
+                            <Input styleType="secondary" state={password} setState={setPassword} placeholder='New Password' type="password" />
                         }
                         
                     </View>

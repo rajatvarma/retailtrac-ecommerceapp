@@ -50,7 +50,7 @@ const ProductCard = ({product, image_url}) => {
                     {!isAdded ? 
                         <SmallButton text="Add" icon={faShoppingBag} onPress={buttonOnPressHandler}/> 
                         :
-                        <QuantityControl value={itemQuantity} onPress={quantityOnPressHandler} />
+                        <QuantityControl value={itemQuantity} onPress={quantityOnPressHandler} maxQuantity={Number(product.total_stock)} />
                     }   
                 </View>
             </View>
@@ -82,7 +82,6 @@ const ProductCardStyles = StyleSheet.create({
     productName: {
         fontFamily: 'Epilogue_500Medium',
         fontSize: 18,
-        fontWeight: '600',
     },
 
     subheading: {
@@ -95,7 +94,6 @@ const ProductCardStyles = StyleSheet.create({
         fontSize: 22,
         fontFamily: 'Epilogue_800ExtraBold',
         color: '#F37A20',
-        fontWeight: '800',
     },
 
     buttonWrapper: {

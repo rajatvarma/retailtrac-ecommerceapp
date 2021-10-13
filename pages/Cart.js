@@ -1,6 +1,6 @@
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../actions/cartActions'
 import GeneralButton from '../components/Button'
@@ -9,7 +9,7 @@ import ProductCard from '../components/ProductCard'
 
 const Cart = ({navigation}) => {
 
-    const {cart, images} = useSelector((state) => state)
+    const {cart, images, user} = useSelector((state) => state)
 
     function getImages(id) {
         let base_url
@@ -49,7 +49,26 @@ const Cart = ({navigation}) => {
 
             <View style={styles.buttonContainer}>
                 {cart.length > 0 ? 
-                    <GeneralButton text='Proceed to CheckOut' onPress={() => navigation.navigate('Checkout')} styleType="secondary" />
+                    <GeneralButton text='Proceed to CheckOut' onPress={() => {
+                        if (Object.keys(user).length === 0) {
+                            Alert.alert('Please Login or Sign up', 'In order to place an order, you must be logged in to the app. Please login if you already have an account, or create an account with us.',
+                            [
+                                {
+                                    text: 'Login or Sign Up',
+                                    onPress: () => navigation.navigate('Login'),
+                                    style: 'default'
+                                },
+                                {
+                                    text: 'Cancel',
+                                    style: 'cancel'
+                                }
+                            ]
+                            )
+                        }
+                        else {
+                            navigation.navigate('Checkout')
+                        }
+                    }} styleType="secondary" />
                     :
                     <GeneralButton text="Continue Shopping" onPress={() => navigation.navigate('Home')} styleType="primary" />
                 }

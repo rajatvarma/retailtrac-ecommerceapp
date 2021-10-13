@@ -135,8 +135,8 @@ android {
         applicationId "com.codon.retailtrac.ecommerce"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1.131
-        versionName "1.1.30"
+        versionCode 2
+        versionName "1.1.32"
     }
     splits {
         abi {

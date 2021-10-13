@@ -1,4 +1,4 @@
-const BASE_URL = 'http://pvanam.retailtrac360.com:8080/eComWS/'
+const BASE_URL = 'http://pvanamuat.retailtrac360.com:8080/eComWS/'
 
 export const categoriesURL = BASE_URL + 'rest/EcomInventory/allCategorywithSearchText/?search_text'
 
@@ -17,13 +17,16 @@ export const loginURL = BASE_URL + 'rest/EcomCustomer/ecomLoginCheck'
 
 export const resetPasswordURL = BASE_URL + 'rest/EcomCustomer/ecomResetPWD'
 
-export const registerOTPURL = BASE_URL + 'rest/EcomCustomer/eCommerceSendOTP'
+export const registerOTPURL = BASE_URL + 'rest/EcomCustomer/eCommerceSendOTPJSON'
 
 export const userRegistrationURL = BASE_URL + 'rest/EcomCustomer/verifyOTPInsertCsutomers'
 
 export const getUserAddressesURL = BASE_URL + 'rest/EcomSales/EcomGetDeliveryAddresses'
 
 export const addUserAddressURL = BASE_URL + 'rest/EcomCustomer/ecomInsert_CustomerDeliveryAddresses'
+
+export const editAccountURL = BASE_URL + 'rest/EcomCustomer/ecomUpdate_Customers'
+
 
 export const getPaymentDataURL = BASE_URL + 'rest/EcomInventory/getPaymentGatewayProperties'
 
