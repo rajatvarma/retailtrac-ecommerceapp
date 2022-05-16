@@ -49,6 +49,9 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+# iosStuff
+/ios/retailtracPOS/GoogleService-Info.plist
+
 # Expo
 .expo/
 web-build/
